@@ -1,0 +1,306 @@
+<div class="user-management-container">
+
+  <div class="header-section">
+    <h1>Quản lý tất cả xe của các đại lý</h1>
+    <p>Theo dõi và quản lý các xe của người dùng trong hệ thống</p>
+  </div>
+
+  <div class="search-criteria-card">
+    <div class="card-header">
+      <i class="fas fa-filter icon-filter"></i>
+      <h3>Điều kiện tìm kiếm</h3>
+    </div>
+    <p class="search-description">Điền thông tin để lọc kết quả tìm kiếm chính xác hơn</p>
+
+    <div class="search-form">
+      <div class="form-group">
+        <label for="carTitle">Tiêu đề xe</label>
+        <input type="text" id="carTitle" [(ngModel)]="filter.title" placeholder="Nhập tiêu đề xe">
+      </div>
+
+      <div class="form-group">
+        <label for="status">Trạng thái</label>
+        <select id="status" [(ngModel)]="filter.status">
+          <option [ngValue]="null">Tất cả</option>
+          <option [ngValue]="1">Xe mới</option>
+          <option [ngValue]="0">Xe cũ</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="dealer">Đại lý</label>
+        <select id="dealer" [(ngModel)]="filter.dealerId">
+          <option [ngValue]="null">Tất cả</option>
+          <option *ngFor="let dealer of dealers" [ngValue]="dealer.id">{{ dealer.username }}</option>
+        </select>
+      </div>
+
+      <button class="search-button" (click)="performSearch()">
+        <i class="fas fa-search"></i>
+        Tìm kiếm
+      </button>
+    </div>
+  </div>
+
+  <div class="search-results-summary">
+    <h2>Kết quả tìm kiếm</h2>
+    <div class="total-rows">
+      <span>Tổng số dòng:</span>
+      <strong>{{ totalElementsCount }}</strong>
+    </div>
+    <p class="link-text">Danh sách xe của đại lý</p>
+  </div>
+
+  <div class="creative-table-card">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Tiêu đề xe</th>
+            <th>Hãng xe</th>
+            <th>Mẫu xe</th>
+            <th>Phiên bản</th>
+            <th>Giá</th>
+            <th>Trạng thái xe</th>
+            <th>Đại lý</th>
+            <th>Năm sản xuất</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let car of cars; let i = index">
+            <td>{{ i + 1 + currentPage * pageSize }}</td>
+            <td>{{ car.title }}</td>
+            <td>{{ car.brandId }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.variant }}</td>
+            <td>{{ car.price | currency:'VND':'symbol':'1.0-0' }}</td>
+            <td>
+              <span [ngClass]="car.status === 1 ? 'status-new' : 'status-used'">
+                {{ getCarStatusLabel(car.status) }}
+              </span>
+            </td>
+            <td>{{ getDealerNameById(car.dealerId) }}</td>
+            <td>{{ car.year }}</td>
+            <td>{{ car.description }}</td>
+            <td class="action-buttons">
+              <div class="form-row">
+                <div class="form-group half">
+                  <button class="btn-edit" (click)="openEditModal(car)">
+                    <i class="fas fa-pen"></i>
+                  </button>
+                </div>
+                <div class="form-group half">
+                  <button class="btn-delete" (click)="handleDeleteCar(car.carId)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="goToPreviousPage()" [disabled]="!hasPreviousPage">Trang trước</button>
+    <span>Trang {{ currentPage + 1 }} / {{ pagesCount }}</span>
+    <button (click)="goToNextPage()" [disabled]="!hasNextPage">Trang sau</button>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isEditModalOpen" (click)="handleBackdropClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Quản lý ảnh</h3>
+
+    <div class="form-group full image-management-section">
+      <label>Ảnh hiện tại (Bỏ chọn để XÓA)</label>
+      <div class="current-images-grid">
+        <div *ngFor="let image of selectedCar.images" class="image-item"
+          [class.keep-image]="keepImageIds.includes(image.id)" (click)="toggleImageToKeep(image.id)">
+
+          <img [src]="image.imageUrl" alt="Car Image" class="car-thumbnail">
+
+          <div class="overlay">
+            <i *ngIf="keepImageIds.includes(image.id)" class="fas fa-check-circle check-icon"></i>
+            <i *ngIf="!keepImageIds.includes(image.id)" class="fas fa-trash-alt delete-icon"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group full">
+      <label for="newImagesUpload">Tải lên ảnh mới (Sẽ được thêm vào)</label>
+      <input type="file" id="newImagesUpload" (change)="handleNewImagesChange($event)" multiple accept="image/*" />
+      <p class="file-count-info" *ngIf="newImages.length > 0">
+        {{ newImages.length }} file mới đã được chọn.
+      </p>
+    </div>
+    <h2>Hiệu chỉnh xe</h2>
+    <form (ngSubmit)="saveEdit()" #editForm="ngForm">
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Tiêu đề xe *</label>
+          <input type="text" [(ngModel)]="selectedCar.title" name="title" required #titleModel="ngModel" />
+          <div class="error-message" *ngIf="titleModel.invalid && titleModel.touched">
+            Tiêu đề xe không được để trống.
+          </div>
+        </div>
+
+        <div class="form-group half">
+          <label>Hãng xe *</label>
+          <input type="text" [(ngModel)]="selectedCar.brandId" name="brandId" required #brandIdModel="ngModel" />
+          <div class="error-message" *ngIf="brandIdModel.invalid && brandIdModel.touched">
+            Hãng xe không được để trống.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Giá *</label>
+          <input type="number" [(ngModel)]="selectedCar.price" name="price" required #priceModel="ngModel" />
+          <div class="error-message" *ngIf="priceModel.invalid && priceModel.touched">
+            Giá không được để trống và phải là số.
+          </div>
+        </div>
+
+        <div class="form-group half">
+          <label>Năm sản xuất *</label>
+          <input type="number" [(ngModel)]="selectedCar.year" name="year" required #yearModel="ngModel" />
+          <div class="error-message" *ngIf="yearModel.invalid && yearModel.touched">
+            Năm sản xuất không được để trống.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Trạng thái</label>
+          <select [(ngModel)]="selectedCar.status" name="status" required>
+            <option [ngValue]="1">Xe mới</option>
+            <option [ngValue]="2">Xe cũ</option>
+          </select>
+        </div>
+
+        <div class="form-group half">
+          <label>Đại lý</label>
+          <select [(ngModel)]="selectedCar.dealerId" name="dealerId">
+            <option *ngFor="let dealer of dealers" [ngValue]="dealer.id">{{ dealer.username }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Mô tả</label>
+          <textarea [(ngModel)]="selectedCar.description" name="description"></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Mẫu xe</label>
+          <input type="text" [(ngModel)]="selectedCar.model" name="model" />
+        </div>
+        <div class="form-group half">
+          <label>Phiên bản</label>
+          <input type="text" [(ngModel)]="selectedCar.variant" name="variant" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Vị trí</label>
+          <input type="text" [(ngModel)]="selectedCar.location" name="location" />
+        </div>
+        <div class="form-group half">
+          <label>Số km đã đi</label>
+          <input type="number" [(ngModel)]="selectedCar.mileage" name="mileage" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Màu sắc</label>
+          <input type="text" [(ngModel)]="selectedCar.color" name="color" />
+        </div>
+        <div class="form-group half">
+          <label>Loại nhiên liệu</label>
+          <input type="text" [(ngModel)]="selectedCar.fuelType" name="fuelType" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Hộp số</label>
+          <input type="text" [(ngModel)]="selectedCar.transmission" name="transmission" />
+        </div>
+        <div class="form-group half">
+          <label>Kiểu thân xe</label>
+          <input type="text" [(ngModel)]="selectedCar.bodyStyle" name="bodyStyle" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Xuất xứ</label>
+          <input type="text" [(ngModel)]="selectedCar.origin" name="origin" />
+        </div>
+        <div class="form-group half">
+          <label>Số ghế</label>
+          <input type="number" [(ngModel)]="selectedCar.seats" name="seats" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Mã lực</label>
+          <input type="number" [(ngModel)]="selectedCar.horsepower" name="horsepower" />
+        </div>
+        <div class="form-group half">
+          <label>Mô-men xoắn</label>
+          <input type="number" [(ngModel)]="selectedCar.torque" name="torque" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Hệ dẫn động</label>
+          <input type="text" [(ngModel)]="selectedCar.drivetrain" name="drivetrain" />
+        </div>
+        <div class="form-group half">
+          <label>Dung tích động cơ</label>
+          <input type="number" [(ngModel)]="selectedCar.engineCapacity" name="engineCapacity" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Loại động cơ</label>
+          <input type="text" [(ngModel)]="selectedCar.engineType" name="engineType" />
+        </div>
+        <div class="form-group half">
+          <label>Tiêu thụ nhiên liệu</label>
+          <input type="number" [(ngModel)]="selectedCar.fuelConsumption" name="fuelConsumption" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Túi khí</label>
+          <input type="number" [(ngModel)]="selectedCar.airbags" name="airbags" />
+        </div>
+        <div class="form-group half">
+          <label>Đăng kiểm đến ngày</label>
+          <input type="text" [(ngModel)]="selectedCar.registeredUntil" name="registeredUntil"
+            placeholder="YYYY-MM-DD" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="closeEditModal()">Hủy bỏ</button>
+        <button type="submit" [disabled]="editForm.invalid">Hoàn tất</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-toast-notification *ngIf="showToast" [message]="toastMessage" [type]="toastType" (closed)="onToastClosed()">
+</app-toast-notification>

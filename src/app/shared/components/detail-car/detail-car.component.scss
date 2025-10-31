@@ -1,0 +1,813 @@
+.detail-car-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 0;
+  font-family: 'Inter', sans-serif;
+  color: #1a2a4b;
+}
+
+.detail-car-breadcrumb {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: #888;
+
+  .detail-car-title-breadcrumb {
+    color: #1a2a4b;
+    font-weight: 600;
+  }
+}
+
+.detail-car-main {
+  display: flex;
+  gap: 32px;
+}
+
+.detail-car-left {
+  flex: 1.2;
+  min-width: 0;
+}
+
+/* ========================================================== */
+/* KHỐI ẢNH CHÍNH (SLIDER & KHUNG) - ĐÃ FIX */
+/* ========================================================== */
+.detail-car-image-main {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+  cursor: zoom-in;
+
+  /* Tỷ lệ 3:2: Chiều cao bằng 66.66% chiều rộng */
+  width: 100%;
+  padding-bottom: 66.66%;
+  height: 0; 
+
+  /* Màu nền khi object-fit: contain không lấp đầy khung */
+  background-color: #f7f9fc;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* 🔥 FIX: Dùng contain để hiển thị TOÀN BỘ ảnh, không bị cắt xén */
+    object-fit: contain;
+
+    display: block;
+    border-radius: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Ô ĐẾM SỐ LƯỢNG ẢNH (1/2) - ĐÃ FIX: Nhỏ hơn và làm mờ */
+  .detail-car-image-count {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Làm mờ và thu nhỏ */
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff; 
+
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: none;
+    z-index: 5;
+    white-space: nowrap;
+  }
+}
+
+/* Nút điều hướng Slider */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 1.2rem;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.slider-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
+}
+
+/* ========================================================== */
+/* KHỐI ẢNH THU NHỎ (GALLERY) */
+/* ========================================================== */
+.detail-car-image-list {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+
+  img {
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #eee;
+    cursor: pointer;
+    transition: border-color 0.2s;
+
+    &:hover, &.active {
+      border-color: #ffd600;
+    }
+  }
+}
+
+/* ========================================================== */
+/* CÁC KHỐI KHÁC (GIỮ NGUYÊN) */
+/* ========================================================== */
+
+.detail-car-features {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 20px;
+
+  .detail-car-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 24px;
+    padding: 8px 18px;
+    font-weight: 500;
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .detail-car-feature-icon {
+      font-size: 22px;
+      color: #ffd600;
+    }
+  }
+}
+
+.detail-car-desc {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px 24px;
+  margin-top: 16px;
+
+  .detail-car-desc-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #1a2a4b;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #ffd600;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 18px;
+
+    li {
+      font-size: 16px;
+      margin-bottom: 4px;
+      list-style: none;
+      position: relative;
+
+      &:before {
+        content: "✔";
+        color: #5c6bc0;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.detail-car-right {
+  flex: 1;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.detail-car-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a2a4b;
+  margin-bottom: 4px;
+}
+
+.detail-car-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e53935;
+  margin-bottom: 4px;
+
+  .price-month {
+    font-size: 14px;
+    color: #222;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+}
+
+.detail-car-location {
+  font-size: 16px;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.detail-car-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+  background: #f7f9fc;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 16px;
+  margin-bottom: 8px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+
+    b {
+      color: #1a2a4b;
+      font-weight: 700;
+      min-width: 90px;
+    }
+
+    span {
+      color: #222;
+      font-weight: 500;
+    }
+  }
+}
+
+.detail-car-dealer {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px 18px 12px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .dealer-img {
+    width: 100%;
+    // max-width: 320px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
+
+  .dealer-info {
+    width: 100%;
+    text-align: left;
+
+    .dealer-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a2a4b;
+      margin-bottom: 2px;
+
+      .dealer-vip {
+        font-size: 18px;
+        margin-left: 4px;
+      }
+    }
+
+    .dealer-location {
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 2px;
+
+      .dealer-link {
+        color: #2563eb;
+        font-size: 14px;
+        margin-left: 8px;
+        text-decoration: none;
+        font-weight: 500;
+      }
+    }
+
+    .dealer-stats {
+      display: flex;
+      gap: 24px;
+      font-size: 15px;
+      margin-bottom: 8px;
+
+      span {
+        color: #222;
+
+        b {
+          color: #1a2a4b;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .dealer-contact {
+      .dealer-phone {
+        background: #ffd600;
+        border-radius: 8px;
+        padding: 8px 0;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a2a4b;
+        margin-top: 4px;
+
+        .dealer-phone-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .detail-car-main {
+    flex-direction: column;
+  }
+
+  .detail-car-right {
+    margin-top: 32px;
+  }
+}
+
+/* ========================================================== */
+/* LIGHTBOX MODAL (ĐÃ TỐI ƯU) */
+/* ========================================================== */
+.lightbox-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-modal.open {
+  display: flex;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-content img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  background-color: #1a1a1a;
+}
+
+.lightbox-modal .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.lightbox-modal .close-btn:hover,
+.lightbox-modal .close-btn:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lightbox-modal .slider-btn {
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+}
+
+.lightbox-modal .prev-btn {
+  left: 20px;
+}
+
+.lightbox-modal .next-btn {
+  right: 20px;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-size: 14px;
+  z-index: 10000;
+}
+
+/* ========================================================== */
+/* KHỐI THÔNG SỐ KỸ THUẬT CHI TIẾT */
+/* ========================================================== */
+
+.detail-car-tech-specs {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 18px 24px;
+    margin-top: 16px;
+}
+
+.tech-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 24px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #eee;
+}
+
+.spec-label {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.spec-value {
+    font-size: 16px;
+    color: #1a2a4b;
+    font-weight: 700;
+}
+
+
+/* ========================================================== */
+/* KHỐI CHÍNH SÁCH ƯU ĐÃI */
+/* ========================================================== */
+.detail-car-policies {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 18px 24px;
+    margin-top: 16px;
+}
+
+.policy-grid {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0 5px 0;
+    text-align: center;
+}
+
+.policy-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+}
+
+.policy-icon {
+    font-size: 36px;
+    color: #1a2a4b;
+    background: #ffd600;
+    border-radius: 50%;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.policy-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a2a4b;
+}
+
+/* ========================================================== */
+/* KHỐI TÍNH KHOẢN VAY */
+/* ========================================================== */
+.detail-car-loan-calculator {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 18px 24px;
+    margin-top: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.loan-calculator-title {
+    font-weight: 700;
+    font-size: 20px;
+    color: #1a2a4b;
+    margin-bottom: 15px;
+}
+
+.loan-price {
+    background: #1a2a4b;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.loan-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.loan-input-item {
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 70px;
+    justify-content: center;
+    background: #1a2a4b; /* Màu nền cho các input */
+    color: #fff;
+}
+
+.loan-input-item.dark-bg {
+    background: #1a2a4b;
+    color: #fff;
+}
+
+.loan-input-item .input-label {
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.8;
+    margin-bottom: 2px;
+}
+
+.loan-input-item .input-value {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.loan-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.loan-result .result-label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.loan-result .result-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e53935;
+}
+
+.loan-deposit {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* ========================================================== */
+/* Cập nhật DEALER Contact Button */
+/* ========================================================== */
+.dealer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.dealer-phone-btn, .dealer-message-btn {
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.dealer-phone-btn {
+    background: #ffd600;
+    color: #1a2a4b;
+    border: none;
+}
+
+.dealer-message-btn {
+    background: #fff;
+    color: #1a2a4b;
+    border: 1px solid #ccc;
+}
+
+.dealer-phone-icon, .dealer-message-icon {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+/* ========================================================== */
+/* KHỐI TIN KHÁC CỦA ĐẠI LÝ */
+/* ========================================================== */
+
+.dealer-other-cars {
+    margin-top: 24px;
+    padding: 0 10px;
+}
+
+.other-cars-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a2a4b;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ffd600;
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+.other-cars-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.car-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+.car-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.car-card-header {
+    position: relative;
+}
+
+.car-card-header img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+.car-card-header .post-time {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.car-card-body {
+    padding: 10px 12px 5px 12px;
+}
+
+.car-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a2a4b;
+    margin: 0 0 5px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.car-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e53935;
+    margin: 0;
+}
+
+.car-monthly-price {
+    font-size: 12px;
+    color: #888;
+    margin: 0 0 8px 0;
+}
+
+.car-card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 12px 10px 12px;
+    gap: 4px 8px;
+}
+
+.car-card-footer .spec {
+    font-size: 11px;
+    color: #555;
+    background: #f7f9fc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Responsive cho khối xe khác */
+@media (max-width: 600px) {
+    .other-cars-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+/* Giữ nguyên các media query cũ */
+/* ... */
+
+/* ... CSS đã có ... */
+
+.dealer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Áp dụng style nút cho thẻ A */
+.dealer-phone-btn, .dealer-message-btn {
+    /* Đảm bảo chúng hiển thị như khối và căn chỉnh nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none; /* Bỏ gạch chân link */
+    
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+    /* Thêm thuộc tính này nếu chưa có */
+    box-sizing: border-box; 
+}
+
+.dealer-phone-btn {
+    background: #ffd600;
+    color: #1a2a4b;
+    border: none;
+}
+
+.dealer-message-btn {
+    background: #fff;
+    color: #1a2a4b;
+    border: 1px solid #ccc;
+}
+
+/* ... CSS đã có ... */

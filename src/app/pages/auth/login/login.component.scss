@@ -1,0 +1,255 @@
+/* login.component.css */
+
+/*
+   Sử dụng :host để nhắm vào host element của component (<app-login> nếu selector là 'app-login')
+   Sau đó dùng ::ng-deep để "thọc sâu" vào bên trong các global elements như html, body.
+   LƯU Ý: ::ng-deep đang bị deprecate và có thể bị loại bỏ trong tương lai.
+   Giải pháp tốt nhất vẫn là đặt CSS reset này vào src/styles.css.
+*/
+:host ::ng-deep html,
+:host ::ng-deep body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */ /* Bỏ comment nếu bạn muốn ngăn scrollbar xuất hiện */
+}
+
+/* Cũng đảm bảo host element của component chiếm toàn bộ không gian */
+:host {
+  display: block; /* Mặc định các component là display: inline, cần đặt thành block */
+  width: 100%;
+  height: 100%;
+}
+
+
+/* Container toàn màn hình */
+.full-screen-container {
+  display: flex; /* Dùng flexbox để chia 2 cột */
+  height: 100vh; /* Chiếm toàn bộ chiều cao viewport */
+  width: 100vw;  /* Chiếm toàn bộ chiều rộng viewport */
+  overflow: hidden; /* Tránh scrollbar nếu nội dung tràn ra */
+  font-family: Arial, sans-serif; /* Font chung */
+}
+
+/* Nền màu cam bên trái */
+.orange-background {
+  flex: 1.5; /* Chiếm khoảng 1.5 phần */
+  background: linear-gradient(to bottom right, #FFA726, #FF7043); /* Gradient màu cam */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+}
+
+.welcome-section {
+  text-align: center;
+  color: white;
+  max-width: 400px;
+}
+
+.welcome-section .shield-icon {
+  width: 80px; /* Kích thước icon lá chắn */
+  height: 80px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); /* Tạo hiệu ứng đổ bóng */
+}
+
+.welcome-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.welcome-section p {
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.welcome-section ul {
+  list-style: none; /* Bỏ dấu chấm mặc định */
+  padding: 0;
+  margin-top: 20px;
+}
+
+.welcome-section ul li {
+  font-size: 1em;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 25px; /* Để chỗ cho icon dấu tích */
+}
+
+/* Tạo dấu tích tùy chỉnh */
+.welcome-section ul li::before {
+  content: '✔'; /* Dấu tích Unicode */
+  color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+
+/* Panel đăng nhập bên phải */
+.login-panel {
+  flex: 1; /* Chiếm 1 phần còn lại */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f2f5; /* Nền xám nhạt */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.login-form-container {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 15px; /* Bo tròn góc */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+  width: 100%;
+  max-width: 400px; /* Chiều rộng tối đa của form */
+  text-align: center; /* Căn giữa nội dung */
+}
+
+.login-form-container h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-form-container .login-subtitle {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Các nhóm form (label + input) */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left; /* Căn trái label và input */
+}
+
+.form-group label {
+  display: block; /* Đặt label trên một dòng riêng */
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: #555;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: calc(100% - 20px); /* Trừ padding */
+  padding: 12px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Bo tròn input */
+  font-size: 1em;
+  outline: none; /* Bỏ viền khi focus */
+  transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus {
+  border-color: #FFA726; /* Màu cam khi focus */
+}
+
+/* Nút đăng nhập */
+button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(to right, #FFA726, #FF7043); /* Gradient cam */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  margin-top: 20px;
+}
+
+button[type="submit"]:hover:not([disabled]) {
+  opacity: 0.9;
+}
+
+button[type="submit"][disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tin nhắn lỗi */
+.error-message {
+  color: #d9534f; /* Màu đỏ cho lỗi */
+  font-size: 0.85em;
+  margin-top: 5px;
+  text-align: left;
+}
+
+/* Phần đăng nhập bằng mạng xã hội */
+.social-login-separator {
+  margin: 30px 0;
+  position: relative;
+  text-align: center;
+  color: #999;
+}
+
+.social-login-separator::before,
+.social-login-separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #eee;
+}
+
+.social-login-separator::before {
+  left: 0;
+}
+
+.social-login-separator::after {
+  right: 0;
+}
+
+.social-login-separator span {
+  background-color: white;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.social-login-button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.social-login-button:hover {
+  background-color: #f5f5f5;
+}
+
+.social-login-button .social-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Styling cụ thể cho nút Google và Microsoft (tùy chọn) */
+.google-button {
+  color: #4285F4; /* Màu chữ Google */
+  border-color: #4285F4;
+}
+
+.microsoft-button {
+  color: #2F2F2F; /* Màu chữ Microsoft */
+  border-color: #2F2F2F;
+}

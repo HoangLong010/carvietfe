@@ -1,0 +1,428 @@
+/* Bạn có thể nhập các tệp SCSS chung ở đây nếu có */
+/* @import 'variables'; */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* ==================================== */
+/* Styles cho phần Báo cáo theo kênh/ chương trình */
+/* ==================================== */
+
+.header-section {
+    margin-bottom: 25px;
+    h1 {
+        font-size: 1.8em;
+        color: #333;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    p {
+        font-size: 0.95em;
+        color: #666;
+        margin-top: 0;
+    }
+}
+
+.search-criteria-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        // Thêm gap để tạo khoảng cách giữa icon và h3 một cách dễ dàng
+        gap: 10px; // Thêm dòng này để có khoảng cách giữa icon và h3
+
+        .icon-filter {
+            color: #ff9900;
+            font-size: 1.2em;
+            // Xóa margin-right ở đây nếu dùng gap trên .card-header
+            // margin-right: 10px; // Dòng này có thể bị trùng hoặc không cần nếu dùng gap
+
+            // Đảm bảo icon luôn chiếm không gian và căn giữa
+            min-width: 20px; // Chiều rộng tối thiểu cho icon
+            display: flex; // Biến icon thành flex container
+            justify-content: center; // Căn giữa nội dung (icon) theo chiều ngang
+            align-items: center; // Căn giữa nội dung (icon) theo chiều dọc
+        }
+
+        h3 {
+            margin: 0; // Đảm bảo không có margin mặc định đẩy h3 đi
+            font-size: 1.2em;
+            color: #333;
+            font-weight: bold;
+            // flex-shrink: 0; // Tùy chọn: ngăn h3 co lại nếu không gian hạn chế
+        }
+    }
+
+    .search-description {
+        font-size: 0.9em;
+        color: #777;
+        margin-top: -10px;
+        margin-bottom: 25px;
+    }
+
+    .search-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-end; /* Căn chỉnh các form group và button */
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px; /* Khoảng cách dưới cho mỗi nhóm form */
+
+            label {
+                font-size: 0.9em;
+                color: #555;
+                margin-bottom: 8px;
+                font-weight: bold;
+            }
+
+            input[type="date"],
+            select {
+                padding: 10px 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 0.9em;
+                color: #333;
+                appearance: none; /* Bỏ giao diện mặc định của select/date input */
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-color: #fff;
+            }
+
+            input[type="date"] {
+                width: 140px; /* Chiều rộng cố định cho input ngày */
+            }
+
+            select {
+                width: 180px; /* Chiều rộng cố định cho select */
+                padding-right: 30px; /* Khoảng trống cho mũi tên dropdown tùy chỉnh */
+            }
+        }
+
+        .date-range {
+            display: flex; /* Để label và input nằm trên một dòng */
+            flex-direction: column;
+
+            .date-inputs {
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                gap: 8px; /* Khoảng cách giữa các input ngày và dấu gạch ngang */
+                span {
+                    font-size: 1.2em;
+                    color: #777;
+                }
+            }
+        }
+
+        .channel-select {
+            position: relative; /* Để position mũi tên dropdown */
+            .dropdown-arrow {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(10px); /* Điều chỉnh vị trí mũi tên */
+                pointer-events: none; /* Không chặn click vào select */
+                color: #999;
+            }
+        }
+
+        .search-button {
+            background-color: #ff9900;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-size: 0.95em;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px; /* Căn chỉnh với các input */
+
+            &:hover {
+                background-color: #e68a00;
+            }
+        }
+    }
+}
+
+.summary-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between; /* Đảm bảo các card có khoảng cách đều */
+    margin-bottom: 30px;
+
+    .summary-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        text-align: center;
+        flex: 1; /* Cho phép các card mở rộng */
+        min-width: 180px; /* Đặt chiều rộng tối thiểu */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+
+        strong {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        span {
+            font-size: 0.85em;
+            color: #777;
+        }
+
+        &.highlight {
+            border: 1px solid #667eea; /* Viền xanh cho card nổi bật */
+            strong, span {
+                color: #667eea;
+            }
+        }
+    }
+}
+
+/* Media queries cho phần mới */
+@media (max-width: 768px) {
+    .search-criteria-card {
+        .search-form {
+            flex-direction: column;
+            align-items: stretch; /* Làm cho các phần tử chiếm toàn bộ chiều rộng */
+
+            .form-group {
+                width: 100%; /* Chiếm toàn bộ chiều rộng */
+            }
+
+            .date-inputs {
+                flex-direction: column; /* Đặt các input ngày trên các dòng khác nhau */
+                align-items: stretch;
+                input[type="date"] {
+                    width: 100%; /* Mở rộng input ngày */
+                }
+            }
+
+            select {
+                width: 100%; /* Mở rộng select */
+            }
+
+            .search-button {
+                width: 100%; /* Mở rộng button */
+            }
+        }
+    }
+
+    .summary-cards-container {
+        flex-direction: column; /* Các card tóm tắt xếp chồng lên nhau */
+        .summary-card {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .summary-cards-container {
+        justify-content: center; /* Giúp căn giữa các card nếu không đủ 5 hàng */
+        .summary-card {
+            flex-basis: calc(33% - 20px); /* 3 card mỗi hàng */
+        }
+    }
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.dashboard-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+    font-weight: bold;
+}
+
+.unit-text {
+    font-size: 0.85em;
+    color: #777;
+}
+
+.chart-container {
+    flex-grow: 1;
+    position: relative;
+    height: 250px;
+}
+
+/* Inventory Ratio Card */
+.inventory-ratio-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "header header"
+        "chart summary"
+        "legend summary";
+    align-items: start;
+    gap: 20px;
+}
+
+.inventory-ratio-card h3 { grid-area: header; }
+.inventory-ratio-card .chart-container { grid-area: chart; height: 180px; width: 180px; justify-self: center; }
+.inventory-ratio-card .legend { grid-area: legend; padding-top: 10px; }
+.inventory-ratio-card .inventory-summary { grid-area: summary; }
+
+.chart-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 10;
+}
+.chart-center-text p {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+    margin: 0;
+}
+
+.legend {
+    width: 100%;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.legend-label {
+    display: flex;
+    align-items: center;
+}
+
+.color-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+.inventory-summary {
+    text-align: right;
+    border-left: 1px solid #eee;
+    padding-left: 20px;
+}
+
+.inventory-summary h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+.inventory-summary p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.inventory-summary p span {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Bar Charts */
+#revenue-by-channel-chart-container {
+    height: 280px;
+}
+
+#inventory-by-channel-chart-container {
+    height: 200px;
+}
+
+/* Fill Rate Chart */
+.fill-rate-card .unit-text {
+    margin-bottom: 20px;
+}
+
+.chart-footer {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #777;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    .card {
+        width: 90%;
+    }
+    .inventory-ratio-card {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "chart"
+            "legend"
+            "summary";
+    }
+    .inventory-ratio-card .chart-container { justify-self: center; }
+    .inventory-ratio-card .inventory-summary { border-left: none; padding-left: 0; text-align: left; }
+}

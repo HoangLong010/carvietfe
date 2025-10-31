@@ -1,0 +1,65 @@
+<div class="elegant-container">
+    <div class="gradient-overlay"></div>
+
+    <div class="register-card">
+        <div class="header-section">
+            <img src="path/to/your/logo.png" alt="Carviet Logo" class="logo-icon"> 
+            <h2>Tạo tài khoản Carviet</h2>
+            <p class="subtitle">Bắt đầu hành trình kinh doanh xe của bạn</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            
+            <div class="form-row">
+                <div class="form-group half-width">
+                    <label for="fullName">Họ và Tên</label>
+                    <input type="text" id="fullName" formControlName="fullName" placeholder="Nhập họ và tên" />
+                    </div>
+
+                <div class="form-group half-width">
+                    <label for="userName">Tên đăng nhập</label>
+                    <input type="text" id="userName" formControlName="userName" placeholder="Nhập tên đăng nhập" />
+                    </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half-width">
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" id="password" formControlName="password" placeholder="Tối thiểu 6 ký tự" />
+                    </div>
+
+                <div class="form-group half-width">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="tel" id="phone" formControlName="phone" placeholder="Nhập số điện thoại" />
+                    </div>
+            </div>
+
+            <button type="submit" class="register-button" [disabled]="registerForm.invalid">
+                Đăng ký ngay
+            </button>
+            
+            <div class="login-link-container">
+                Đã có tài khoản? <a href="/login">**Đăng nhập**</a>
+            </div>
+        </form>
+
+        <div class="social-login-separator">
+            <span>Hoặc</span>
+        </div>
+
+        <div class="social-buttons-row">
+            <button class="social-login-button google-button">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" class="social-icon"> Google
+            </button>
+            <button class="social-login-button microsoft-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="M" class="social-icon"> Microsoft
+            </button>
+        </div>
+    </div>
+    <app-toast-notification
+          *ngIf="showToast"
+          [message]="toastMessage"
+          [type]="toastType"
+          (closed)="onToastClosed()">
+        </app-toast-notification>
+</div>

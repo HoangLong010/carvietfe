@@ -1,0 +1,198 @@
+/* General body styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.logo img {
+  height: 80px;
+  width: auto;
+  max-width: 320px;
+  display: block;
+}
+/* Header Top Section */
+.header-top {
+    background-color: #1a2a4b; /* Dark blue background */
+    color: white;
+    padding: 10px 0;
+}
+
+.header-top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-top-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.header-top-nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.user-info .test {
+    background-color: white;
+    color: #1a2a4b; /* Dark blue text */
+    padding: 5px 10px;
+    border-radius: 20px; /* Rounded corners for the "Hoàng Long" part */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+}
+
+.user-menu-dropdown {
+    position: absolute;
+    top: 38px;
+    right: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    min-width: 220px;
+    z-index: 100;
+    padding: 0;
+    border: 2px solid #ffe600;
+    animation: fadeIn .18s;
+}
+.user-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px 8px 16px;
+    border-bottom: 1px solid #f3f3f3;
+}
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffe600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+}
+.user-menu-action {
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #1a2a4b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.15s;
+}
+.user-menu-action:hover {
+    background: #f7f7f7;
+}
+.user-menu-action.logout {
+    color: #e53935;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user-info .test::before {
+    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%231a2a4b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'); /* User icon SVG, filled with dark blue */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Header Main Section */
+.header-main {
+    background-color: #ffe600; /* Yellow background */
+    padding: 20px 0;
+}
+
+.header-main-content {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1a2a4b; /* Dark blue color for logo text */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo img {
+    margin-right: 10px;
+    height: 40px; /* Adjust size as needed for the logo image */
+}
+
+.slogan {
+    color: #1a2a4b; /* Dark blue color for slogan */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Main Navigation (assuming it's the yellow bar with "DANH MỤC" and menu items) */
+.main-nav {
+    background-color: #ffe600; /* Yellow background, consistent with the main header */
+    padding: 10px 0;
+    /* The image provided only shows the top two bars, so this section is based on the HTML provided */
+}
+
+.main-nav-list {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #1a2a4b;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.menu-toggle svg {
+    stroke: #1a2a4b; /* Set SVG icon color to dark blue */
+}
+
+.main-nav-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+    margin-left: 30px; /* Space between "DANH MỤC" and the menu items */
+}
+
+.main-nav-list ul li a {
+    color: #1a2a4b;
+    text-decoration: none;
+    font-size: 16px;
+}

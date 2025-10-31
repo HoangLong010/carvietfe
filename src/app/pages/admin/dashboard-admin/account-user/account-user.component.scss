@@ -1,0 +1,448 @@
+// ... (Giữ nguyên nội dung SCSS đã cung cấp trước đó) ...
+.user-management-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  font-family: 'Arial', sans-serif;
+}
+
+.header-section {
+  margin-bottom: 25px;
+
+  h1 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 0.95em;
+    color: #666;
+    margin-top: 0;
+  }
+}
+
+.search-criteria-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    .icon-filter {
+      color: #ff9900;
+      font-size: 1.2em;
+      margin-right: 10px;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.2em;
+      color: #333;
+      font-weight: bold;
+    }
+  }
+
+  .search-description {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: -10px;
+    margin-bottom: 25px;
+  }
+
+  .search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 200px;
+      /* Allows items to wrap and have a min-width */
+      margin-bottom: 10px;
+      /* Adjust for consistent spacing */
+
+      label {
+        font-size: 0.9em;
+        color: #555;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      select {
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.9em;
+        color: #333;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #fff;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      select {
+        padding-right: 30px;
+        /* Space for custom arrow */
+      }
+
+      .dropdown-arrow {
+        position: absolute;
+        right: 12px;
+        top: calc(50% + 10px);
+        /* Aligns with input field */
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #999;
+      }
+    }
+
+    .search-button {
+      background-color: #ff9900;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      font-size: 0.95em;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+      margin-left: auto;
+      /* Push button to the right */
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #e68a00;
+      }
+    }
+  }
+}
+
+.search-results-summary {
+  display: flex;
+  align-items: baseline;
+  /* Align text baselines */
+  margin-bottom: 20px;
+  gap: 15px;
+  /* Spacing between elements */
+
+  h2 {
+    font-size: 1.2em;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  .total-rows {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.85em;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    strong {
+      color: #ff9900;
+      font-size: 1.1em;
+    }
+  }
+
+  .link-text {
+    font-size: 0.9em;
+    color: #667eea;
+    /* Color for links */
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 0;
+  }
+}
+
+.creative-table-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  /* Ensures rounded corners for table */
+
+  .table-responsive {
+    overflow-x: auto;
+    /* Enables horizontal scrolling for the table */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 1000px;
+    /* Ensures table doesn't shrink too much */
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f8f8f8;
+      color: #666;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #fdfdfd;
+    }
+
+    tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .actions {
+      text-align: center;
+
+      .action-icon {
+        color: #999;
+        cursor: pointer;
+        font-size: 1.1em;
+
+        &:hover {
+          color: #555;
+        }
+      }
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .user-management-container {
+    padding: 15px;
+  }
+
+  .search-criteria-card .search-form {
+    flex-direction: column;
+    align-items: stretch;
+
+    .form-group {
+      width: 100%;
+    }
+
+    .search-button {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  .search-results-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .creative-table-card table {
+    min-width: 0;
+    /* Remove min-width on small screens to allow full collapse */
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-delete {
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-edit {
+  background-color: #fff7e6;
+  color: #f0ad4e;
+  border: 1px solid #f0ad4e;
+}
+
+.btn-delete {
+  background-color: #ffe6e6;
+  color: #d9534f;
+  border: 1px solid #d9534f;
+}
+
+.btn-edit i,
+.btn-delete i {
+  pointer-events: none;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 40px 53px;
+  border-radius: 12px;
+  width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  color: #f26b38;
+  /* màu đỏ cam */
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #f26b38;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.form-actions button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.form-actions button[type='submit'] {
+  background-color: #f26b38;
+  color: white;
+}
+
+.form-actions button[type='button'] {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.form-group.half {
+  flex: 1 1 50%;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.input-disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+  /* icon cấm */
+  transition: all 0.2s ease;
+}
+
+.input-disabled:hover {
+  border-color: #ff4d4f;
+  /* đỏ nhẹ */
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    font-size: 16px;
+}
+
+.pagination button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    font-weight: 500;
+}

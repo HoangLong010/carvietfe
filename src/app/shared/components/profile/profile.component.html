@@ -1,0 +1,139 @@
+<!-- app-profile.component.html -->
+
+<!-- To center the content, we wrap it in a container -->
+<div class="app-container">
+  <app-header></app-header>
+  
+  <div class="profile-container">
+    <div class="profile-sidebar">
+      <div class="profile-menu-group">
+        <div class="profile-menu-title">Thông tin cơ bản</div>
+        <!-- Use [class.active] for conditional styling -->
+        <div class="profile-menu-item" [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">
+          <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4" fill="none" stroke="#1a2a4b" stroke-width="2"/><path d="M2 22c0-4.418 3.582-8 8-8h4c4.418 0 8 3.582 8 8" fill="none" stroke="#1a2a4b" stroke-width="2"/></svg></span>
+          Thông tin
+        </div>
+      </div>
+      <div class="profile-menu-group">
+        <div class="profile-menu-title">Bảo mật</div>
+        <div class="profile-menu-item" [class.active]="activeTab === 'password'" (click)="activeTab = 'password'">
+          <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 17a5 5 0 0 0 5-5V9a5 5 0 0 0-10 0v3a5 5 0 0 0 5 5z" fill="none" stroke="#1a2a4b" stroke-width="2"/><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" fill="none" stroke="#1a2a4b" stroke-width="2"/></svg></span>
+          Đổi mật khẩu
+        </div>
+        <div class="profile-menu-item logout" (click)="logout()">
+          <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M16 17l5-5-5-5M21 12H9" stroke="#e53935" stroke-width="2" fill="none"/><path d="M4 4v16h8" stroke="#e53935" stroke-width="2" fill="none"/></svg></span>
+          Đăng xuất
+        </div>
+      </div>
+    </div>
+    
+    <!-- All main content is now correctly inside this container -->
+    <div class="profile-content">
+      <div class="profile-breadcrumb">Trang chủ &gt; <span>Trang cá nhân</span></div>
+      <h2 class="profile-title">THÔNG TIN CÁ NHÂN</h2>
+      
+      <!-- Info Form -->
+      <form *ngIf="activeTab === 'info'" class="profile-form">
+        <div class="profile-form-row">
+          <div class="profile-form-group">
+            <label>Họ và tên</label>
+            <input type="text" value="Hoàng Long" />
+          </div>
+          <div class="profile-form-group">
+            <label>Số điện thoại</label>
+            <input type="text" value="0963543864" disabled />
+          </div>
+        </div>
+        <div class="profile-form-row">
+          <div class="profile-form-group">
+            <label>Địa chỉ</label>
+            <input type="text" placeholder="Vui lòng nhập địa chỉ" />
+          </div>
+        </div>
+        <div class="profile-form-section">
+          Thông tin bảo mật
+          <span class="profile-form-note">Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy và sửa những thông tin này.</span>
+        </div>
+        <div class="profile-form-row">
+          <div class="profile-form-group-with-btn">
+            <div class="profile-form-group">
+              <label>Email liên hệ</label>
+              <input type="email" placeholder="Email liên hệ" />
+            </div>
+            <button type="button" class="profile-btn-change">Thay đổi</button>
+          </div>
+        </div>
+        <div class="profile-form-row">
+          <div class="profile-form-group">
+            <label>CCCD / Hộ chiếu</label>
+            <input type="text" placeholder="Nhập CCCD" />
+          </div>
+          <div class="profile-form-group">
+            <label>Ngày cấp</label>
+            <input type="text" placeholder="Ngày cấp DD/MM/YYYY" />
+          </div>
+        </div>
+        <div class="profile-form-row">
+          <div class="profile-form-group">
+            <label>Ngày, tháng, năm sinh</label>
+            <input type="text" placeholder="DD/MM/YYYY" />
+          </div>
+          <div class="profile-form-group">
+            <label>Giới tính</label>
+            <div class="profile-radio-group">
+              <label><input type="radio" name="gender" /> Nam</label>
+              <label><input type="radio" name="gender" /> Nữ</label>
+            </div>
+          </div>
+        </div>
+        <div class="profile-form-row">
+          <div class="profile-form-group">
+            <label>Mã số thuế</label>
+            <input type="text" placeholder="Vui lòng nhập mã số thuế" />
+          </div>
+        </div>
+        <div class="profile-form-row">
+          <div class="profile-form-group">
+            <label>Thông tin xuất hóa đơn</label>
+            <input type="text" placeholder="" />
+          </div>
+        </div>
+        <div class="profile-form-actions">
+          <button type="submit" class="profile-btn-save">Lưu thay đổi</button>
+        </div>
+      </form>
+      
+      <!-- Password Form -->
+      <form *ngIf="activeTab === 'password'" class="profile-form profile-form-password">
+        <div class="profile-form-password-title">Thay đổi mật khẩu</div>
+        <div class="profile-form-password-note">Vui lòng không chia sẻ mật khẩu cho bất kỳ ai</div>
+        <div class="profile-form-group">
+          <label><span style="color:#e53935">*</span> Mật khẩu hiện tại</label>
+          <div class="profile-password-input">
+            <input type="password" />
+            <span class="profile-password-eye"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none" stroke="#888" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="#888" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+        <div class="profile-form-group">
+          <label><span style="color:#e53935">*</span> Mật khẩu mới</label>
+          <div class="profile-password-input">
+            <input type="password" />
+            <span class="profile-password-eye"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none" stroke="#888" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="#888" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+        <div class="profile-form-group">
+          <label><span style="color:#e53935">*</span> Xác nhận mật khẩu mới</label>
+          <div class="profile-password-input">
+            <input type="password" />
+            <span class="profile-password-eye"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none" stroke="#888" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="#888" stroke-width="2"/></svg></span>
+          </div>
+        </div>
+        <div class="profile-form-actions">
+          <button type="submit" class="profile-btn-save">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

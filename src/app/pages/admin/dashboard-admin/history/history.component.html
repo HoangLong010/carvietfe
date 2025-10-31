@@ -1,0 +1,91 @@
+<div class="history-container">
+  <div class="header-section">
+    <h1>Danh sách lịch sử task vụ</h1>
+    <p>Tổng hợp các lịch sử task vụ. Hỗ trợ tìm kiếm, theo dõi và quản lý hiệu quả.</p>
+  </div>
+
+  <div class="search-criteria-card">
+    <div class="card-header">
+      <i class="fas fa-filter icon-filter"></i>
+      <h3>Điều kiện tìm kiếm</h3>
+    </div>
+    <p class="search-description">Điền thông tin để lọc kết quả tìm kiếm chính xác hơn</p>
+
+    <div class="search-form">
+      <div class="form-group">
+        <label for="executor">Người thực hiện</label>
+        <input type="text" id="executor" placeholder="Nhập người thực hiện" [(ngModel)]="filter.createdBy">
+      </div>
+
+      <div class="form-group large-input">
+        <label for="content">Nội dung</label>
+        <input type="text" id="content" placeholder="Nhập nội dung tìm kiếm" [(ngModel)]="filter.content">
+      </div>
+
+      <div class="form-group">
+        <label for="taskType">Task vụ</label>
+        <select id="taskType" [(ngModel)]="filter.task">
+          <option value=" " [ngValue]="null">Tất cả</option>
+          <option *ngFor="let task of taskTypes" [value]="task">{{ task }}</option>
+        </select>
+        <i class="fas fa-caret-down dropdown-arrow"></i>
+      </div>
+
+      <div class="form-group date-range-group">
+        <label for="startDate">Thực hiện từ ngày</label>
+        <div class="date-inputs">
+          <input type="date" id="startDate" [(ngModel)]="filter.startDate">
+          <span>-</span>
+          <input type="date" id="endDate" [(ngModel)]="filter.endDate">
+        </div>
+      </div>
+
+      <button class="search-button" (click)="onSearch()">
+        <i class="fas fa-search"></i>
+        Tìm kiếm
+      </button>
+    </div>
+  </div>
+
+  <div class="search-results-summary">
+    <h2>Kết quả tìm kiếm</h2>
+    <div class="total-rows">
+      <span>Tổng số dòng:</span>
+      <strong>{{ totalItems }}</strong>
+      <span> | Trang {{ page + 1 }}/{{ totalPages }}</span>
+    </div>
+    <p class="link-text">Danh sách lịch sử task vụ</p>
+  </div>
+
+  <div class="history-table-card">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Ngày thực hiện</th>
+            <th>Người thực hiện</th>
+            <th>Task vụ</th>
+            <th>Nội dung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of taskHistories; let i = index">
+            <td>{{ i + 1 + page * size }}</td>
+            <td>{{ formatDate(item.createdDate) }}</td>
+            <td>{{ item.createdBy }}</td>
+            <td>{{ item.task }}</td>
+            <td class="wrap-text">{{ item.content }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 0">Trang trước</button>
+    <span>Trang {{ page + 1 }} / {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="(page + 1) >= totalPages">Trang sau</button>
+  </div>
+
+
+</div>

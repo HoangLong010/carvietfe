@@ -1,0 +1,18 @@
+/* src/styles.css */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */ /* Tùy chọn: bỏ comment nếu bạn muốn ngăn scrollbar xuất hiện */
+}
+
+/* Đảm bảo #root hoặc <app-root> (Angular root component) chiếm toàn bộ không gian */
+app-root { /* Đây là selector mặc định của Angular CLI. Nếu bạn đổi tên, hãy dùng tên đó. */
+  display: block; /* Mặc định <app-root> là display: inline, cần đặt thành block */
+  width: 100%;
+  height: 100%;
+}
+
+/* Các style toàn cục khác (nếu có) */

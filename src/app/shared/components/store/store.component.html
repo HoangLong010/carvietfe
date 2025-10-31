@@ -1,0 +1,97 @@
+<app-header></app-header>
+<main class="container">
+
+    <div class="breadcrumb">
+        <span>Trang chủ > Cửa hàng xe đã qua sử dụng</span>
+    </div>
+
+    <h1 class="page-title"><span id="total-stores-count">{{ totalStoresCount | number }}</span> CỬA HÀNG XE ĐÃ QUA SỬ
+        DỤNG</h1>
+
+    <div class="main-wrapper">
+        <div class="main-content">
+            <div class="store-list-grid">
+                <ng-container *ngIf="stores.length > 0; else noStores">
+                    <div *ngFor="let store of stores" class="store-card">
+                        <div class="store-banner">
+                            <img [src]="store.bannerUrl" [alt]="'Banner ' + store.storeName">
+                        </div>
+
+                        <div class="store-info">
+                            <div class="store-logo-wrapper">
+                                <img [src]="store.logoUrl" [alt]="'Logo ' + store.storeName" class="store-logo">
+                                <h2 class="store-name">
+                                    {{ store.storeName }}
+                                    <span class="store-vip" *ngIf="">
+                                        <svg width="16" height="16" viewBox="0 0 24 24">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                            </polygon>
+                                        </svg>
+                                    </span>
+                                </h2>
+                            </div>
+                            <p class="store-address">📍 {{ store.address }}</p>
+                        </div>
+
+                        <div class="store-stats-footer">
+                            <div class="store-stats">
+                                <div class="stat-item">
+                                    <span>Đăng bán</span>
+                                    <strong>{{ formatNumber(store.carAvailable) }}</strong>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Đã bán</span>
+                                    <strong>{{ formatNumber(store.carSold) }}</strong>
+                                </div>
+                            </div>
+                            <div class="store-stats-footer">
+                                <a [routerLink]="['/detail-store', store.id]" class="view-store-button">
+                                    Xem cửa hàng <span class="arrow-right"> &gt; </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #noStores>
+                    <p class="no-result">Không tìm thấy cửa hàng nào phù hợp.</p>
+                </ng-template>
+
+            </div>
+
+            <div class="pagination-wrapper" *ngIf="apiResponse && apiResponse.pagesCount > 1">
+                <ul class="pagination" id="pagination-list">
+                    <li [class.disabled]="!apiResponse.hasPrevious">
+                        <a href="#">&laquo; Trước</a>
+                    </li>
+                    <li class="active"><span>{{ apiResponse.currentPage + 1 }}</span></li>
+                    <li [class.disabled]="!apiResponse.hasNext">
+                        <a href="#">Sau &raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="filter-group filter-header">
+                <h4>Bộ lọc</h4>
+            </div>
+            <div class="filter-group">
+                <h4>Khu vực</h4>
+                <div class="relative">
+                    <input type="text" placeholder="Tìm khu vực" class="filter-input-dropdown"
+                        (input)="onAddressSearch($event)" [value]="searchAddress === 'null' ? '' : searchAddress">
+                    <svg class="dropdown-icon" width="20" height="20" fill="none" stroke="#888" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+</main>
+
+<app-footer></app-footer>

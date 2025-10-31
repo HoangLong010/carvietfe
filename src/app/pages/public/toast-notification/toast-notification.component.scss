@@ -1,0 +1,59 @@
+/* Container cho toast notification, định vị cố định ở góc trên bên phải */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: -300px; /* Bắt đầu từ ngoài màn hình để tạo hiệu ứng trượt vào */
+  z-index: 1000; /* Đảm bảo toast nằm trên các phần tử khác */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Kiểu dáng chung cho hộp thông báo */
+.toast-message {
+  padding: 15px 20px;
+  border-radius: 8px; /* Bo góc nhẹ */
+  color: white; /* Màu chữ mặc định */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng nhẹ */
+  min-width: 250px; /* Chiều rộng tối thiểu */
+}
+
+/* Kiểu dáng cho đoạn văn bản chứa message */
+.toast-message p {
+  margin: 0;
+  flex-grow: 1; /* Cho phép đoạn văn bản chiếm hết không gian còn lại */
+  padding-right: 10px; /* Khoảng cách với nút đóng */
+}
+
+/* Kiểu dáng cho nút đóng (X) */
+.toast-message button {
+  background: none; /* Nền trong suốt */
+  border: none; /* Không viền */
+  color: white; /* Màu chữ */
+  font-size: 1.2em; /* Kích thước chữ */
+  cursor: pointer; /* Con trỏ dạng bàn tay khi di chuột qua */
+  padding: 0 5px;
+}
+
+/* Màu nền cho thông báo lỗi (error) */
+.toast-message.error {
+  background-color: #dc3545; /* Màu đỏ */
+}
+
+/* Màu nền cho thông báo thành công (success) */
+.toast-message.success {
+  background-color: #28a745; /* Màu xanh lá cây */
+}
+
+/* Màu nền cho thông báo cảnh báo (warning) */
+.toast-message.warning {
+  background-color: #ffc107; /* Màu vàng */
+  color: #333; /* Màu chữ đen cho dễ đọc trên nền vàng */
+}
+
+/* Màu nền cho thông báo thông tin (info) */
+.toast-message.info {
+  background-color: #17a2b8; /* Màu xanh dương */
+}

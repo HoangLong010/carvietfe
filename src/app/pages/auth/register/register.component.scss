@@ -1,0 +1,258 @@
+/* register-v2.component.css */
+
+/* Reset cơ bản cho màn hình full-height */
+:host {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* Ngăn cuộn */
+}
+
+:host ::ng-deep html,
+:host ::ng-deep body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Container chính */
+.elegant-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background-color: #f0f2f5; /* Màu nền dự phòng */
+}
+
+/* Hiệu ứng nền Gradient toàn màn hình */
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradient cam/đỏ cam đẹp mắt */
+    background: linear-gradient(135deg, #FF7043 0%, #FFB74D 100%); 
+    opacity: 0.9; /* Giảm độ đậm để form nổi bật hơn */
+    z-index: 0;
+}
+
+/* Panel Form Đăng ký (Card) */
+.register-card {
+    position: relative;
+    z-index: 1; /* Nổi lên trên nền gradient */
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 20px; /* Bo tròn góc lớn */
+    /* Đổ bóng lớn, hoa mỹ */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 112, 67, 0.5); 
+    width: 100%;
+    max-width: 700px; /* Chiều rộng lớn hơn để chứa 2 cột input */
+    max-height: 90vh; /* Giới hạn chiều cao để form không tràn màn hình */
+    box-sizing: border-box;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+/* Header */
+.header-section {
+    margin-bottom: 25px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.header-section h2 {
+    font-size: 2.2em;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.header-section .subtitle {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 0;
+}
+
+/* Bố cục 2 cột cho các trường input */
+.form-row {
+    display: flex;
+    gap: 20px; /* Khoảng cách giữa 2 cột */
+    margin-bottom: 0px; /* Giảm khoảng cách giữa các hàng để tiết kiệm không gian */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Giảm khoảng cách giữa các form-group */
+    text-align: left;
+    flex: 1; /* Quan trọng: Đảm bảo form-group chiếm nửa hàng */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px; /* Giảm khoảng cách */
+    font-size: 0.9em;
+    color: #555;
+    font-weight: 600;
+}
+
+/* Styling input */
+.form-group input {
+    width: calc(100% - 20px);
+    padding: 10px 10px; /* Giảm padding */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #FF7043;
+    box-shadow: 0 0 5px rgba(255, 112, 67, 0.5);
+}
+
+/* Nút Đăng ký */
+.register-button {
+    width: 100%;
+    padding: 14px; /* Giảm padding một chút so với bản cũ */
+    background: linear-gradient(to right, #FF7043, #FF5722); /* Gradient cam đậm hơn */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px; /* Giảm margin-top */
+    margin-bottom: 15px;
+}
+
+.register-button:hover:not([disabled]) {
+    box-shadow: 0 5px 15px rgba(255, 112, 67, 0.5);
+    transform: translateY(-2px);
+}
+
+.register-button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Link Đăng nhập */
+.login-link-container {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+.login-link-container a {
+    color: #FF7043;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Phần xã hội tinh gọn */
+.social-login-separator {
+    margin: 15px 0; /* Giảm margin */
+    position: relative;
+    text-align: center;
+    color: #999;
+}
+.social-login-separator::before,
+.social-login-separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 38%; /* Cân đối với chiều rộng mới */
+    height: 1px;
+    background-color: #eee;
+}
+.social-login-separator::before { left: 0; }
+.social-login-separator::after { right: 0; }
+.social-login-separator span {
+    background-color: white;
+    padding: 0 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.social-buttons-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 5px;
+}
+
+.social-login-button {
+    flex: 1; /* Chiếm đều không gian */
+    padding: 10px; /* Giảm padding */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 0.9em; /* Giảm kích thước font */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.social-login-button .social-icon {
+    width: 18px; /* Giảm kích thước icon */
+    height: 18px;
+    margin-right: 8px;
+}
+
+/* --- Media Queries (Quan trọng để giữ form vừa màn hình điện thoại) --- */
+
+@media (max-width: 768px) {
+    .register-card {
+        padding: 25px 25px;
+        max-width: 90%; /* Phù hợp với màn hình điện thoại */
+    }
+
+    /* Chuyển các trường input thành 1 cột */
+    .form-row {
+        flex-direction: column;
+        gap: 0; /* Bỏ khoảng cách giữa các cột */
+    }
+
+    .form-group {
+        flex: none;
+        width: 100%;
+    }
+
+    .social-buttons-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .social-login-separator::before,
+    .social-login-separator::after {
+        width: 35%; /* Điều chỉnh lại tỷ lệ separator */
+    }
+}
+
+@media (max-height: 800px) and (min-width: 769px) {
+    /* Điều chỉnh nhẹ cho màn hình desktop thấp */
+    .register-card {
+        padding: 20px 30px;
+    }
+    .header-section {
+        margin-bottom: 15px;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .register-button {
+        margin-top: 10px;
+    }
+    .social-login-separator {
+        margin: 10px 0;
+    }
+}

@@ -1,0 +1,63 @@
+<div class="full-screen-container">
+  <div class="orange-background">
+    <div class="welcome-section">
+      <h1>Chào mừng đến với Carviet</h1>
+      <p>Hệ thống mua bán và trao đổi ô tô tốt nhất</p>
+      <p>giúp bạn tối ưu hóa hiệu quả kinh doanh</p>
+
+      <ul>
+        <li>Quản lý xe thông minh</li>
+        <li>Theo dõi hiệu suất real-time</li>
+        <li>Báo cáo chi tiết và phân tích</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <div class="login-form-container">
+      <h2>Đăng nhập</h2>
+      <p class="login-subtitle">Truy cập vào tài khoản của bạn</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username">Tên đăng nhập:</label>
+          <input type="text" id="username" formControlName="username" placeholder="Nhập tên đăng nhập" />
+          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="error-message">
+            Tên đăng nhập là bắt buộc.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mật khẩu:</label>
+          <input type="password" id="password" formControlName="password" placeholder="Nhập mật khẩu" />
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
+            Mật khẩu là bắt buộc.
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid">Đăng nhập</button>
+
+        <!-- Toast Notification sẽ hiển thị ở đây, được điều khiển bởi logic trong TypeScript -->
+        <!-- Chỉ hiển thị toast khi showToast là true -->
+        <app-toast-notification
+          *ngIf="showToast"
+          [message]="toastMessage"
+          [type]="toastType"
+          (closed)="onToastClosed()">
+        </app-toast-notification>
+
+      </form>
+
+      <div class="social-login-separator">
+        <span>Hoặc</span>
+      </div>
+
+      <button class="social-login-button google-button">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" class="social-icon"> Google
+      </button>
+      <button class="social-login-button microsoft-button">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Icon" class="social-icon"> Microsoft
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<app-header></app-header>
+
+<div class="container" *ngIf="storeDetail; else loadingOrError">
+    <header class="breadcrumb">
+        <span>Trang chủ</span>
+        <span class="separator">/</span>
+        <span>Cửa hàng xe đã qua sử dụng</span>
+        <span class="separator">/</span>
+        <span class="active">{{ storeDetail.storeName }}</span>
+    </header>
+
+    <main class="store-details">
+        <section class="store-banner-info">
+            <div class="banner-container">
+                <div class="banner-image">
+                    <img [src]="storeDetail.bannerUrl || 'https://via.placeholder.com/1200x200?text=Banner+Cua+Hang'" [alt]="'Banner ' + storeDetail.storeName">
+                </div>
+                <div class="store-avatar-container">
+                    <div class="store-avatar">
+                        <img [src]="storeDetail.logoUrl || 'https://via.placeholder.com/100x100?text=Logo'" [alt]="'Logo ' + storeDetail.storeName">
+                    </div>
+                </div>
+            </div>
+
+            <div class="store-header">
+                <h1 class="store-name">{{ storeDetail.storeName }}</h1>
+                <p class="join-date">Tham gia từ {{ storeDetail.createdDate | date: 'dd/MM/yyyy' }}</p>
+                <button class="follow-button">Theo dõi +</button>
+            </div>
+        </section>
+
+        <nav class="store-nav">
+            <a (click)="setActiveTab('available')" class="nav-item" [class.active]="activeTab === 'available'">
+                <i class="fas fa-car-side"></i> Xe đang bán
+            </a>
+            <a (click)="setActiveTab('sold')" class="nav-item" [class.active]="activeTab === 'sold'">
+                <i class="fas fa-history"></i> Xe đã bán
+            </a>
+            <a href="#" class="nav-item"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+        </nav>
+
+        <div class="content-wrapper">
+            <aside class="sidebar">
+                <div class="info-card overview-card">
+                    <h2>Tổng quan</h2>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-value">{{ storeDetail.carAvailable | number }}</span>
+                            <span class="stat-label">Đang bán</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">{{ storeDetail.carSold | number }}</span>
+                            <span class="stat-label">Đã bán</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="info-card policy-card">
+                    <h2>Chính sách</h2>
+                    <div class="policies">
+                        <div class="policy-item">
+                            <i class="fas fa-car policy-icon yellow-bg"></i>
+                            <span class="policy-label">Thu mua xe cũ</span>
+                        </div>
+                        <div class="policy-item">
+                            <i class="fas fa-shield-alt policy-icon yellow-bg"></i>
+                            <span class="policy-label">Bảo hành chính hãng</span>
+                        </div>
+                        <div class="policy-item">
+                            <i class="fas fa-tools policy-icon yellow-bg"></i>
+                            <span class="policy-label">Kiểm tra xe miễn phí</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="info-card contact-card">
+                    <h2>Liên hệ</h2>
+                    <p class="contact-label">Hotline bán hàng</p>
+                    <p class="hotline">{{ storeDetail.phone }}</p>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p class="address">Địa chỉ: {{ storeDetail.address }}</p>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="car-list-section">
+                <h2>Xe {{ activeTab === 'available' ? 'đang bán' : 'đã bán' }}</h2>
+
+                <div class="car-list-grid">
+                    <div *ngIf="getCarList().length === 0" class="no-result">
+                        <p>Không có chiếc xe nào {{ activeTab === 'available' ? 'đang được đăng bán' : 'đã được bán' }} tại cửa hàng này.</p>
+                    </div>
+                    
+                    <div *ngFor="let car of getCarList()" class="car-item" (click)="goToDetail(car.id)">
+                        <span class="time-posted">{{ car.postedTime }}</span>
+                        <div class="car-image-container">
+                            <img [src]="car.imageUrl || 'https://via.placeholder.com/300x150?text=Xe+da+qua+su+dung'" [alt]="car.name">
+                        </div>
+                        <div class="car-details">
+                            <h3 class="car-name">{{ car.name }}</h3>
+                            <p class="mileage">{{ car.mileage | number }} KM</p>
+                            <p class="price">{{ formatPrice(car.price) }}</p>
+                            <p class="installment-info">{{ getInstallmentInfo(car.price) }}</p>
+                            <ul class="car-specs">
+                                <li><i class="fas fa-chair spec-icon"></i> {{ car.seat }} chỗ</li>
+                                <li><i class="fas fa-cogs spec-icon"></i> {{ car.transmission }}</li>
+                                <li><i [class]="car.fuelType === 'Xăng' ? 'fas fa-gas-pump spec-icon' : 'fas fa-oil-can spec-icon'"></i> {{ car.fuelType }}</li>
+                                <li><i class="fas fa-map-marker-alt spec-icon"></i> {{ storeDetail.address.split(',').pop()?.trim() }}</li>
+                                <li><i class="fas fa-tachometer-alt spec-icon"></i> {{ car.mileage | number }} km</li>
+                                <li><i class="fas fa-globe spec-icon"></i> {{ car.origin }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<ng-template #loadingOrError>
+    <div class="container loading-state" style="padding: 50px; text-align: center;">
+        <p *ngIf="loading">Đang tải chi tiết cửa hàng...</p>
+        <p *ngIf="!loading && !storeDetail">Không tìm thấy chi tiết cửa hàng này hoặc ID không hợp lệ.</p>
+    </div>
+</ng-template>
+
+<app-footer></app-footer>

@@ -1,0 +1,446 @@
+<app-header></app-header>
+<main class="container">
+    <div class="breadcrumb">
+        Trang chủ > Mua xe cũ
+    </div>
+
+    <h1 class="page-title">Mua bán xe ô tô cũ mới giá tốt ưu đãi 07/2025</h1>
+    <div class="promo-banner">
+        <img src="https://e-cdn.carpla.vn/carpla-ecom/cms/toyotacantho-1747121816.802.png?image_process=format,webp/resize,w_1080"
+            srcset="https://e-cdn.carpla.vn/carpla-ecom/cms/toyotacantho-1747121816.802.png?image_process=format,webp/resize,w_1080 1x, https://e-cdn.carpla.vn/carpla-ecom/cms/toyotacantho-1747121816.802.png?image_process=format,webp/resize,w_2048 2x"
+            alt="Toyota Cần Thơ Banner"
+            style="width:100%;max-width:100%;height:auto;display:block;margin:18px auto 24px auto;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+    </div>
+
+    <div class="main-wrapper">
+        <div class="main-content">
+            <div class="search-banner">
+                <div class="search-banner-content">
+                    <h2>Tìm xe chính hãng<br>Chọn Carpla.vn</h2>
+                    <div class="search-input-group">
+                        <input type="text" placeholder="Tìm kiếm theo hãng xe, mẫu xe, số chỗ...">
+                        <button>Tìm kiếm</button>
+                    </div>
+                </div>
+                <div class="search-banner-image"></div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Khu vực</h4>
+                <div class="filter-buttons">
+                    <button class="active">Tất cả</button>
+                    <button>Hà Nội</button>
+                    <button>Hồ Chí Minh</button>
+                    <button>Đà Nẵng</button>
+                    <button>Cần Thơ</button>
+                    <button>Bình Dương</button>
+                    <button>An Giang</button>
+                    <button id="show-province-modal"
+                        onclick="document.getElementById('province-modal').style.display='block'">Xem thêm</button>
+                </div>
+                <div id="province-modal" class="province-modal" style="display:none;">
+                    <div class="province-modal-content">
+                        <span class="close"
+                            onclick="document.getElementById('province-modal').style.display='none'">&times;</span>
+                        <h3>Chọn khu vực</h3>
+                        <input type="text" class="province-search" placeholder="Tìm kiếm tỉnh thành..."
+                            oninput="filterProvinces(this.value)">
+                        <div class="province-list">
+                            <button class="active">Tất cả</button>
+                            <button>Hà Nội</button>
+                            <button>Hồ Chí Minh</button>
+                            <button>Đà Nẵng</button>
+                            <button>Cần Thơ</button>
+                            <button>Bình Dương</button>
+                            <button>An Giang</button>
+                            <button>Bắc Giang</button>
+                            <button>Bắc Kạn</button>
+                            <button>Bạc Liêu</button>
+                            <button>Bắc Ninh</button>
+                            <button>Bến Tre</button>
+                            <button>Bình Định</button>
+                            <button>Bình Phước</button>
+                            <button>Bình Thuận</button>
+                            <button>Cà Mau</button>
+                            <button>Cao Bằng</button>
+                            <button>Đắk Lắk</button>
+                            <button>Đắk Nông</button>
+                            <button>Điện Biên</button>
+                            <button>Đồng Nai</button>
+                            <button>Đồng Tháp</button>
+                            <button>Gia Lai</button>
+                            <button>Hà Giang</button>
+                            <button>Hà Nam</button>
+                            <button>Hà Tĩnh</button>
+                            <button>Hải Dương</button>
+                            <button>Hải Phòng</button>
+                            <button>Hậu Giang</button>
+                            <button>Hòa Bình</button>
+                            <button>Hưng Yên</button>
+                            <button>Khánh Hòa</button>
+                            <button>Kiên Giang</button>
+                            <button>Kon Tum</button>
+                            <button>Lai Châu</button>
+                            <button>Lâm Đồng</button>
+                            <button>Lạng Sơn</button>
+                            <button>Lào Cai</button>
+                            <button>Long An</button>
+                            <button>Nam Định</button>
+                            <button>Nghệ An</button>
+                            <button>Ninh Bình</button>
+                            <button>Ninh Thuận</button>
+                            <button>Phú Thọ</button>
+                            <button>Phú Yên</button>
+                            <button>Quảng Bình</button>
+                            <button>Quảng Nam</button>
+                            <button>Quảng Ngãi</button>
+                            <button>Quảng Ninh</button>
+                            <button>Quảng Trị</button>
+                            <button>Sóc Trăng</button>
+                            <button>Sơn La</button>
+                            <button>Tây Ninh</button>
+                            <button>Thái Bình</button>
+                            <button>Thái Nguyên</button>
+                            <button>Thanh Hóa</button>
+                            <button>Thừa Thiên Huế</button>
+                            <button>Tiền Giang</button>
+                            <button>Trà Vinh</button>
+                            <button>Tuyên Quang</button>
+                            <button>Vĩnh Long</button>
+                            <button>Vĩnh Phúc</button>
+                            <button>Yên Bái</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Hãng xe</h4>
+                <div class="filter-buttons">
+                    <button class="active"><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/toyota-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Toyota"> Toyota</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/ford-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Ford"> Ford</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/mitsubishi-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Mitsubishi"> Mitsubishi</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/hyundai-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Hyundai"> Hyundai</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/honda-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Honda"> Honda</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/mazda-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Mazda"> Mazda</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/geely-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Geely"> Geely</button>
+                    <button><img
+                            src="https://e-cdn.carpla.vn/carpla-ecom/cms/kia-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                            alt="Kia"> Kia</button>
+                    <button id="show-brand-modal"
+                        onclick="document.getElementById('brand-modal').style.display='block'">Xem thêm</button>
+                </div>
+                <div id="brand-modal" class="brand-modal" style="display:none;">
+                    <div class="brand-modal-content">
+                        <span class="close"
+                            onclick="document.getElementById('brand-modal').style.display='none'">&times;</span>
+                        <h3>Chọn hãng xe</h3>
+                        <input type="text" class="brand-search" placeholder="Tìm kiếm hãng xe..."
+                            oninput="filterBrands(this.value)">
+                        <div class="brand-list">
+                            <button class="active"><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/toyota-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Toyota"> Toyota</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/ford-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Ford"> Ford</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/mitsubishi-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Mitsubishi"> Mitsubishi</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/hyundai-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Hyundai"> Hyundai</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/honda-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Honda"> Honda</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/mazda-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Mazda"> Mazda</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/geely-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Geely"> Geely</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/kia-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Kia"> Kia</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/mercedes-benz-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Mercedes-Benz"> Mercedes-Benz</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/bmw-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="BMW"> BMW</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/volvo-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Volvo"> Volvo</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/mg-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="MG"> MG</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/lynkco-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Lynk & Co"> Lynk & Co</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/nissan-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Nissan"> Nissan</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/vinfast-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Vinfast"> Vinfast</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/subaru-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Subaru"> Subaru</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/renault-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Renault"> Renault</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/isuzu-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Isuzu"> Isuzu</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/peugeot-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Peugeot"> Peugeot</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/suzuki-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Suzuki"> Suzuki</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/audi-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Audi"> Audi</button>
+                            <button><img
+                                    src="https://e-cdn.carpla.vn/carpla-ecom/cms/lexus-1741528722.299.jpg?image_process=format,webp/resize,w_128"
+                                    alt="Lexus"> Lexus</button>
+                            <!-- Add more brands as needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Năm sản xuất</h4>
+                <div class="filter-buttons">
+                    <button class="active">Tất cả</button>
+                    <button>2025</button>
+                    <button>2024</button>
+                    <button>2023</button>
+                    <button>2022</button>
+                    <button>2021</button>
+                    <button>2020</button>
+                    <button>2019</button>
+                    <button>2018</button>
+                    <button id="show-year-modal"
+                        onclick="document.getElementById('year-modal').style.display='block'">Xem thêm</button>
+                </div>
+                <div id="year-modal" class="year-modal" style="display:none;">
+                    <div class="year-modal-content">
+                        <span class="close"
+                            onclick="document.getElementById('year-modal').style.display='none'">&times;</span>
+                        <h3>Chọn năm sản xuất</h3>
+                        <input type="text" class="year-search" placeholder="Tìm kiếm năm..."
+                            oninput="filterYears(this.value)">
+                        <div class="year-list-grid">
+                            <button class="active">Tất cả</button>
+                            <button>2025</button>
+                            <button>2024</button>
+                            <button>2023</button>
+                            <button>2022</button>
+                            <button>2021</button>
+                            <button>2020</button>
+                            <button>2019</button>
+                            <button>2018</button>
+                            <button>2017</button>
+                            <button>2016</button>
+                            <button>2015</button>
+                            <button>2014</button>
+                            <button>2013</button>
+                            <button>2012</button>
+                            <button>2011</button>
+                            <button>2010</button>
+                            <button>2009</button>
+                            <button>2008</button>
+                            <button>2007</button>
+                            <button>2006</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="car-listing-header">
+                <div class="total-listings">Tổng: 1245 xe đang bán</div>
+                <div class="sort-options">
+                    <span>Sắp xếp theo:</span>
+                    <select>
+                        <option value="moi_nhat">Mới nhất</option>
+                        <option value="gia_thap_cao">Giá thấp - cao</option>
+                        <option value="gia_cao_thap">Giá cao - thấp</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="car-list">
+                <div class="car-card-2col" *ngFor="let car of cars" (click)="goToDetail(car.carId, car.status)"
+                    style="cursor:pointer;">
+                    <div class="car-card-img">
+                        <div class="car-card-img-content">
+                            <img [src]="car.images?.[0]?.imageUrl || 'https://via.placeholder.com/320x200?text=No+Image'"
+                                [alt]="car.title">
+                            <div class="car-card-time">
+                                <span>
+                                    <svg width="18" height="18" fill="none" stroke="#ffd600" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    2 giờ trước
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-card-info">
+                        <div class="car-card-title">
+                            <h3>{{car.title}}</h3>
+                            <p class="price">{{car.price | number}} đ <span class="price-month">chỉ từ 5,0
+                                    triệu/tháng</span></p>
+                        </div>
+                        <div class="car-card-specs">
+                            <span><svg width="18" height="18" fill="none" stroke="#222" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg> {{car.seats}} chỗ</span>
+                            <span><svg width="18" height="18" fill="none" stroke="#222" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg> {{car.transmission}}</span>
+                            <span><svg width="18" height="18" fill="none" stroke="#222" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg> {{car.fuelType}}</span>
+                            <span><svg width="18" height="18" fill="none" stroke="#222" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> {{car.mileage | number}} km</span>
+                            <span><svg width="18" height="18" fill="none" stroke="#222" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg> {{car.location}}</span>
+                        </div>
+                    </div>
+                    <div class="car-card-dealer">
+                        <div class="dealer-title">
+                            <img src="https://via.placeholder.com/40x40?text=Logo" alt="Logo">
+                            <span class="dealer-name">
+                                {{car.store?.storeName || 'Đại lý bán lẻ'}}
+                                <span class="dealer-vip" *ngIf="car.store?.storeName">🌻</span>
+                            </span>
+                        </div>
+                        <div class="dealer-stats">
+                            <span>Đang bán <b>5</b></span>
+                            <span>Đã bán <b>10</b></span>
+                        </div>
+                        <div class="dealer-location">
+                            <svg width="18" height="18" fill="none" stroke="#222" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M21 10c0 6-9 13-9 13S3 16 3 10a9 9 0 1 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <span>{{car.store?.address || car.location}}</span>
+                        </div>
+                        <div class="dealer-contact">
+                            <svg width="18" height="18" fill="none" stroke="#222" stroke-width="2" viewBox="0 0 24 24">
+                                <path
+                                    d="M22 16.92V19a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.07.37 2.11.73 3.12a2 2 0 0 1-.45 2.11l-.27.27a16 16 0 0 0 6.29 6.29l.27-.27a2 2 0 0 1 2.11-.45c1.01.36 2.05.6 3.12.73A2 2 0 0 1 21 16.92z" />
+                            </svg>
+                            <span>{{car.store?.phone ? car.store?.phone?.slice(0, 4) + '******' : 'Liên hệ'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination-wrapper">
+                    <ul class="pagination">
+                        <li [class.disabled]="currentPage === 0" (click)="currentPage > 0 && loadCars(currentPage - 1)">
+                            <span>&lt;</span>
+                        </li>
+                        <li *ngFor="let page of [].constructor(pagesCount); let i = index"
+                            [class.active]="i === currentPage" (click)="loadCars(i)"><span>{{i + 1}}</span></li>
+                        <li [class.disabled]="currentPage === pagesCount - 1"
+                            (click)="currentPage < pagesCount - 1 && loadCars(currentPage + 1)"><span>&gt;</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <h3>Bộ lọc</h3>
+            <div class="filter-group">
+                <h4>Trạng thái xe</h4>
+                <div class="filter-radio-list">
+                    <label><input type="radio" name="status" checked> Xe cũ</label>
+                    <label><input type="radio" name="status"> Xe mới</label>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4>Khoảng giá</h4>
+                <div class="filter-radio-list">
+                    <label><input type="radio" name="price" checked> Dưới 300 triệu</label>
+                    <label><input type="radio" name="price"> 300 - 500 triệu</label>
+                    <label><input type="radio" name="price"> 500 - 700 triệu</label>
+                    <label><input type="radio" name="price"> 700 triệu - 1 tỷ</label>
+                    <label><input type="radio" name="price"> 1 tỷ - 2 tỷ</label>
+                    <label><input type="radio" name="price"> Trên 2 tỷ</label>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4>Kiểu dáng</h4>
+                <div class="filter-radio-list">
+                    <label><input type="radio" name="body"> Hatchback</label>
+                    <label><input type="radio" name="body"> MPV</label>
+                    <label><input type="radio" name="body"> Sedan</label>
+                    <label><input type="radio" name="body"> SUV</label>
+                    <label><input type="radio" name="body"> Pickup</label>
+                    <label><input type="radio" name="body"> CUV</label>
+                    <label><input type="radio" name="body"> Coupe</label>
+                    <label><input type="radio" name="body"> Van/Minibus</label>
+                    <label><input type="radio" name="body"> Xe tải</label>
+                    <label><input type="radio" name="body"> Xe du lịch</label>
+                    <label><input type="radio" name="body"> Xe khách</label>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4>Số chỗ ngồi</h4>
+                <div class="filter-radio-list">
+                    <label><input type="radio" name="seat"> 2 chỗ</label>
+                    <label><input type="radio" name="seat"> 3 chỗ</label>
+                    <label><input type="radio" name="seat"> 4 chỗ</label>
+                    <label><input type="radio" name="seat"> 5 chỗ</label>
+                    <label><input type="radio" name="seat"> 7 chỗ</label>
+                    <label><input type="radio" name="seat"> 8 chỗ</label>
+                    <label><input type="radio" name="seat"> 9 chỗ</label>
+                    <label><input type="radio" name="seat"> 16 chỗ</label>
+                    <label><input type="radio" name="seat"> 29 chỗ</label>
+                    <label><input type="radio" name="seat"> 47 chỗ</label>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<app-footer></app-footer>

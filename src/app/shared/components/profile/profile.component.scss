@@ -1,0 +1,303 @@
+/*
+ * Styles for app-profile.component.html
+ * This CSS file is tailored for the Angular template provided.
+ */
+
+/* General Layout and Centering */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f7f9fc;
+    font-family: 'Inter', sans-serif;
+    color: #1a2a4b;
+}
+
+/* Main profile container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Allows it to grow and fill the remaining space */
+    width: 100%;
+    max-width: 1280px; /* Equivalent to max-w-7xl from Tailwind, provides centering on large screens */
+    margin: 2rem auto;
+    padding: 0 1rem;
+    gap: 2rem; /* Creates space between sidebar and content */
+}
+
+@media (min-width: 768px) {
+    .profile-container {
+        flex-direction: row;
+        padding: 0 2rem;
+    }
+}
+
+/* Sidebar styling */
+.profile-sidebar {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .profile-sidebar {
+        width: 256px; /* A fixed width for desktop */
+    }
+}
+
+.profile-menu-group {
+    margin-bottom: 1.5rem;
+}
+
+.profile-menu-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.profile-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 200ms ease, border-left-color 200ms ease;
+    border-left: 4px solid transparent;
+    color: #1a2a4b;
+}
+
+.profile-menu-item:hover {
+    background-color: #f3f4f6;
+}
+
+.profile-menu-item .icon {
+    margin-right: 0.75rem;
+}
+
+.profile-menu-item.active {
+    color: #2563eb;
+    border-left-color: #2563eb;
+}
+
+.profile-menu-item.active .icon svg circle,
+.profile-menu-item.active .icon svg path {
+    stroke: #2563eb;
+}
+
+/* Logout button styling */
+.profile-menu-item.logout {
+    color: #e53935;
+}
+
+.profile-menu-item.logout:hover {
+    background-color: #fef2f2;
+}
+
+.profile-menu-item.logout .icon svg path {
+    stroke: #e53935;
+}
+
+/* Main content area styling */
+.profile-content {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .profile-content {
+        padding: 2rem;
+    }
+}
+
+.profile-breadcrumb {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.profile-breadcrumb span {
+    color: #1a2a4b;
+}
+
+.profile-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Form styling */
+.profile-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .profile-form-row {
+        flex-direction: row;
+    }
+}
+
+.profile-form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.profile-form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.profile-form-group input {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: box-shadow 150ms ease-in-out;
+}
+
+.profile-form-group input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.profile-form-group input[disabled] {
+    background-color: #e5e7eb;
+    border-color: #e5e7eb;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.profile-form-section {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a2a4b;
+    margin-bottom: 0.5rem;
+}
+
+.profile-form-note {
+    font-size: 0.875rem;
+    color: #6b7280;
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.profile-form-group-with-btn {
+    display: flex;
+    flex: 1;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.profile-form-group-with-btn .profile-form-group {
+    flex: 1;
+}
+
+.profile-btn-change {
+    color: #2563eb;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms ease-in-out;
+}
+
+.profile-btn-change:hover {
+    background-color: #eff6ff;
+}
+
+.profile-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.profile-radio-group label {
+    display: flex;
+    align-items: center;
+    color: #374151;
+}
+
+.profile-radio-group input[type="radio"] {
+    height: 1rem;
+    width: 1rem;
+    color: #2563eb;
+    margin-right: 0.5rem;
+}
+
+.profile-form-actions {
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 1.5rem;
+}
+
+.profile-btn-save {
+    background-color: #2563eb;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: background-color 150ms ease-in-out;
+}
+
+.profile-btn-save:hover {
+    background-color: #1d4ed8;
+}
+
+/* Password form specific styles */
+.profile-form-password-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.profile-form-password-note {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.profile-password-input {
+    position: relative;
+}
+
+.profile-password-input input {
+    width: 100%;
+}
+
+.profile-password-eye {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.profile-password-eye svg path,
+.profile-password-eye svg circle {
+    stroke: #888;
+}
+
+.profile-password-eye:hover svg path,
+.profile-password-eye:hover svg circle {
+    stroke: #2563eb;
+}

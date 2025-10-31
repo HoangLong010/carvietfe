@@ -1,0 +1,211 @@
+<app-header></app-header>
+<div class="detail-car-container" *ngIf="car">
+  <div class="detail-car-breadcrumb">
+    Trang chủ &gt; Mua xe &gt; <span class="detail-car-title-breadcrumb">{{ car.model }} {{ car.year
+      }} - {{ car.mileage | number }}KM</span>
+  </div>
+  <div class="detail-car-main">
+    <div class="detail-car-left">
+      <div class="detail-car-image-main" (click)="openModal(currentImageIndex)">
+        <img [src]="car.images?.[currentImageIndex]?.imageUrl || 'https://via.placeholder.com/600x400?text=Car+Main'"
+          [alt]="car.model + ' main image'" />
+        <button class="slider-btn prev-btn" (click)="prevImage($event)">&lt;</button>
+        <button class="slider-btn next-btn" (click)="nextImage($event)">&gt;</button>
+        <div class="detail-car-image-count">{{ currentImageIndex + 1 }} / {{ car.images?.length || 1 }}</div>
+      </div>
+
+      <div class="detail-car-image-list">
+        <img *ngFor="let img of car.images || []; let i = index" [src]="img.imageUrl"
+          [alt]="car.model + ' image ' + (i + 1)" [class.active]="i === currentImageIndex" (click)="goToSlide(i)" />
+      </div>
+
+      <div class="detail-car-features">
+        <div class="detail-car-feature">
+          <span class="detail-car-feature-icon">🚗</span>
+          Đạt kiểm định chính hãng
+        </div>
+        <div class="detail-car-feature">
+          <span class="detail-car-feature-icon">📄</span>
+          Pháp lý an toàn
+        </div>
+        <div class="detail-car-feature">
+          <span class="detail-car-feature-icon">💧</span>
+          Không đâm đụng, thủy kích
+        </div>
+      </div>
+
+      <div class="detail-car-desc">
+        <div class="detail-car-desc-title">Mô tả chi tiết</div>
+        <ul>
+          <li>Nhập: **{{ car.origin || 'Thái Lan' }}**</li>
+          <!-- <li>Biển số (BS): **{{ car.plate || '63A - Trắng' }}**</li> -->
+          <li>Màu: **{{ car.color || 'Cam' }}**</li>
+          <li>Số km: **{{ car.mileage | number }} KM** full lịch sử hãng</li>
+          <li>Phụ kiện đi kèm: **DVD - cam 360\*, cam lùi, dán phim, lót sàn, Trần 5D.**</li>
+        </ul>
+      </div>
+
+      <div class="detail-car-tech-specs">
+        <div class="detail-car-desc-title">Thông số kỹ thuật</div>
+        <div class="tech-specs-grid">
+          <div class="spec-item">
+            <span class="spec-label">Trọng lượng</span>
+            <!-- <span class="spec-value">{{ car. || '-' }}</span> -->
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Công suất (mã lực)</span>
+            <span class="spec-value">{{ car.horsepower || '104 HP @ 6000 RPM' }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Hệ dẫn động</span>
+            <span class="spec-value">{{ car.drivetrain || '4AT' }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Dung tích (lít)</span>
+            <span class="spec-value">{{ car.engineCapacity || '1.5' }}</span>
+          </div>
+
+          <div class="spec-item">
+            <span class="spec-label">Động cơ</span>
+            <span class="spec-value">{{ car.engineType || 'Số tự động' }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Kiểu dáng</span>
+            <span class="spec-value">{{ car.bodyStyle || 'Minivan (MPV)' }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Tiêu thụ (lít/100km)</span>
+            <span class="spec-value">{{ car.fuelConsumption || '6.9' }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Số túi khí</span>
+            <span class="spec-value">{{ car.airbags || '2' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-car-policies">
+        <div class="detail-car-desc-title">Chính sách ưu đãi & nổi bật</div>
+        <div class="policy-grid">
+          <div class="policy-item">
+            <span class="policy-icon">🏠</span>
+            <span class="policy-text">Giao dịch tận nơi</span>
+          </div>
+          <div class="policy-item">
+            <span class="policy-icon">💰</span>
+            <span class="policy-text">Trả góp ưu đãi</span>
+          </div>
+          <div class="policy-item">
+            <span class="policy-icon">🛡️</span>
+            <span class="policy-text">Chính hãng 100%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-car-loan-calculator">
+        <div class="loan-calculator-title">Tính khoản vay</div>
+
+        <div class="loan-price">Giá xe (VND) <span>{{ car.price || 555000000 | number }}</span></div>
+
+        <div class="loan-inputs-grid">
+          <div class="loan-input-item dark-bg">
+            <span class="input-label">Khoản vay (% giá xe)</span>
+            <!-- <span class="input-value">{{ loanData.percentage || '50' }}</span> -->
+          </div>
+          <div class="loan-input-item dark-bg">
+            <span class="input-label">Khoản vay (VND)</span>
+            <!-- <span class="input-value">{{ loanData.amount || '277.500.000' | number }}</span> -->
+          </div>
+          <div class="loan-input-item dark-bg">
+            <span class="input-label">Lãi suất (%)</span>
+            <!-- <span class="input-value">{{ loanData.interest || '12' }}</span> -->
+          </div>
+          <div class="loan-input-item dark-bg">
+            <span class="input-label">Thời gian vay (Tháng)</span>
+            <!-- <span class="input-value">{{ loanData.duration || '60' }}</span> -->
+          </div>
+        </div>
+
+        <div class="loan-result">
+          <span class="result-label">Số tiền trả góp hàng tháng ước tính</span>
+          <!-- <span class="result-value">{{ loanData.monthlyPayment || '6.172.834' | number }} VND / Tháng</span> -->
+        </div>
+
+        <div class="loan-deposit">
+          <span class="deposit-label">Trả trước:</span>
+          <!-- <span class="deposit-value">{{ loanData.deposit || '277.500.000' | number }} VND</span> -->
+        </div>
+      </div>
+
+    </div>
+
+    <div class="detail-car-right">
+      <div class="detail-car-title">{{ car.model }} {{ car.year }} - {{ car.mileage | number }}KM
+      </div>
+      <div class="detail-car-price">
+        <span class="price">{{ car.price | number }} đ</span>
+        <span class="price-month">(Trả góp từ 5,0 triệu/tháng)</span>
+      </div>
+      <div class="detail-car-location">
+        {{ car.location }}<br>
+      </div>
+      <div class="detail-car-specs">
+        <div><b>Nhiên liệu</b> <span>{{ car.fuelType }}</span></div>
+        <div><b>Kiểu dáng</b> <span>{{ car.bodyStyle }}</span></div>
+        <div><b>Hộp số</b> <span>{{ car.transmission }}</span></div>
+        <div><b>Số chỗ</b> <span>{{ car.seats }}</span></div>
+      </div>
+
+      <div class="detail-car-dealer" *ngIf="dealer">
+        <img class="dealer-img" [src]="dealer.bannerUrl || 'https://via.placeholder.com/320x120?text=Dealer'"
+          [alt]="dealer.storeName" />
+        <div class="dealer-info">
+          <div class="dealer-name">{{ dealer.storeName }} <span class="dealer-vip">🌻</span></div>
+          <div class="dealer-location">{{ dealer.address }} <a class="dealer-link" href="#">Xem cửa hàng &gt;</a></div>
+          <div class="dealer-stats">
+            <span>Đang bán <b>{{ dealer.carsSelling || 20 | number }}</b></span>
+            <span>Đã bán <b>{{ dealer.carsSold || 118 | number }}</b></span>
+          </div>
+
+          <div class="dealer-contact">
+            <a class="dealer-phone-btn" href="tel:{{ dealer.phone || '0908000000' }}" target="_blank">
+              <span class="dealer-phone-icon">📞</span>
+              <span class="dealer-phone-number">{{ dealer.phone || '0908.******' }}</span>
+            </a>
+
+            <a class="dealer-message-btn" href="https://zalo.me/{{ dealer.phone || '0932059379' }}" target="_blank">
+              <span class="dealer-message-icon">💬</span>
+              <span>Nhắn tin Zalo</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dealer-other-cars">
+        <div class="other-cars-title">Tin khác của {{ dealer.storeName || 'MITSUBISHI TRƯỜNG CHINH' }}</div>
+        <div class="other-cars-list">
+          <div class="car-card" *ngFor="let otherCar of dealer.otherCars" (click)="goToDetail(otherCar.id)">
+            <div class="car-card-header">
+              <img [src]="otherCar.imageUrl || 'https://via.placeholder.com/200x120?text=Car'"
+                alt="{{ otherCar.title }}">
+              <span class="post-time">{{ otherCar.postedAgo || 'một ngày trước' }}</span>
+            </div>
+            <div class="car-card-body">
+              <h4 class="car-title">{{ otherCar.title || 'Mitsubishi Attrage 2025' }}</h4>
+              <p class="car-price">{{ otherCar.price || 380000000 | number }} đ</p>
+              <p class="car-monthly-price">chỉ từ {{ otherCar.monthlyPrice || 4.2 }} triệu/tháng</p>
+            </div>
+            <div class="car-card-footer">
+              <span class="spec">5 chỗ</span>
+              <span class="spec">Số sàn</span>
+              <span class="spec">Xăng</span>
+              <span class="spec">Hồ Chí Minh</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

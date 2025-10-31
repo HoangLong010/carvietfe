@@ -1,0 +1,450 @@
+/* Thiết lập cơ bản */
+:root {
+    --primary-color: #005A9C; /* Màu xanh Ford */
+    --secondary-color: #FDD700; /* Màu vàng nổi bật */
+    --text-color: #333;
+    --light-gray: #f4f4f4;
+    --border-color: #ddd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    padding: 15px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.breadcrumb .separator {
+    margin: 0 5px;
+}
+
+.breadcrumb .active {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Phần Banner và Thông tin Cửa hàng */
+.store-details {
+    margin-top: 10px;
+}
+
+.store-banner-info {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.banner-container {
+    position: relative;
+}
+
+.banner-image {
+    height: 200px; /* Chiều cao cố định cho banner */
+    background-color: #000; /* Thay bằng màu nền hoặc ảnh thật */
+    background-image: url('https://via.placeholder.com/1200x200?text=Ford+Dealer+Banner'); /* Placeholder */
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.store-avatar-container {
+    position: absolute;
+    bottom: -50px; /* Đặt logo chồng lên banner */
+    left: 20px;
+}
+
+.store-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 5px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.store-avatar img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.store-header {
+    padding-left: 140px; /* Đẩy nội dung qua khỏi vị trí logo */
+    padding-top: 60px; /* Khoảng trống cho logo */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.store-name {
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+.join-date {
+    font-size: 14px;
+    color: #999;
+}
+
+.follow-button {
+    background-color: #fff;
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.follow-button:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+/* Thanh Menu Cửa hàng */
+.store-nav {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid var(--border-color);
+    margin-top: 20px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-weight: 500;
+    transition: color 0.2s, border-bottom 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    font-weight: bold;
+}
+
+.nav-item:hover:not(.active) {
+    color: var(--primary-color);
+}
+
+/* Nội dung chính */
+.content-wrapper {
+    display: flex;
+    margin-top: 20px;
+}
+
+/* Cột Trái (Sidebar) */
+.sidebar {
+    width: 300px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.info-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.info-card h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--secondary-color);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.overview-card .stats {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.stat-item {
+    flex-basis: 48%;
+    padding: 10px 0;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--primary-color);
+    display: block;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    display: block;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 10px 0;
+}
+
+/* Chính sách */
+.policy-card {
+    /* Loại bỏ padding và box-shadow vì style trong hình ảnh có vẻ không có */
+    padding: 15px 0; 
+    box-shadow: none;
+}
+
+.policy-card h2 {
+    padding-left: 20px;
+}
+
+.policies {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.policy-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--light-gray); /* Nền nhẹ cho mỗi mục */
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.policy-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    background-color: var(--secondary-color); /* Màu nền vàng */
+}
+
+/* Liên hệ */
+.contact-card {
+    box-shadow: none;
+    padding: 15px 0;
+}
+
+.contact-card h2 {
+    padding-left: 20px;
+}
+
+.contact-label {
+    padding-left: 20px;
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.hotline {
+    padding-left: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.location {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 20px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.location i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    margin-top: 3px;
+    font-size: 16px;
+}
+
+/* Cột Phải (Danh sách Xe) */
+.car-list-section {
+    flex-grow: 1;
+}
+
+.car-list-section h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.car-list-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cột */
+    gap: 20px;
+}
+
+.car-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s;
+    
+}
+
+.car-item:hover {
+    cursor: pointer;
+}
+
+.car-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.time-posted {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.car-image-container {
+    height: 150px;
+    overflow: hidden;
+}
+
+.car-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.car-details {
+    padding: 15px;
+}
+
+.car-name {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    height: 40px; /* Giữ chiều cao cố định để các card đều nhau */
+    overflow: hidden;
+}
+
+.mileage {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.price {
+    font-size: 20px;
+    color: #D9534F; /* Màu đỏ cho giá */
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.installment-info {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.car-specs {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 cột cho thông số */
+    gap: 8px 0;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.car-specs li {
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.spec-icon {
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+/* Responsive cơ bản (Cho các màn hình nhỏ hơn) */
+@media (max-width: 992px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .car-list-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên tablet */
+    }
+}
+
+@media (max-width: 600px) {
+    .car-list-grid {
+        grid-template-columns: 1fr; /* 1 cột trên mobile */
+    }
+    .store-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 20px;
+    }
+    .store-avatar-container {
+        position: static;
+        transform: none;
+        margin-top: -50px;
+        margin-left: 20px;
+    }
+    .store-name, .join-date, .follow-button {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    .overview-card .stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .stat-item {
+        flex-basis: 100%;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+    }
+}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carpla - Nền tảng lịch sử xe</title>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <span class="logo-icon">🚗</span>
+                    <span class="logo-text">CARPLA</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-link">Giới thiệu</a>
+                    <a href="#" class="nav-link">Mua báo cáo</a>
+                    <a href="#" class="nav-link">Giá trị báo cáo</a>
+                    <a href="#" class="nav-link">Vì sao nên chọn Carpla</a>
+                </nav>
+                <a class="btn-primary" (click)="scrollToRegisterForm()">Đăng ký ngay</a>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <p class="hero-subtitle">Lịch sử của bạn</p>
+                <h1 class="hero-title">Cùng chúng tôi tạo nên <span class="highlight">lịch sử</span></h1>
+                <p class="hero-description">Dịch vụ tra cứu lịch sử xe ô tô, xe máy được cập nhật liên tục</p>
+                <button class="btn-primary">Mua báo cáo</button>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?w=600" alt="Handshake">
+            </div>
+        </div>
+        <div class="partners">
+            <div class="container">
+                <img src="https://via.placeholder.com/80x30/333/fff?text=Toyota" alt="Toyota">
+                <img src="https://via.placeholder.com/80x30/333/fff?text=Honda" alt="Honda">
+                <img src="https://via.placeholder.com/80x30/333/fff?text=Mazda" alt="Mazda">
+                <img src="https://via.placeholder.com/80x30/333/fff?text=BMW" alt="BMW">
+                <img src="https://via.placeholder.com/80x30/333/fff?text=Hyundai" alt="Hyundai">
+                <img src="https://via.placeholder.com/80x30/333/fff?text=Ford" alt="Ford">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-icon">🚗</div>
+                <h2>Về <span class="highlight">Carpla</span></h2>
+                <p>Chào mừng đến với Carpla - Nền tảng tra cứu lịch sử xe hàng đầu tại Việt Nam. Với đội ngũ chuyên gia giàu kinh nghiệm và công nghệ hiện đại, chúng tôi cam kết cung cấp cho bạn những thông tin chính xác và đáng tin cậy về lịch sử xe của bạn.</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>1,000<sup>+</sup></h3>
+                        <p>Xe đang ký lô</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>150<sup>+</sup></h3>
+                        <p>Cửa hàng</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Hàng ngày</h3>
+                        <p>Cập nhật liên tục</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://e.carpla.vn/_next/static/media/infoBg.413dbb1f.png" alt="Luxury Car">
+            </div>
+        </div>
+    </section>
+
+    <!-- Cooperation Section -->
+    <section class="cooperation">
+        <div class="container">
+            <h2>Hợp tác <span class="highlight">phát triển</span><br>Đồng hành <span class="highlight">thành công</span></h2>
+            <div class="cooperation-grid">
+                <div class="cooperation-card">
+                    <div class="card-icon">C</div>
+                    <h3>Mục tiêu của Carpla</h3>
+                    <p>Tối ưu hoá trải nghiệm mua bán xe hơi thông qua việc cung cấp thông tin đầy đủ và chính xác về lịch sử các loại xe một cách nhanh chóng.</p>
+                </div>
+                <div class="cooperation-card">
+                    <div class="card-icon">C</div>
+                    <h3>Định vị</h3>
+                    <p>Carpla ra đời với sứ mệnh là nền tảng tra cứu lịch sử xe toàn diện và dễ dàng.</p>
+                </div>
+                <div class="cooperation-card">
+                    <div class="card-icon">C</div>
+                    <h3>Phương châm</h3>
+                    <p>Phát triển dựa - Khách hàng tưởng trung</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Section -->
+    <section class="value">
+        <div class="container">
+            <h2>Giá trị <span class="highlight">cốt lõi</span></h2>
+            <div class="value-grid">
+                <div class="value-card">
+                    <span class="value-number">01</span>
+                    <h3>Minh bạch</h3>
+                    <p>Chúng tôi tin rằng sự minh bạch xây dựng lòng tin và là yếu tố quan trọng trong mỗi giao dịch thành công.</p>
+                </div>
+                <div class="value-card center">
+                    <div class="value-icon-center">C</div>
+                </div>
+                <div class="value-card">
+                    <span class="value-number">02</span>
+                    <h3>Hỗ trợ tận tình</h3>
+                    <p>Đội ngũ của chúng tôi luôn sẵn sàng để giúp đỡ bạn, hãy liên hệ với chúng tôi bất cứ lúc nào.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-number">03</span>
+                    <h3>An toàn</h3>
+                    <p>Bảo mật dữ liệu, đảm bảo các thông tin cá nhân và giao dịch của bạn được bảo vệ tối đa.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-number">04</span>
+                    <h3>Tiện lợi</h3>
+                    <p>Hệ thống Carpla ra đời nhằm mang đến trải nghiệm mua bán xe một cách tốt nhất và nhanh chóng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose">
+        <div class="container">
+            <h2>Vì sao nên <span class="highlight">chọn Carpla</span></h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">👥</div>
+                    <h3>Tiếp cận hàng nghìn khách hàng đang cùng tìm kiếm thông tin</h3>
+                    <p>Carpla có lưu lượng truy cập cao, đáng tin cậy bao gồm các giao dịch việc mua bán nhanh nhất với vốn lưu chuyển cao.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">💼</div>
+                    <h3>Hỗ trợ công cụ kinh doanh chuyên nghiệp</h3>
+                    <p>Tất cả đối tác của Carpla đều được cung cấp công cụ quản lý kinh doanh, quảng cáo cũng như marketing hiệu quả.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">📊</div>
+                    <h3>Minh bạch giá trị, tăng cơ hội bán hàng một cách hiệu quả</h3>
+                    <p>Những thông tin lịch sử những điểm mạnh của xe ô tô được hiển thị chi tiết giúp thu hút người mua dễ dàng hơn.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">⭐</div>
+                    <h3>Được đảm bảo và hỗ trợ chuyên gia</h3>
+                    <p>Chúng tôi cam kết với mỗi đối tác giúp họ có được những trải nghiệm uy tín nhất đến cả khách hàng và người bán hàng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-form" id="register-form">
+        <div class="container">
+            <h2>Để lại thông tin<br><span class="highlight">đăng ký tham gia</span></h2>
+            <form class="form" [formGroup]="registerStoreForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <input type="text" placeholder="Tên đại lý" class="form-input" formControlName="storeName"> 
+                    <input type="text" placeholder="Số điện thoại *" class="form-input" formControlName="phone" required>
+                </div>
+                <div class="form-row">
+                    <input type="text" placeholder="Tên đăng nhập" class="form-input" formControlName="userName">
+                    <input type="email" placeholder="Email" class="form-input" formControlName="email">
+                </div>
+                <div class="form-row">
+                    <input type="text" placeholder="Vị trí của bạn" class="form-input">
+                    <input type="text" placeholder="Thành phố hoạt động" class="form-input" formControlName="address">
+                </div>
+                <input type="text" placeholder="Ghi chú" class="form-input full-width" formControlName="notes">
+                <div class="form-checkbox">
+                    <input type="checkbox" id="terms" formControlName="terms">
+                    <label for="terms">Tôi đã đọc và đồng ý với các điều khoản</label>
+                </div>
+                <button type="submit" class="btn-primary">Đăng ký ngay</button>
+            </form>
+        </div>
+    </section>
+    
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🚗</span>
+                        <span class="logo-text">CARPLA</span>
+                    </div>
+                    <p>CARPLA là nền tảng tra cứu lịch sử xe toàn diện đầu tiên tại Việt Nam</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Định vị khách hàng</h4>
+                    <ul>
+                        <li><a href="#">Mục đích</a></li>
+                        <li><a href="#">Định vị</a></li>
+                        <li><a href="#">Giá trị cốt lõi</a></li>
+                        <li><a href="#">Công nghệ áp dụng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Giới thiệu</h4>
+                    <ul>
+                        <li><a href="#">Về Carpla</a></li>
+                        <li><a href="#">Giá trị báo cáo</a></li>
+                        <li><a href="#">Chính sách quyền riêng tư</a></li>
+                        <li><a href="#">Điều khoản - Chính sách</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Tin tức</h4>
+                    <ul>
+                        <li><a href="#">Carpla Blog</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Khuyến</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-newsletter">
+                <h4>Đăng ký nhận tin tức với từ chương tế</h4>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Email của bạn">
+                    <button class="btn-primary">Đăng ký</button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Carpla Seed Joint Company All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+     <app-toast-notification
+          *ngIf="showToast"
+          [message]="toastMessage"
+          [type]="toastType"
+          (closed)="onToastClosed()">
+        </app-toast-notification>
+</body>
+</html>

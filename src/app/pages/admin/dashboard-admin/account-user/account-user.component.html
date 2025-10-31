@@ -1,0 +1,192 @@
+<div class="user-management-container">
+
+  <div class="header-section">
+    <h1>Quản lý tài khoản người dùng</h1>
+    <p>Theo dõi và quản lý các tài khoản của người dùng trong hệ thống</p>
+  </div>
+
+  <div class="search-criteria-card">
+    <div class="card-header">
+      <i class="fas fa-filter icon-filter"></i>
+      <h3>Điều kiện tìm kiếm</h3>
+    </div>
+    <p class="search-description">Điền thông tin để lọc kết quả tìm kiếm chính xác hơn</p>
+
+    <div class="search-form">
+      <div class="form-group">
+        <label for="userName">Tên tài khoản</label>
+        <input type="text" id="userName" [(ngModel)]="filter.userName" placeholder="Nhập tên tài khoản">
+      </div>
+
+      <div class="form-group">
+        <label for="status">Trạng thái</label>
+        <select id="status" [(ngModel)]="filter.status">
+          <option [ngValue]="null">Tất cả</option>
+          <option [ngValue]="1">Hoạt động</option>
+          <option [ngValue]="0">Không hoạt động</option>
+          <option [ngValue]="2">Chờ duyệt</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="accountType">Loại tài khoản</label>
+        <select id="accountType" [(ngModel)]="filter.accountType">
+          <option [ngValue]="null">Tất cả</option>
+          <option [ngValue]="1">Quản trị viên</option>
+          <option [ngValue]="2">Người dùng</option>
+          <option [ngValue]="3">Đại lý</option>
+        </select>
+      </div>
+
+      <button class="search-button" (click)="onSearch()">
+        <i class="fas fa-search"></i>
+        Tìm kiếm
+      </button>
+    </div>
+  </div>
+
+  <div class="search-results-summary">
+    <h2>Kết quả tìm kiếm</h2>
+    <div class="total-rows">
+      <span>Tổng số dòng:</span>
+      <strong>5</strong>
+    </div>
+    <p class="link-text">Danh sách tài khoản người dùng</p>
+  </div>
+
+  <div class="creative-table-card">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ và tên</th>
+            <th>Tên tài khoản</th>
+            <th>Email</th>
+            <th>SĐT</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+            <th>Ngày cập nhật</th>
+            <th>Loại tài khoản</th>
+            <th></th> </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; let i = index">
+            <td>{{ i + 1 + page * size }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phoneNumber }}</td>
+            <td>
+              <span [ngClass]="{
+                  'status-active': user.status === 1,
+                  'status-inactive': user.status === 0,
+                  'status-pending': user.status === 2
+                }">
+                {{ getStatusLabel(user.status) }}
+              </span>
+              </td>
+            <td>{{ user.createdDate }}</td>
+            <td>{{ user.modifiedDate }}</td>
+            <td>{{ getAccountTypeLabel(user.accountType) }}</td>
+            <td class="action-buttons">
+              <div class="form-row">
+                <div class="form-group half">
+                  <button class="btn-edit" (click)="openEditModal(user)">
+                    <i class="fas fa-pen"></i>
+                  </button>
+                </div>
+                <div class="form-group half">
+                  <button class="btn-delete">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 0">Trang trước</button>
+    <span>Trang {{ page + 1 }} / {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="(page + 1) >= totalPages">Trang sau</button>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isEditModalOpen" (click)="onBackdropClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>Hiệu chỉnh tài khoản</h2>
+    <form (ngSubmit)="onSaveEdit()" #editForm="ngForm">
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Tên tài khoản *</label>
+          <input type="text" [(ngModel)]="selectedUser.username" name="username" disabled class="input-disabled" />
+        </div>
+
+        <div class="form-group half">
+          <label>Họ và tên *</label>
+          <input type="text" [(ngModel)]="selectedUser.fullName" name="fullName" required #fullNameModel="ngModel" />
+          <div class="error-message" *ngIf="fullNameModel.invalid && fullNameModel.touched">
+            Họ và tên không được để trống.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Email *</label>
+          <input type="email" [(ngModel)]="selectedUser.email" name="email" required #emailModel="ngModel" />
+          <div class="error-message" *ngIf="emailModel.invalid && emailModel.touched">
+            Email không được để trống và phải đúng định dạng.
+          </div>
+        </div>
+
+        <div class="form-group half">
+          <label>Số điện thoại *</label>
+          <input type="text" [(ngModel)]="selectedUser.phoneNumber" name="phoneNumber" required #phoneModel="ngModel" />
+          <div class="error-message" *ngIf="phoneModel.invalid && phoneModel.touched">
+            Số điện thoại không được để trống.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Địa chỉ *</label>
+          <input type="text" [(ngModel)]="selectedUser.address" name="address" required #addressModel="ngModel" />
+          <div class="error-message" *ngIf="addressModel.invalid && addressModel.touched">
+            Địa chỉ không được để trống.
+          </div>
+        </div>
+
+        <div class="form-group half">
+          <label>Loại tài khoản</label>
+          <select [(ngModel)]="selectedUser.accountType" name="accountType">
+            <option [ngValue]="1">Quản trị viên</option>
+            <option [ngValue]="2">Người dùng</option>
+            <option [ngValue]="3">Đại lý</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Trạng thái</label>
+          <select [(ngModel)]="selectedUser.status" name="status" required>
+            <option [ngValue]="1">Hoạt động</option>
+            <option [ngValue]="0">Không hoạt động</option>
+            <option [ngValue]="2">Chờ duyệt</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="closeEditModal()">Huỷ bỏ</button>
+        <button type="submit" [disabled]="editForm.invalid">Hoàn tất</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,159 @@
+<div class="user-management-container">
+    <div class="header-section">
+        <h1>Quản lý Creative đã duyệt</h1>
+        <p>Theo dõi và quản lý các Creative đã được phê duyệt</p>
+    </div>
+
+    <div class="search-criteria-card">
+        <div class="card-header">
+            <i class="fas fa-filter icon-filter"></i>
+            <h3>Điều kiện tìm kiếm</h3>
+        </div>
+        <p class="search-description">Điền thông tin để lọc kết quả tìm kiếm chính xác hơn</p>
+
+        <div class="search-form">
+            <div class="form-group">
+                <label for="channel">Kênh</label>
+                <input type="text" id="channel" placeholder="Nhập kênh" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="campaignStatus">Trạng thái campaign</label>
+                <select id="campaignStatus">
+                    <option value="">Chọn trạng thái campaign</option>
+                    <option value="active" selected>Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <i class="fas fa-caret-down dropdown-arrow"></i>
+            </div>
+
+            <div class="form-group">
+                <label for="campaignCode">Campaign Code</label>
+                <input type="text" id="campaignCode" placeholder="Nhập campaign code" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="inventoryCode">Inventory Code</label>
+                <input type="text" id="inventoryCode" placeholder="Nhập inventory code" value="">
+            </div>
+
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+                Tìm kiếm
+            </button>
+        </div>
+    </div>
+
+    <div class="search-results-summary">
+        <h2>Kết quả tìm kiếm</h2>
+        <div class="total-rows">
+            <span>Tổng số dòng:</span>
+            <strong>5</strong> </div>
+        <p class="link-text">Danh sách Creative đã duyệt</p>
+    </div>
+
+    <div class="creative-table-card">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Campaign Code</th>
+                        <th>Tên Campaign</th>
+                        <th>Platform</th>
+                        <th>Inventory Code</th>
+                        <th>Tên Inventory</th>
+                        <th>Device</th>
+                        <th>AD_Code</th>
+                        <th>Price</th>
+                        <th>Kênh</th>
+                        <th>C</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>CAM2507150001</td>
+                        <td>Chiến dịch trung thu</td>
+                        <td>VTVigo</td>
+                        <td>INV2507150001</td>
+                        <td>Quảng cáo ca nhạc</td>
+                        <td>SmartTV, Mobile, Inventory</td>
+                        <td>B13</td>
+                        <td>4 đ</td>
+                        <td>Kênh VTV 5</td>
+                        <td>C</td>
+                        <td class="actions">
+                            <i class="fas fa-ellipsis-h action-icon"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>CAM2507150001</td>
+                        <td>Chiến dịch trung thu</td>
+                        <td>VTVigo</td>
+                        <td>INV2507150001</td>
+                        <td>Quảng cáo ca nhạc</td>
+                        <td>SmartTV, Mobile, Inventory</td>
+                        <td>A12</td>
+                        <td>10 đ</td>
+                        <td>Kênh VTV 5</td>
+                        <td>C</td>
+                        <td class="actions">
+                            <i class="fas fa-ellipsis-h action-icon"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>CAM2507150001</td>
+                        <td>Chiến dịch trung thu</td>
+                        <td>VTVigo</td>
+                        <td>INV2507150001</td>
+                        <td>Quảng cáo ca nhạc</td>
+                        <td>SmartTV, Mobile, Inventory</td>
+                        <td>A11</td>
+                        <td>1 đ</td>
+                        <td>Kênh VTV 5</td>
+                        <td>C</td>
+                        <td class="actions">
+                            <i class="fas fa-ellipsis-h action-icon"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>CAM2507150002</td>
+                        <td>Chiến dịch hè</td>
+                        <td>FPT Play</td>
+                        <td>INV2507150002</td>
+                        <td>Phim hành động</td>
+                        <td>Mobile, Tablet</td>
+                        <td>X01</td>
+                        <td>15 đ</td>
+                        <td>Kênh VTV 1</td>
+                        <td>C</td>
+                        <td class="actions">
+                            <i class="fas fa-ellipsis-h action-icon"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>CAM2507150003</td>
+                        <td>Quảng bá du lịch</td>
+                        <td>YouTube</td>
+                        <td>INV2507150003</td>
+                        <td>Video ca nhạc</td>
+                        <td>PC, Mobile</td>
+                        <td>Y05</td>
+                        <td>8 đ</td>
+                        <td>Kênh VTV 3</td>
+                        <td>C</td>
+                        <td class="actions">
+                            <i class="fas fa-ellipsis-h action-icon"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

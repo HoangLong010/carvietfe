@@ -1,0 +1,41 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { SharedRoutingModule } from './shared-routing.module';
+import { ToastNotificationComponent } from '../pages/public/toast-notification/toast-notification.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { DetailCarComponent } from './components/detail-car/detail-car.component';
+import { CarNewComponent } from './components/car-new/car-new.component';
+import { CarOldComponent } from './components/car-old/car-old.component';
+import { StoreComponent } from './components/store/store.component';
+import { DetailStoreComponent } from './components/detail-store/detail-store.component';
+
+
+@NgModule({
+  declarations: [
+    ToastNotificationComponent,
+    HeaderComponent,
+    HomeComponent,
+    FooterComponent,
+    ProfileComponent,
+    DetailCarComponent,
+    CarNewComponent,
+    CarOldComponent,
+    StoreComponent,
+    DetailStoreComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedRoutingModule
+  ],
+  exports: [
+    ToastNotificationComponent,
+    HeaderComponent,
+    HomeComponent,
+    FooterComponent
+  ]
+})
+export class SharedModule { }

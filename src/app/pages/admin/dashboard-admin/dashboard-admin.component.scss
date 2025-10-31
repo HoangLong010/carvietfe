@@ -1,0 +1,674 @@
+/* Global styles and resets */
+* {
+  box-sizing: border-box;
+}
+
+/* Note: 'body' styles should ideally be in a global stylesheet (e.g., styles.css) */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  height: 100vh;
+}
+
+.admin-layout {
+  display: grid; /* Changed to CSS Grid */
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  /* Define grid areas for layout */
+  grid-template-columns: 260px 1fr; /* Sidebar width and remaining space for content */
+  grid-template-rows: auto 1fr; /* Header height and remaining space for main content */
+  grid-template-areas:
+    "sidebar header" /* Top row: sidebar on left, header on right */
+    "sidebar main";   /* Bottom row: sidebar on left, main content on right */
+}
+
+.sidebar {
+  grid-area: sidebar; /* Assign to sidebar grid area */
+  width: 260px; /* Explicit width, though grid-template-columns also defines it */
+  background-color: #fff;
+  border-right: 1px solid #ccc;
+  padding: 20px 10px;
+  overflow-y: auto;
+  box-shadow: none;
+  border-radius: 0;
+  color: #333;
+  /* flex-shrink: 0; removed as grid handles sizing */
+
+  /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Webkit */
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  color: #f57c00;
+  font-weight: 700;
+  text-align: center;
+}
+
+.menu-item {
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.2s;
+  font-size: 16px;
+}
+
+.menu-item i {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  background-color: #ffe0b2;
+  transform: none;
+}
+
+.menu-item.active {
+  background-color: #ffe0b2;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+/* Dashboard Header Styles */
+.dashboard-header {
+  grid-area: header; /* Assign to header grid area */
+  display: flex;
+  justify-content: flex-end; /* Aligns user-info to the right */
+  align-items: center; /* Vertically centers user-info */
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  height: 60px; /* Fixed height for the header bar */
+  box-sizing: border-box;
+  /* width: 100%; and flex-shrink: 0; removed as grid handles sizing */
+}
+
+.dashboard-header .user-info {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+.dashboard-header .user-info i {
+  font-size: 18px;
+  color: #555;
+}
+
+.dashboard-header .user-info .bi-caret-down-fill {
+    font-size: 12px;
+}
+
+.dashboard-header .user-info .dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position below the user-info element */
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 180px;
+  padding: 5px 0;
+  margin-top: 5px;
+}
+
+.dashboard-header .user-info .dropdown-menu .dropdown-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: #333;
+  font-size: 14px;
+  display: block;
+}
+
+.dashboard-header .user-info .dropdown-menu .dropdown-item:hover {
+  background: #f1f1f1;
+}
+
+.main-content {
+  grid-area: main; /* Assign to main grid area */
+  padding: 25px;
+  background-color: #ffffff;
+  overflow-y: auto; /* Enable scrolling for main content if it overflows */
+  position: relative; /* For any absolutely positioned elements within main-content */
+  /* flex-grow, display, flex-direction removed as grid handles layout */
+
+  /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.main-content::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Webkit */
+}
+
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  background-color: #f57c00;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.user-avatar i {
+  font-size: 20px;
+}
+
+.user-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+.user-avatar-large {
+  width: 50px;
+  height: 50px;
+  background-color: #f57c00;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 24px;
+  margin-right: 15px;
+}
+
+.user-avatar-large i {
+  font-size: 28px;
+}
+
+.user-name-full {
+  font-weight: 600;
+  font-size: 18px;
+  color: #333;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Modal Styles */
+.profile-details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.profile-details-modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+.profile-details-modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  font-weight: 600;
+}
+
+.profile-details-modal-content p {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.profile-details-modal-content p strong {
+  color: #333;
+}
+
+.close-modal-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 25px;
+  background-color: #f57c00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  background-color: #ef6c00;
+  transform: translateY(-2px);
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Additional styles from your previous input, kept for completeness */
+.header-section {
+  margin-bottom: 25px;
+}
+.header-section h1 {
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.header-section p {
+  font-size: 0.95em;
+  color: #666;
+  margin-top: 0;
+}
+
+.search-criteria-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.search-criteria-card .card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+.search-criteria-card .card-header .icon-filter {
+  color: #ff9900;
+  font-size: 1.2em;
+  min-width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search-criteria-card .card-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+  font-weight: bold;
+}
+.search-criteria-card .search-description {
+  font-size: 0.9em;
+  color: #777;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+.search-criteria-card .search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+.search-criteria-card .search-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.search-criteria-card .search-form .form-group label {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.search-criteria-card .search-form .form-group input[type="date"],
+.search-criteria-card .search-form .form-group select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9em;
+  color: #333;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+}
+.search-criteria-card .search-form .form-group input[type="date"] {
+  width: 140px;
+}
+.search-criteria-card .search-form .form-group select {
+  width: 180px;
+  padding-right: 30px;
+}
+.search-criteria-card .search-form .date-range {
+  display: flex;
+  flex-direction: column;
+}
+.search-criteria-card .search-form .date-range .date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-criteria-card .search-form .date-range .date-inputs span {
+  font-size: 1.2em;
+  color: #777;
+}
+.search-criteria-card .search-form .channel-select {
+  position: relative;
+}
+.search-criteria-card .search-form .channel-select .dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(10px);
+  pointer-events: none;
+  color: #999;
+}
+.search-criteria-card .search-form .search-button {
+  background-color: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-size: 0.95em;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+.search-criteria-card .search-form .search-button:hover {
+  background-color: #e68a00;
+}
+
+.summary-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.summary-cards-container .summary-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.summary-cards-container .summary-card strong {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+}
+.summary-cards-container .summary-card span {
+  font-size: 0.85em;
+  color: #777;
+}
+.summary-cards-container .summary-card.highlight {
+  border: 1px solid #667eea;
+}
+.summary-cards-container .summary-card.highlight strong,
+.summary-cards-container .summary-card.highlight span {
+  color: #667eea;
+}
+
+@media (max-width: 768px) {
+  .search-criteria-card .search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-criteria-card .search-form .form-group {
+    width: 100%;
+  }
+  .search-criteria-card .search-form .date-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-criteria-card .search-form .date-inputs input[type="date"] {
+    width: 100%;
+  }
+  .search-criteria-card .search-form select {
+    width: 100%;
+  }
+  .search-criteria-card .search-form .search-button {
+    width: 100%;
+  }
+  .summary-cards-container {
+    flex-direction: column;
+  }
+  .summary-cards-container .summary-card {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .summary-cards-container {
+    justify-content: center;
+  }
+  .summary-cards-container .summary-card {
+    flex-basis: calc(33% - 20px);
+  }
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+  font-weight: bold;
+}
+
+.unit-text {
+  font-size: 0.85em;
+  color: #777;
+}
+
+.chart-container {
+  flex-grow: 1;
+  position: relative;
+  height: 250px;
+}
+
+/* Inventory Ratio Card */
+.inventory-ratio-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "header header"
+    "chart summary"
+    "legend summary";
+  align-items: start;
+  gap: 20px;
+}
+
+.inventory-ratio-card h3 { grid-area: header; }
+.inventory-ratio-card .chart-container { grid-area: chart; height: 180px; width: 180px; justify-self: center; }
+.inventory-ratio-card .legend { grid-area: legend; padding-top: 10px; }
+.inventory-ratio-card .inventory-summary { grid-area: summary; }
+
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+}
+.chart-center-text p {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #333;
+  margin: 0;
+}
+
+.legend {
+  width: 100%;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.legend-label {
+  display: flex;
+  align-items: center;
+}
+
+.color-box {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+
+.inventory-summary {
+  text-align: right;
+  border-left: 1px solid #eee;
+  padding-left: 20px;
+}
+
+.inventory-summary h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #333;
+}
+
+.inventory-summary p {
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.inventory-summary p span {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+/* Bar Charts */
+#revenue-by-channel-chart-container {
+  height: 280px;
+}
+
+#inventory-by-channel-chart-container {
+  height: 200px;
+}
+
+/* Fill Rate Chart */
+.fill-rate-card .unit-text {
+  margin-bottom: 20px;
+}
+
+.chart-footer {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #777;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .card {
+    width: 90%;
+  }
+  .inventory-ratio-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "chart"
+      "legend"
+      "summary";
+  }
+  .inventory-ratio-card .chart-container { justify-self: center; }
+  .inventory-ratio-card .inventory-summary { border-left: none; padding-left: 0; text-align: left; }
+}
