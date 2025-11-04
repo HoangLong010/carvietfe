@@ -1,0 +1,109 @@
+<div class="chat-container">
+  <!-- Sidebar: Danh sách cuộc hội thoại -->
+  <div class="conversations-sidebar">
+    <div class="sidebar-header">
+      <h2>Tin nhắn</h2>
+      <span class="connection-status" [class.connected]="isConnected">
+        {{ isConnected ? 'Đã kết nối' : 'Đang kết nối...' }}
+      </span>
+    </div>
+
+    <div class="conversations-list">
+      <div 
+        *ngFor="let conv of conversations" 
+        class="conversation-item"
+        [class.active]="selectedConversation?.userId === conv.userId"
+        (click)="selectConversation(conv)">
+        
+        <div class="avatar">
+          <img [src]="conv.userAvatar || 'assets/default-avatar.png'" [alt]="conv.userName">
+          <span *ngIf="conv.unreadCount > 0" class="unread-badge">{{ conv.unreadCount }}</span>
+        </div>
+
+        <div class="conversation-info">
+          <div class="user-name">{{ conv.userName }}</div>
+          <div class="last-message">{{ conv.lastMessage }}</div>
+        </div>
+
+        <div class="conversation-meta">
+          <span class="time">{{ formatTime(conv.lastMessageTime) }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="conversations.length === 0" class="empty-state">
+        <p>Chưa có cuộc hội thoại nào</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main: Khung chat -->
+  <div class="chat-main">
+    <div *ngIf="!selectedConversation" class="no-conversation-selected">
+      <i class="fas fa-comments"></i>
+      <p>Chọn một cuộc hội thoại để bắt đầu chat</p>
+    </div>
+
+    <div *ngIf="selectedConversation" class="chat-window">
+      <!-- Header -->
+      <div class="chat-header">
+        <div class="avatar">
+          <img [src]="selectedConversation.userAvatar || 'assets/default-avatar.png'" 
+               [alt]="selectedConversation.userName">
+        </div>
+        <div class="user-info">
+          <h3>{{ selectedConversation.userName }}</h3>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-container" #messageContainer>
+        <div *ngIf="isLoading" class="loading">
+          <i class="fas fa-spinner fa-spin"></i> Đang tải...
+        </div>
+
+        <div 
+          *ngFor="let message of messages" 
+          class="message"
+          [class.my-message]="isMyMessage(message)"
+          [class.their-message]="!isMyMessage(message)">
+          
+          <div class="message-avatar" *ngIf="!isMyMessage(message)">
+            <img [src]="message.senderAvatar || 'assets/default-avatar.png'" 
+                 [alt]="message.senderName">
+          </div>
+
+          <div class="message-content">
+            <div class="message-bubble">
+              {{ message.content }}
+            </div>
+            <div class="message-time">
+              {{ formatTime(message.createdDate) }}
+            </div>
+          </div>
+
+          <div class="message-avatar" *ngIf="isMyMessage(message)">
+            <img [src]="message.senderAvatar || 'assets/default-avatar.png'" 
+                 [alt]="message.senderName">
+          </div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="message-input">
+        <input 
+          type="text" 
+          [(ngModel)]="newMessage" 
+          (keyup.enter)="sendMessage()"
+          placeholder="Nhập tin nhắn..." 
+          [disabled]="!isConnected || isSending">
+        
+        <button 
+          class="send-button" 
+          (click)="sendMessage()"
+          [disabled]="!newMessage.trim() || !isConnected || isSending">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
