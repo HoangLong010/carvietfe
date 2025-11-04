@@ -25,9 +25,11 @@ export class DetailStoreComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    debugger;
     this.route.paramMap.pipe(
       switchMap(params => {
-        this.storeId = params.get('id');
+        debugger
+        this.storeId = params.get('userId');
         this.loading = true;
         if (this.storeId) {
           return this.storeService.getStoreDetail(this.storeId);

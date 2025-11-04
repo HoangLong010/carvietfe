@@ -5,6 +5,7 @@ import { environment } from '../../../environments/enviroment';
 
 export interface Store {
   id: string;
+  userId: string | null;
   storeName: string;
   address: string;
   carSold: number | null;

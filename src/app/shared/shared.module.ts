@@ -12,6 +12,11 @@ import { CarNewComponent } from './components/car-new/car-new.component';
 import { CarOldComponent } from './components/car-old/car-old.component';
 import { StoreComponent } from './components/store/store.component';
 import { DetailStoreComponent } from './components/detail-store/detail-store.component';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { FineCheckComponent } from './components/fine-check/fine-check.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ChatComponent } from './components/chat/chat.component';
 
 
 @NgModule({
@@ -25,11 +30,16 @@ import { DetailStoreComponent } from './components/detail-store/detail-store.com
     CarNewComponent,
     CarOldComponent,
     StoreComponent,
-    DetailStoreComponent
+    DetailStoreComponent,
+    FineCheckComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
-    SharedRoutingModule
+    SharedRoutingModule,
+    FormsModule,
+    RouterModule,
+    HttpClientModule
   ],
   exports: [
     ToastNotificationComponent,

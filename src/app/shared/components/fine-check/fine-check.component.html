@@ -1,0 +1,188 @@
+<app-header></app-header>
+<div class="fine-check-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="breadcrumb">
+      <a routerLink="/">Trang chủ</a>
+      <span class="separator">›</span>
+      <span>Tra cứu phạt nguội</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="check-card">
+      <h1 class="title">Tra cứu phạt nguội</h1>
+
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab === 'csgt'"
+          (click)="activeTab = 'csgt'">
+          Tra cứu từ Cục CSGT
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab === 'registry'"
+          (click)="activeTab = 'registry'">
+          Tra cứu từ Cục Đăng kiểm
+        </button>
+      </div>
+
+      <!-- Vehicle Type Selection -->
+      <div class="vehicle-type">
+        <label class="radio-label">
+          <input 
+            type="radio" 
+            name="vehicleType" 
+            value="car" 
+            [(ngModel)]="vehicleType">
+          <span>Ô tô</span>
+        </label>
+        <label class="radio-label">
+          <input 
+            type="radio" 
+            name="vehicleType" 
+            value="motorcycle" 
+            [(ngModel)]="vehicleType">
+          <span>Xe máy</span>
+        </label>
+        <label class="radio-label">
+          <input 
+            type="radio" 
+            name="vehicleType" 
+            value="electric" 
+            [(ngModel)]="vehicleType">
+          <span>Xe máy điện</span>
+        </label>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-section">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="99C138957"
+          [(ngModel)]="licensePlate"
+          (keyup.enter)="searchFines()">
+        <button class="search-btn" (click)="searchFines()">
+          <i class="icon-search">→</i>
+        </button>
+      </div>
+
+      <p class="helper-text">
+        Tích hợp dữ liệu: Cổng thông tin điện tử Cục Cảnh sát giao thông và Cục Đăng kiểm Việt Nam
+      </p>
+
+      <!-- Results Section -->
+      <div class="results-section" *ngIf="searchResults">
+        <div class="success-icon" *ngIf="!searchResults.hasFines">
+          <div class="checkmark-circle">
+            <span class="checkmark">✓</span>
+          </div>
+        </div>
+
+        <div class="result-message">
+          <p class="status-text" *ngIf="!searchResults.hasFines">
+            chưa phát hiện lỗi vi phạm
+          </p>
+          <p class="congratulation" *ngIf="!searchResults.hasFines">
+            Hãy kiểm tra thường xuyên để cập nhật dữ liệu mới nhất !
+          </p>
+
+          <div class="fines-list" *ngIf="searchResults.hasFines">
+            <h3>Danh sách vi phạm</h3>
+            <div class="fine-item" *ngFor="let fine of searchResults.fines">
+              <div class="fine-info">
+                <p><strong>Ngày vi phạm:</strong> {{ fine.date }}</p>
+                <p><strong>Địa điểm:</strong> {{ fine.location }}</p>
+                <p><strong>Hành vi:</strong> {{ fine.violation }}</p>
+                <p><strong>Mức phạt:</strong> {{ fine.amount | currency:'VND' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="update-info" *ngIf="searchResults">
+            <p>Thời gian cập nhật gần nhất: <strong>{{ searchResults.lastUpdate }}</strong></p>
+            <p>Nguồn trả kết quả: <strong>{{ searchResults.source }}</strong></p>
+          </div>
+
+          <div class="action-buttons" *ngIf="searchResults">
+            <button class="btn-primary" (click)="updateData()">
+              Cập nhật dữ liệu mới
+            </button>
+            <button class="btn-secondary" (click)="checkOtherPlate()">
+              Kiểm tra biển số khác
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Đang tra cứu...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-message" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Information Section -->
+  <div class="info-section">
+    <h2>Tiện ích tra cứu phạt nguội</h2>
+    
+    <div class="info-content">
+      <p class="intro-text">
+        Carpla.vn cung cấp công cụ tra cứu phạt nguội trực tuyến, hỗ trợ chủ xe và người điều khiển 
+        phương tiện dễ dàng kiểm tra tình trạng vi phạm giao thông của ô tô, xe máy trên toàn quốc.
+      </p>
+
+      <h3>Tra cứu phạt nguội ô tô, xe máy online toàn quốc</h3>
+      
+      <div class="feature-section">
+        <h4>Tính năng nổi bật:</h4>
+        <ul>
+          <li>Tra cứu nhanh chóng qua biển số xe hoặc thông tin đăng kiểm.</li>
+          <li>Dữ liệu chính xác từ Cổng thông tin điện tử Cục Cảnh sát giao thông hoặc cục đăng kiểm Việt Nam.</li>
+          <li>Hiển thị đầy đủ thông tin vi phạm: loại lỗi, thời gian – địa điểm, hình ảnh/video (nếu có), mức xử phạt và cơ quan xử lý.</li>
+          <li>Miễn phí sử dụng, không cần đăng ký tài khoản.</li>
+        </ul>
+      </div>
+
+      <div class="feature-section">
+        <h4>Lợi ích mang lại:</h4>
+        <ul>
+          <li>Chủ động nắm bắt vi phạm, tránh phải sinh xử lý chậm hoặc quên nộp phạt.</li>
+          <li>Đảm bảo điều kiện đăng kiểm xe, tránh bị từ chối do vi phạm chưa giải quyết.</li>
+          <li>Nâng cao ý thức chấp hành luật giao thông, hướng đến trải nghiệm lái xe an toàn và văn minh.</li>
+        </ul>
+      </div>
+
+      <div class="recommendation-section">
+        <h4>Lý do nên thường xuyên tra cứu phạt nguội</h4>
+        <ol>
+          <li><strong>Kiểm soát kịp thời các hành vi vi phạm:</strong> Thông qua hệ thống, người điều khiển phương tiện dễ dàng theo dõi, 
+            kiểm soát các lỗi vi phạm như vượt đèn đỏ, đi sai làn đường, vi phạm tốc độ,... từ đó chủ động xử lý, nộp phạt theo đúng quy định.</li>
+          <li><strong>Đảm bảo điều kiện đăng kiểm xe:</strong> Theo Thông tư 16/2021/TT-BGTVT, phương tiện có vi phạm chưa xử lý sẽ bị từ chối 
+            đăng kiểm. Việc tra cứu phạt nguội giúp chủ xe kịp thời hoàn tất nghĩa vụ pháp lý, tránh gián đoán trong quá trình đăng kiểm định kỳ.</li>
+          <li><strong>Góp phần nâng cao ý thức chấp hành luật giao thông:</strong> Việc chủ động kiểm tra và theo dõi thông tin vi phạm giúp nâng cao 
+            nhận thức pháp luật, đồng thời giảm thiểu rủi ro tai nạn và đảm bảo an toàn giao thông cho bản thân và cộng đồng.</li>
+        </ol>
+      </div>
+
+      <p class="note">
+        👉 Trải nghiệm tiện ích <a href="#">tra cứu phạt nguội</a> ngay trên Carpla.vn
+      </p>
+
+      <div class="collapse-btn">
+        <button class="btn-collapse">Thu gọn</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
