@@ -85,6 +85,29 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <p class="address">Địa chỉ: {{ storeDetail.address }}</p>
                     </div>
+                    
+                    <!-- ========== NÚT NHẮN TIN VÀ GỌI ĐIỆN ========== -->
+                    <div class="contact-actions">
+                        <button 
+                            class="btn-chat" 
+                            (click)="openChatWithStore()"
+                            [disabled]="!isLoggedIn || currentUserId === storeId">
+                            <i class="fas fa-comments"></i>
+                            Nhắn tin
+                        </button>
+                        
+                        <button 
+                            class="btn-call" 
+                            (click)="callStore()">
+                            <i class="fas fa-phone-alt"></i>
+                            Gọi điện
+                        </button>
+                    </div>
+                    
+                    <p class="login-hint" *ngIf="!isLoggedIn">
+                        <i class="fas fa-info-circle"></i>
+                        Vui lòng đăng nhập để nhắn tin
+                    </p>
                 </div>
             </aside>
 

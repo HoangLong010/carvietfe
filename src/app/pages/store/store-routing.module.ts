@@ -5,6 +5,7 @@ import { CarManagementComponent } from './dashboard-store/car-management/car-man
 import { HistoryComponent } from './dashboard-store/history/history.component';
 import { ReportComponent } from './dashboard-store/report/report.component';
 import { ProfileComponent } from './dashboard-store/profile/profile.component';
+import { ChatComponent } from './dashboard-store/chat/chat.component';
 
 const routes: Routes = [
   { path: 'dashboard-store', 
@@ -13,7 +14,8 @@ const routes: Routes = [
     { path: 'car-management', component: CarManagementComponent },
     { path: 'history', component: HistoryComponent },
     { path: 'report', component: ReportComponent },
-    { path: 'profile', component: ProfileComponent}
+    { path: 'profile', component: ProfileComponent},
+    { path: 'chat', component: ChatComponent}
   ]
 },
 {path: 'store/report-store', component: ReportComponent}

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ChatService, ChatMessage, Conversation } from '../../../core/services/chat.service';
+import { ChatMessage, ChatService, Conversation } from '../../../../core/services/chat.service';
 
 @Component({
   selector: 'app-chat',

@@ -879,3 +879,26 @@ body, .container {
     max-width: 100%;
   }
 }
+
+.floating-chat-icon {
+        position: fixed; /* Giữ cố định trên màn hình */
+        bottom: 20px; /* Cách đáy 20px */
+        right: 20px; /* Cách bên phải 20px */
+        width: 56px; /* Kích thước của biểu tượng */
+        height: 56px;
+        background-color: #007bff; /* Màu nền xanh dương */
+        color: white; /* Màu biểu tượng */
+        border-radius: 50%; /* Hình tròn */
+        display: flex; /* Canh giữa nội dung */
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* Tạo bóng */
+        z-index: 1000; /* Đảm bảo nổi trên các phần tử khác */
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển động */
+        text-decoration: none; /* Xóa gạch chân */
+    }
+
+    .floating-chat-icon:hover {
+        background-color: #0056b3; /* Đổi màu khi di chuột */
+        transform: scale(1.05); /* Phóng to nhẹ khi di chuột */
+    }

@@ -10,6 +10,7 @@ import { Router, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './dashboard-store/profile/profile.component';
+import { ChatComponent } from './dashboard-store/chat/chat.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ProfileComponent } from './dashboard-store/profile/profile.component';
     CarManagementComponent,
     HistoryComponent,
     ReportComponent,
-    ProfileComponent
+    ProfileComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
