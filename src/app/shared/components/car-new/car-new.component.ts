@@ -41,4 +41,41 @@ export class CarNewComponent implements OnInit {
   goToDetail(id: string, status?: number) {
     this.router.navigate(['/detail-car'], { queryParams: { id } }).then(() => window.scrollTo(0, 0));
   }
+   timeSince(dateString?: string | null): string {
+    const now = new Date();
+    if (!dateString) {
+      return 'Chưa xác định';
+    }
+    // Tạo đối tượng Date từ chuỗi, thay thế khoảng trắng bằng 'T' để hỗ trợ định dạng ISO
+    const createdDate = new Date(dateString.replace(' ', 'T'));
+
+    if (isNaN(createdDate.getTime())) {
+      // Trả về ngày tháng nếu chuỗi không hợp lệ hoặc quá xa
+      return createdDate.toLocaleDateString('vi-VN');
+    }
+
+    const seconds = Math.floor((now.getTime() - createdDate.getTime()) / 1000);
+
+    let interval = seconds / 31536000;
+    if (interval >= 1) {
+      return Math.floor(interval) + " năm trước";
+    }
+    interval = seconds / 2592000;
+    if (interval >= 1) {
+      return Math.floor(interval) + " tháng trước";
+    }
+    interval = seconds / 86400;
+    if (interval >= 1) {
+      return Math.floor(interval) + " ngày trước";
+    }
+    interval = seconds / 3600;
+    if (interval >= 1) {
+      return Math.floor(interval) + " giờ trước";
+    }
+    interval = seconds / 60;
+    if (interval >= 1) {
+      return Math.floor(interval) + " phút trước";
+    }
+    return Math.floor(seconds) <= 5 ? "Vừa xong" : Math.floor(seconds) + " giây trước";
+  }
 }

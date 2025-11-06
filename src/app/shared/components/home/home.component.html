@@ -121,7 +121,7 @@
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
-                                    2 giờ trước
+                                    {{ timeSince(car.createdDate) }}
                                 </span>
                             </div>
                         </div>
@@ -194,6 +194,12 @@
                             </svg>
                             <span>{{car.store?.phone ? car.store?.phone?.slice(0, 4) + '******' : 'Liên hệ'}}</span>
                         </div>
+                    </div>
+                    <div class="favorite-button" (click)="toggleFavorite(car.carId, $event)">
+                        <i class="favorite-icon" [class.favorite]="car.isFavorite"
+                            [class.not-favorite]="!car.isFavorite">
+                            ♥
+                        </i>
                     </div>
                 </div>
                 <div class="pagination-wrapper">

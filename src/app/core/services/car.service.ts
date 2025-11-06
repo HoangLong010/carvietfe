@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/enviroment';
+import { AuthService } from './auth.service';
 
 // Giao diện cho một đối tượng xe nhận được từ API
 export interface CarResponseItem {
@@ -31,11 +32,13 @@ export interface CarResponseItem {
   fuelConsumption: number; // Tiêu thụ nhiên liệu
   airbags: number; // Túi khí
   registeredUntil: string; // Đăng kiểm đến ngày
+  createdDate?: string;
   images: CarImage[];
-  store: Store | null;
+  store: Store | null
+  isFavorite?: boolean; // Trạng thái yêu thích
 }
 
-export interface Store {
+  export interface Store {
     id: string;
     storeName: string; // Tên cửa hàng
     address: string;    // Địa chỉ cửa hàng
@@ -131,7 +134,7 @@ export interface DealerSelectResponse {
 })
 export class CarService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   /**
    * Lấy danh sách xe theo tham số vị trí, khớp với chữ ký của API backend.
@@ -158,7 +161,10 @@ export class CarService {
     let params = new HttpParams();
     params = params.append('page', page.toString());
     params = params.append('size', size.toString());
-
+    const userId = this.authService.getUserId();
+    if (userId) {
+      params = params.append('userId', userId);
+    }
     let headers = new HttpHeaders();
     if (dealerId) {
       // Thêm dealerId vào header (khớp với @RequestHeader)

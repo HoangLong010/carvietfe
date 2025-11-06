@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CarService, CarResponseItem } from '../../../core/services/car.service';
 import { Router } from '@angular/router';
+import { ApiResponse, FavoriteCarResponse, FavoriteService, UserFavoritesResponse } from '../../../core/services/favorite.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +11,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
   cars: CarResponseItem[] = [];
   currentPage: number = 0;
   pageSize: number = 10;
   pagesCount: number = 1;
 
   // Biến filter với các thuộc tính khớp với API
-  filter: any = { 
+  filter: any = {
     title: '',
     location: '',
     year: null,
@@ -42,19 +43,32 @@ export class HomeComponent implements OnInit {
     { label: '1 tỷ - 2 tỷ', min: 1000000000, max: 2000000000 },
     { label: 'Trên 2 tỷ', min: 2000000000, max: null }
   ];
-showProvinceModal = false;
-showYearModal = false;
+  showProvinceModal = false;
+  showYearModal = false;
 
-  constructor(private carService: CarService, private router: Router) {}
+  constructor(private carService: CarService,
+    private router: Router,
+    private favoriteService: FavoriteService,
+    private authService: AuthService) { }
 
   goToDetail(id: string, status?: number) {
     this.router.navigate(['/detail-car'], { queryParams: { id } }).then(() => window.scrollTo(0, 0));
   }
 
   ngOnInit(): void {
+    this.checkAuthStatus();
     this.loadCars();
     this.setupFilterListeners();
   }
+
+  checkAuthStatus(): void {
+  console.log('=== Auth Status ===');
+  console.log('isLoggedIn:', this.authService.isLoggedIn());
+  console.log('userId:', this.authService.getUserId());
+  console.log('accessToken exists:', !!this.authService.getAccessToken());
+  console.log('userProfile:', this.authService.getUserProfile());
+  console.log('===================');
+}
 
   // Setup event listeners cho các filter trong giao diện
   setupFilterListeners(): void {
@@ -73,7 +87,7 @@ showYearModal = false;
   attachLocationFilters(): void {
     const locationButtons = document.querySelectorAll('.filter-section:first-of-type .filter-buttons button');
     const modalLocationButtons = document.querySelectorAll('.province-list button');
-    
+
     locationButtons.forEach((btn: any) => {
       btn.addEventListener('click', () => {
         const location = btn.textContent.trim();
@@ -93,11 +107,49 @@ showYearModal = false;
     });
   }
 
+  timeSince(dateString?: string | null): string {
+    const now = new Date();
+    if (!dateString) {
+      return 'Chưa xác định';
+    }
+    // Tạo đối tượng Date từ chuỗi, thay thế khoảng trắng bằng 'T' để hỗ trợ định dạng ISO
+    const createdDate = new Date(dateString.replace(' ', 'T'));
+
+    if (isNaN(createdDate.getTime())) {
+      // Trả về ngày tháng nếu chuỗi không hợp lệ hoặc quá xa
+      return createdDate.toLocaleDateString('vi-VN');
+    }
+
+    const seconds = Math.floor((now.getTime() - createdDate.getTime()) / 1000);
+
+    let interval = seconds / 31536000;
+    if (interval >= 1) {
+      return Math.floor(interval) + " năm trước";
+    }
+    interval = seconds / 2592000;
+    if (interval >= 1) {
+      return Math.floor(interval) + " tháng trước";
+    }
+    interval = seconds / 86400;
+    if (interval >= 1) {
+      return Math.floor(interval) + " ngày trước";
+    }
+    interval = seconds / 3600;
+    if (interval >= 1) {
+      return Math.floor(interval) + " giờ trước";
+    }
+    interval = seconds / 60;
+    if (interval >= 1) {
+      return Math.floor(interval) + " phút trước";
+    }
+    return Math.floor(seconds) <= 5 ? "Vừa xong" : Math.floor(seconds) + " giây trước";
+  }
+
   // Gắn sự kiện cho filter năm sản xuất
   attachYearFilters(): void {
     const yearButtons = document.querySelectorAll('.filter-section:nth-of-type(2) .filter-buttons button:not(#show-year-modal)');
     const modalYearButtons = document.querySelectorAll('.year-list-grid button');
-    
+
     yearButtons.forEach((btn: any) => {
       btn.addEventListener('click', () => {
         const year = btn.textContent.trim();
@@ -179,13 +231,13 @@ showYearModal = false;
     const minPriceParam = this.filter.minPrice || undefined;
     const maxPriceParam = this.filter.maxPrice || undefined;
     const yearParam = this.filter.year ? Number(this.filter.year) : undefined;
-    const bodyStyleParam = this.filter.bodyStyle || undefined; 
+    const bodyStyleParam = this.filter.bodyStyle || undefined;
     const seatsParam = this.filter.seats || undefined;
     const brandIdParam = this.filter.brandId || undefined;
     const colorParam = this.filter.color || undefined;
     const originParam = this.filter.origin || undefined;
     const fuelTypeParam = this.filter.fuelType || undefined;
-    
+
     // Gọi API - KHÔNG truyền dealerId vào header để lấy tất cả
     this.carService.getCars(
       page,
@@ -209,7 +261,7 @@ showYearModal = false;
         this.currentPage = res.data.currentPage;
         this.pagesCount = res.data.pagesCount || 1;
       } else {
-        this.cars = []; 
+        this.cars = [];
       }
     }, error => {
       console.error('Lỗi khi tải danh sách xe:', error);
@@ -229,27 +281,27 @@ showYearModal = false;
   }
 
   onSelectYear(year: string): void {
-    this.filter.year = year ? Number(year) : null; 
+    this.filter.year = year ? Number(year) : null;
     this.loadCars(0);
   }
 
   onSelectStatus(status: string): void {
-    this.filter.status = status ? Number(status) : null; 
+    this.filter.status = status ? Number(status) : null;
     this.loadCars(0);
   }
 
-  onSelectPrice(min: number|null, max: number|null): void {
+  onSelectPrice(min: number | null, max: number | null): void {
     this.filter.minPrice = min;
     this.filter.maxPrice = max;
     this.loadCars(0);
   }
 
   onSelectBodyStyle(style: string): void {
-    this.filter.bodyStyle = style; 
+    this.filter.bodyStyle = style;
     this.loadCars(0);
   }
 
-  onSelectSeats(seats: number|null): void {
+  onSelectSeats(seats: number | null): void {
     this.filter.seats = seats;
     this.loadCars(0);
   }
@@ -272,5 +324,31 @@ showYearModal = false;
     };
     this.searchInput = '';
     this.loadCars(0);
+  }
+
+  // Toggle yêu thích
+  toggleFavorite(carId: string, event: Event): void {
+    event.stopPropagation();
+
+    if (!this.authService.isLoggedIn()) {
+      alert('Vui lòng đăng nhập để sử dụng tính năng yêu thích');
+      return;
+    }
+
+    this.favoriteService.toggleFavorite(carId).subscribe({
+      next: (res: ApiResponse<FavoriteCarResponse>) => {
+        if (res.success && res.data) {
+          const car = this.cars.find(c => c.carId === carId);
+          if (car) {
+            car.isFavorite = res.data.favorite;
+          }
+          console.log('Toggle favorite:', res.data.message);
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi toggle favorite:', err);
+        alert('Có lỗi xảy ra khi thực hiện thao tác');
+      }
+    });
   }
 }
