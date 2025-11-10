@@ -6,6 +6,7 @@ import { HistoryComponent } from './dashboard-store/history/history.component';
 import { ReportComponent } from './dashboard-store/report/report.component';
 import { ProfileComponent } from './dashboard-store/profile/profile.component';
 import { ChatComponent } from './dashboard-store/chat/chat.component';
+import { ScheduleManagementComponent } from './dashboard-store/schedule-management/schedule-management.component';
 
 const routes: Routes = [
   { path: 'dashboard-store', 
@@ -15,7 +16,8 @@ const routes: Routes = [
     { path: 'history', component: HistoryComponent },
     { path: 'report', component: ReportComponent },
     { path: 'profile', component: ProfileComponent},
-    { path: 'chat', component: ChatComponent}
+    { path: 'chat', component: ChatComponent},
+    { path: 'schedule-management', component: ScheduleManagementComponent}
   ]
 },
 {path: 'store/report-store', component: ReportComponent}

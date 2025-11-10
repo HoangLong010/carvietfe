@@ -11,6 +11,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './dashboard-store/profile/profile.component';
 import { ChatComponent } from './dashboard-store/chat/chat.component';
+import { ScheduleManagementComponent } from './dashboard-store/schedule-management/schedule-management.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ChatComponent } from './dashboard-store/chat/chat.component';
     HistoryComponent,
     ReportComponent,
     ProfileComponent,
-    ChatComponent
+    ChatComponent,
+    ScheduleManagementComponent
   ],
   imports: [
     CommonModule,

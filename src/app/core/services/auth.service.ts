@@ -90,6 +90,7 @@ export class AuthService {
 
   getUserId(): string | null {
     try {
+      debugger
       // Lấy chuỗi userProfile từ localStorage
       const userProfileString = localStorage.getItem('userProfile');
 
@@ -104,8 +105,8 @@ export class AuthService {
       if (
         userProfile &&
         userProfile.data &&
-        userProfile.data.userId &&
-        userProfile.data.accountType === 2 
+        userProfile.data.userId 
+        // userProfile.data.accountType === 2 
       ) {
         return userProfile.data.userId;
       }

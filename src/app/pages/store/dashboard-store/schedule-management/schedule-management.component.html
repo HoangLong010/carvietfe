@@ -1,0 +1,169 @@
+<!-- schedule-management.component.html -->
+<div class="schedule-management-container">
+  <div class="header-section">
+    <h1>🎯 Quản lý lịch làm việc</h1>
+    <p>Thiết lập lịch làm việc của cửa hàng để khách hàng đặt lịch xem xe. Bạn có thể chỉnh sửa từng ngày hoặc cập nhật tất cả cùng lúc.</p>
+    <button class="btn-create-new" (click)="openBatchEditModal()">
+      <i class="fas fa-edit"></i> 📅 Chỉnh sửa tất cả lịch
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Đang tải lịch làm việc...</p>
+  </div>
+
+  <!-- Schedule cards -->
+  <div class="schedules-grid" *ngIf="!isLoading">
+    <div *ngFor="let day of daysOfWeek" class="schedule-card" 
+         [class.inactive]="!hasSchedule(day.id) || !getScheduleByDay(day.id)?.isActive">
+      
+      <!-- Nếu chưa có lịch cho ngày này -->
+      <div *ngIf="!hasSchedule(day.id)">
+        <div class="schedule-header">
+          <h3>{{ day.name }}</h3>
+          <span class="status-badge">⏰ Chưa thiết lập</span>
+        </div>
+        <div class="schedule-body" style="text-align: center; padding: 30px 0;">
+          <p style="color: #7f8c8d; margin-bottom: 20px;">Chưa có lịch làm việc cho ngày này</p>
+          <button class="btn-add-schedule" (click)="openAddScheduleModal(day.id)">
+            <i class="fas fa-plus"></i> Thêm lịch
+          </button>
+        </div>
+      </div>
+
+      <!-- Nếu đã có lịch -->
+      <div *ngIf="hasSchedule(day.id)">
+        <div class="schedule-header">
+          <h3>{{ getScheduleByDay(day.id)?.dayName }}</h3>
+          <span class="status-badge" [class.active]="getScheduleByDay(day.id)?.isActive">
+            {{ getScheduleByDay(day.id)?.isActive ? '✅ Đang hoạt động' : '⛔ Ngừng hoạt động' }}
+          </span>
+        </div>
+        <div class="schedule-body">
+          <div class="time-range">
+            <i class="fas fa-clock"></i>
+            {{ formatTime(getScheduleByDay(day.id)?.startTime || '') }} - 
+            {{ formatTime(getScheduleByDay(day.id)?.endTime || '') }}
+          </div>
+          <div class="slot-duration">
+            <i class="fas fa-hourglass-half"></i>
+            Thời gian mỗi khung: {{ getScheduleByDay(day.id)?.slotDuration }} phút
+          </div>
+          <div class="schedule-actions">
+            <button class="btn-edit-small" (click)="openEditScheduleModal(getScheduleByDay(day.id)!)">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="btn-delete-small" (click)="deleteSchedule(getScheduleByDay(day.id)!)">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal chỉnh sửa đơn lẻ -->
+<div class="modal-overlay" *ngIf="isEditModalOpen && !isBatchMode" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ currentEditSchedule?.id ? '✏️ Chỉnh sửa' : '➕ Thêm' }} lịch làm việc - {{ currentEditSchedule?.dayName }}</h2>
+      <button type="button" class="close-btn" (click)="closeEditModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="saveSingleSchedule()" #singleForm="ngForm">
+        <div class="form-group">
+          <label>🕐 Giờ bắt đầu</label>
+          <input type="time" [(ngModel)]="currentEditSchedule!.startTime" 
+                 name="startTime" required>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label>🕔 Giờ kết thúc</label>
+          <input type="time" [(ngModel)]="currentEditSchedule!.endTime" 
+                 name="endTime" required>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label>⏱️ Thời gian mỗi khung (phút)</label>
+          <input type="number" [(ngModel)]="currentEditSchedule!.slotDuration" 
+                 name="slotDuration" min="15" max="120" required>
+        </div>
+
+        <div class="checkbox-group" style="margin-top: 20px;">
+          <label>
+            <input type="checkbox" [(ngModel)]="currentEditSchedule!.isActive" 
+                   name="isActive">
+            🟢 Hoạt động
+          </label>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">❌ Hủy</button>
+          <button type="submit" class="btn-confirm" [disabled]="!singleForm.form.valid || isLoading">
+            {{ isLoading ? '⏳ Đang lưu...' : '💾 Lưu' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal chỉnh sửa hàng loạt -->
+<div class="modal-overlay" *ngIf="isEditModalOpen && isBatchMode" (click)="closeEditModal()">
+  <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>📅 Chỉnh sửa tất cả lịch làm việc</h2>
+      <button type="button" class="close-btn" (click)="closeEditModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="saveBatchSchedules()" #batchForm="ngForm">
+        <div *ngFor="let schedule of editSchedules; let i = index" class="schedule-edit-item">
+          <h3>{{ schedule.dayName }}</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>🕐 Giờ bắt đầu</label>
+              <input type="time" [(ngModel)]="schedule.startTime" 
+                     [name]="'startTime' + i" required>
+            </div>
+            <div class="form-group">
+              <label>🕔 Giờ kết thúc</label>
+              <input type="time" [(ngModel)]="schedule.endTime" 
+                     [name]="'endTime' + i" required>
+            </div>
+            <div class="form-group">
+              <label>⏱️ Thời gian mỗi khung (phút)</label>
+              <input type="number" [(ngModel)]="schedule.slotDuration" 
+                     [name]="'slotDuration' + i" min="15" max="120" required>
+            </div>
+            <div class="form-group checkbox-group">
+              <label>
+                <input type="checkbox" [(ngModel)]="schedule.isActive" 
+                       [name]="'isActive' + i">
+                🟢 Hoạt động
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">❌ Hủy</button>
+          <button type="submit" class="btn-confirm" 
+                  [disabled]="!batchForm.form.valid || isLoading">
+            {{ isLoading ? '⏳ Đang lưu...' : '💾 Lưu tất cả' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-notification" *ngIf="showToast" [class]="toastType">
+  <span>{{ toastMessage }}</span>
+  <button class="toast-close" (click)="hideToast()">&times;</button>
+</div>

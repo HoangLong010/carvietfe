@@ -204,7 +204,81 @@
           </div>
         </div>
       </div>
+      <!-- Thêm vào detail-car.component.html, trong phần .detail-car-right -->
+      <div class="detail-car-booking">
+        <button class="btn-book-appointment" (click)="openAppointmentModal()">
+          <span class="booking-icon">📅</span>
+          Đặt lịch xem xe
+        </button>
+      </div>
 
+      <!-- Modal đặt lịch -->
+      <div class="modal-overlay" *ngIf="isAppointmentModalOpen" (click)="closeAppointmentModal()">
+        <div class="modal-content appointment-modal" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Đặt lịch xem xe</h2>
+            <button class="close-btn" (click)="closeAppointmentModal()">&times;</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="car-info" *ngIf="car">
+              <img [src]="car.images?.[0]?.imageUrl || 'https://via.placeholder.com/100x60?text=Car'" [alt]="car.model">
+              <div class="car-details">
+                <h3>{{ car.model }} {{ car.year }}</h3>
+                <p>Giá: {{ car.price | number }} đ</p>
+              </div>
+            </div>
+
+            <form (ngSubmit)="bookAppointment()" #appointmentForm="ngForm">
+              <div class="form-group">
+                <label>Thông tin liên hệ</label>
+                <div class="contact-info">
+                  <input type="text" [(ngModel)]="appointmentData.customerName" name="customerName"
+                    placeholder="Họ và tên" required>
+                  <input type="tel" [(ngModel)]="appointmentData.customerPhone" name="customerPhone"
+                    placeholder="Số điện thoại" required>
+                  <input type="email" [(ngModel)]="appointmentData.customerEmail" name="customerEmail"
+                    placeholder="Email" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Chọn ngày xem xe</label>
+                <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" name="appointmentDate"
+                  [min]="minDate" required>
+              </div>
+
+              <div class="form-group">
+                <label>Chọn khung giờ</label>
+                <div class="time-slots" *ngIf="availableSlots.length > 0">
+                  <div *ngFor="let slot of availableSlots" class="time-slot" [class.available]="slot.isAvailable"
+                    [class.selected]="selectedTime === slot.startTime" [class.unavailable]="!slot.isAvailable"
+                    (click)="selectTimeSlot(slot)">
+                    <span class="time">{{ formatTime(slot.startTime) }} - {{ formatTime(slot.endTime) }}</span>
+                    <span class="status" *ngIf="!slot.isAvailable">Đã có lịch</span>
+                  </div>
+                </div>
+                <div *ngIf="availableSlots.length === 0 && selectedDate" class="no-slots">
+                  Không có khung giờ trống cho ngày này
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Ghi chú (tuỳ chọn)</label>
+                <textarea [(ngModel)]="appointmentData.notes" name="notes"
+                  placeholder="Ghi chú thêm cho đại lý..."></textarea>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn-cancel" (click)="closeAppointmentModal()">Hủy</button>
+                <button type="submit" class="btn-confirm" [disabled]="!selectedTime || !appointmentForm.form.valid">
+                  Xác nhận đặt lịch
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
