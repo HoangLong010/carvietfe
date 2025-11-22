@@ -1,1 +1,142 @@
-<p>report works!</p>
+<div class="header-section">
+    <h1>Báo cáo cửa hàng</h1>
+    <p>Tổng hợp các báo cáo cửa hàng hỗ trợ tìm kiếm, theo dõi và quản lý hiệu quả.</p>
+</div>
+
+<div class="search-criteria-card">
+    <div class="card-header">
+        <i class="fas fa-filter icon-filter"></i>
+        <h3>Điều kiện tìm kiếm</h3>
+    </div>
+
+    <p class="search-description">Chọn khoảng thời gian để xem báo cáo chi tiết</p>
+
+    <div class="search-form">
+        <div class="form-group date-range">
+            <label for="startDate">Thực hiện từ ngày</label>
+            <div class="date-inputs">
+                <input type="date" id="startDate" [(ngModel)]="startDate">
+                <span>-</span>
+                <input type="date" id="endDate" [(ngModel)]="endDate">
+            </div>
+        </div>
+
+        <!-- ĐÃ XÓA PHẦN CHỌN CỬA HÀNG -->
+
+        <button class="search-button" (click)="onSearch()" [disabled]="isLoading">
+            <i class="fas fa-search" *ngIf="!isLoading"></i>
+            <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+            {{ isLoading ? 'Đang tải...' : 'Tìm kiếm' }}
+        </button>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="summary-cards-container">
+    <div class="summary-card">
+        <strong>{{ generalData?.totalCar ?? 0 }}</strong>
+        <span>Tổng số xe</span>
+    </div>
+    <div class="summary-card highlight">
+        <strong>{{ generalData?.totalCarSold ?? 0 }}</strong>
+        <span>Tổng số xe đã bán</span>
+    </div>
+    <div class="summary-card">
+        <strong>{{ generalData?.totalCarNotSold ?? 0 }}</strong>
+        <span>Tổng số xe chưa bán</span>
+    </div>
+    <div class="summary-card">
+        <strong>{{ generalData?.totalSchedule ?? 0 }}</strong>
+        <span>Tổng số lượt đặt xem xe</span>
+    </div>
+    <div class="summary-card">
+        <strong>{{ generalData?.totalFavourite ?? 0 }}</strong>
+        <span>Tổng số lượt yêu thích</span>
+    </div>
+</div>
+
+<!-- Dashboard Charts -->
+<div class="dashboard-container">
+    <div class="dashboard-row">
+        <!-- Booking Status Chart -->
+        <div class="card inventory-ratio-card">
+            <h3>Tỷ lệ trạng thái đặt xe</h3>
+            <div class="chart-container">
+                <canvas id="inventory-ratio-chart"></canvas>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #f0f2f5;"></span>
+                        Chờ xác nhận
+                    </div>
+                    <span id="pending-percent">0%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #00bcd4;"></span>
+                        Đã xác nhận
+                    </div>
+                    <span id="confirmed-percent">0%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #4caf50;"></span>
+                        Đã hoàn thành
+                    </div>
+                    <span id="completed-percent">0%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #f44336;"></span>
+                        Đã hủy
+                    </div>
+                    <span id="cancelled-percent">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car by Brand Chart -->
+        <div class="card">
+            <h3>Số lượng xe theo hãng xe</h3>
+            <p class="unit-text">Số lượng xe theo từng hãng</p>
+            <div class="chart-container" id="inventory-by-channel-chart-container">
+                <canvas id="inventory-by-channel-chart"></canvas>
+            </div>
+            <div class="chart-footer">Hãng xe</div>
+        </div>
+
+        <!-- Revenue by Brand Chart -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Tổng doanh thu theo hãng xe</h3>
+                <i class="fa-regular fa-thumbs-up" style="color: #667eea; font-size: 1.2em;"></i>
+            </div>
+            <p class="unit-text">Đơn vị: VNĐ</p>
+            <div class="chart-container" id="revenue-by-channel-chart-container">
+                <canvas id="revenue-by-channel-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-row">
+        <!-- Top 5 Brands Chart -->
+        <div class="card fill-rate-card">
+            <h3>Top 5 hãng xe bán chạy nhất</h3>
+            <div class="chart-container">
+                <canvas id="fill-rate-chart"></canvas>
+            </div>
+            <div class="chart-footer">Số lượng xe đã bán</div>
+        </div>
+
+        <!-- Revenue by Time Chart -->
+        <div class="card">
+            <h3>Doanh thu theo thời gian</h3>
+            <p class="unit-text">Đơn vị: VNĐ</p>
+            <p class="unit-text" style="margin-top: -15px; font-weight: bold; color: #555;">Theo ngày</p>
+            <div class="chart-container">
+                <canvas id="revenue-by-time-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

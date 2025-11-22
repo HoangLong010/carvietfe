@@ -1,0 +1,66 @@
+// src/app/components/brand/brand.component.scss
+.brand-container {
+  padding: 20px;
+
+  .search-bar {
+    margin-bottom: 20px;
+
+    input {
+      margin-right: 10px;
+      padding: 5px;
+    }
+
+    button {
+      margin-right: 10px;
+      padding: 5px 10px;
+    }
+  }
+
+  .brand-form {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    .form-group {
+      margin-bottom: 10px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        width: 100%;
+        padding: 5px;
+      }
+    }
+
+    button {
+      margin-right: 10px;
+    }
+  }
+
+  .brand-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  }
+
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+
+    button {
+      margin: 0 5px;
+    }
+  }
+}

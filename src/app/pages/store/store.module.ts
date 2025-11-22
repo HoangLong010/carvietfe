@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './dashboard-store/profile/profile.component';
 import { ChatComponent } from './dashboard-store/chat/chat.component';
 import { ScheduleManagementComponent } from './dashboard-store/schedule-management/schedule-management.component';
+import { DealerAppointmentsComponent } from './dashboard-store/dealer-appointments/dealer-appointments.component';
+import { BrandComponent } from './dashboard-store/brand/brand.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { ScheduleManagementComponent } from './dashboard-store/schedule-manageme
     ReportComponent,
     ProfileComponent,
     ChatComponent,
-    ScheduleManagementComponent
+    ScheduleManagementComponent,
+    DealerAppointmentsComponent,
+    BrandComponent
   ],
   imports: [
     CommonModule,

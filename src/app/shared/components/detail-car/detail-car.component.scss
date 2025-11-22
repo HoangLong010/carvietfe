@@ -41,7 +41,7 @@
   /* Tỷ lệ 3:2: Chiều cao bằng 66.66% chiều rộng */
   width: 100%;
   padding-bottom: 66.66%;
-  height: 0; 
+  height: 0;
 
   /* Màu nền khi object-fit: contain không lấp đầy khung */
   background-color: #f7f9fc;
@@ -60,7 +60,7 @@
     border-radius: 0;
     transition: transform 0.3s ease;
   }
-  
+
   /* Ô ĐẾM SỐ LƯỢNG ẢNH (1/2) - ĐÃ FIX: Nhỏ hơn và làm mờ */
   .detail-car-image-count {
     position: absolute;
@@ -70,7 +70,7 @@
 
     /* Làm mờ và thu nhỏ */
     background: rgba(0, 0, 0, 0.4);
-    color: #ffffff; 
+    color: #ffffff;
 
     border-radius: 8px;
     padding: 3px 10px;
@@ -130,7 +130,8 @@
     cursor: pointer;
     transition: border-color 0.2s;
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       border-color: #ffd600;
     }
   }
@@ -444,39 +445,39 @@
 /* ========================================================== */
 
 .detail-car-tech-specs {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    padding: 18px 24px;
-    margin-top: 16px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px 24px;
+  margin-top: 16px;
 }
 
 .tech-specs-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px 24px;
-    font-size: 16px;
-    margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .spec-item {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 8px;
-    border-bottom: 1px dashed #eee;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #eee;
 }
 
 .spec-label {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 4px;
-    font-weight: 500;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 
 .spec-value {
-    font-size: 16px;
-    color: #1a2a4b;
-    font-weight: 700;
+  font-size: 16px;
+  color: #1a2a4b;
+  font-weight: 700;
 }
 
 
@@ -484,137 +485,138 @@
 /* KHỐI CHÍNH SÁCH ƯU ĐÃI */
 /* ========================================================== */
 .detail-car-policies {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    padding: 18px 24px;
-    margin-top: 16px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px 24px;
+  margin-top: 16px;
 }
 
 .policy-grid {
-    display: flex;
-    justify-content: space-around;
-    padding: 15px 0 5px 0;
-    text-align: center;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0 5px 0;
+  text-align: center;
 }
 
 .policy-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
 }
 
 .policy-icon {
-    font-size: 36px;
-    color: #1a2a4b;
-    background: #ffd600;
-    border-radius: 50%;
-    padding: 12px;
-    margin-bottom: 8px;
+  font-size: 36px;
+  color: #1a2a4b;
+  background: #ffd600;
+  border-radius: 50%;
+  padding: 12px;
+  margin-bottom: 8px;
 }
 
 .policy-text {
-    font-size: 15px;
-    font-weight: 600;
-    color: #1a2a4b;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a2a4b;
 }
 
 /* ========================================================== */
 /* KHỐI TÍNH KHOẢN VAY */
 /* ========================================================== */
 .detail-car-loan-calculator {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    padding: 18px 24px;
-    margin-top: 16px;
-    position: relative;
-    overflow: hidden;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px 24px;
+  margin-top: 16px;
+  position: relative;
+  overflow: hidden;
 }
 
 .loan-calculator-title {
-    font-weight: 700;
-    font-size: 20px;
-    color: #1a2a4b;
-    margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 20px;
+  color: #1a2a4b;
+  margin-bottom: 15px;
 }
 
 .loan-price {
-    background: #1a2a4b;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 15px;
+  background: #1a2a4b;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .loan-inputs-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .loan-input-item {
-    padding: 10px 15px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    min-height: 70px;
-    justify-content: center;
-    background: #1a2a4b; /* Màu nền cho các input */
-    color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  min-height: 70px;
+  justify-content: center;
+  background: #1a2a4b;
+  /* Màu nền cho các input */
+  color: #fff;
 }
 
 .loan-input-item.dark-bg {
-    background: #1a2a4b;
-    color: #fff;
+  background: #1a2a4b;
+  color: #fff;
 }
 
 .loan-input-item .input-label {
-    font-size: 13px;
-    font-weight: 500;
-    opacity: 0.8;
-    margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-bottom: 2px;
 }
 
 .loan-input-item .input-value {
-    font-size: 16px;
-    font-weight: 700;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .loan-result {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
 }
 
 .loan-result .result-label {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 4px;
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 4px;
 }
 
 .loan-result .result-value {
-    font-size: 22px;
-    font-weight: 700;
-    color: #e53935;
+  font-size: 22px;
+  font-weight: 700;
+  color: #e53935;
 }
 
 .loan-deposit {
-    display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-    font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 
@@ -622,40 +624,42 @@
 /* Cập nhật DEALER Contact Button */
 /* ========================================================== */
 .dealer-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.dealer-phone-btn, .dealer-message-btn {
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+.dealer-phone-btn,
+.dealer-message-btn {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .dealer-phone-btn {
-    background: #ffd600;
-    color: #1a2a4b;
-    border: none;
+  background: #ffd600;
+  color: #1a2a4b;
+  border: none;
 }
 
 .dealer-message-btn {
-    background: #fff;
-    color: #1a2a4b;
-    border: 1px solid #ccc;
+  background: #fff;
+  color: #1a2a4b;
+  border: 1px solid #ccc;
 }
 
-.dealer-phone-icon, .dealer-message-icon {
-    font-size: 20px;
-    margin-right: 8px;
+.dealer-phone-icon,
+.dealer-message-icon {
+  font-size: 20px;
+  margin-right: 8px;
 }
 
 /* ========================================================== */
@@ -663,156 +667,159 @@
 /* ========================================================== */
 
 .dealer-other-cars {
-    margin-top: 24px;
-    padding: 0 10px;
+  margin-top: 24px;
+  padding: 0 10px;
 }
 
 .other-cars-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1a2a4b;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #ffd600;
-    display: inline-block;
-    padding-bottom: 2px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a2a4b;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ffd600;
+  display: inline-block;
+  padding-bottom: 2px;
 }
 
 .other-cars-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
 .car-card {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-    cursor: pointer;
-    transition: box-shadow 0.2s;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
 }
 
 .car-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .car-card-header {
-    position: relative;
+  position: relative;
 }
 
 .car-card-header img {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
 }
 
 .car-card-header .post-time {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 12px;
-    padding: 3px 8px;
-    border-radius: 6px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
 }
 
 .car-card-body {
-    padding: 10px 12px 5px 12px;
+  padding: 10px 12px 5px 12px;
 }
 
 .car-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1a2a4b;
-    margin: 0 0 5px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2a4b;
+  margin: 0 0 5px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .car-price {
-    font-size: 16px;
-    font-weight: 700;
-    color: #e53935;
-    margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #e53935;
+  margin: 0;
 }
 
 .car-monthly-price {
-    font-size: 12px;
-    color: #888;
-    margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #888;
+  margin: 0 0 8px 0;
 }
 
 .car-card-footer {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 12px 10px 12px;
-    gap: 4px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 12px 10px 12px;
+  gap: 4px 8px;
 }
 
 .car-card-footer .spec {
-    font-size: 11px;
-    color: #555;
-    background: #f7f9fc;
-    padding: 2px 6px;
-    border-radius: 4px;
-    white-space: nowrap;
+  font-size: 11px;
+  color: #555;
+  background: #f7f9fc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 
 /* Responsive cho khối xe khác */
 @media (max-width: 600px) {
-    .other-cars-list {
-        grid-template-columns: repeat(1, 1fr);
-    }
+  .other-cars-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
+
 /* Giữ nguyên các media query cũ */
 /* ... */
 
 /* ... CSS đã có ... */
 
 .dealer-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 /* Áp dụng style nút cho thẻ A */
-.dealer-phone-btn, .dealer-message-btn {
-    /* Đảm bảo chúng hiển thị như khối và căn chỉnh nội dung */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none; /* Bỏ gạch chân link */
-    
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-    width: 100%;
-    /* Thêm thuộc tính này nếu chưa có */
-    box-sizing: border-box; 
+.dealer-phone-btn,
+.dealer-message-btn {
+  /* Đảm bảo chúng hiển thị như khối và căn chỉnh nội dung */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  /* Bỏ gạch chân link */
+
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  /* Thêm thuộc tính này nếu chưa có */
+  box-sizing: border-box;
 }
 
 .dealer-phone-btn {
-    background: #ffd600;
-    color: #1a2a4b;
-    border: none;
+  background: #ffd600;
+  color: #1a2a4b;
+  border: none;
 }
 
 .dealer-message-btn {
-    background: #fff;
-    color: #1a2a4b;
-    border: 1px solid #ccc;
+  background: #fff;
+  color: #1a2a4b;
+  border: 1px solid #ccc;
 }
 
 .detail-car-booking {
   margin: 20px 0;
-  
+
   .btn-book-appointment {
     width: 100%;
     padding: 15px;
@@ -824,13 +831,13 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background: linear-gradient(135deg, #ee5a24, #ff6b6b);
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
     }
-    
+
     .booking-icon {
       margin-right: 8px;
       font-size: 18px;
@@ -840,7 +847,7 @@
 
 .appointment-modal {
   max-width: 500px;
-  
+
   .car-info {
     display: flex;
     align-items: center;
@@ -848,7 +855,7 @@
     padding: 15px;
     background: #f8f9fa;
     border-radius: 8px;
-    
+
     img {
       width: 80px;
       height: 60px;
@@ -856,13 +863,13 @@
       border-radius: 6px;
       margin-right: 15px;
     }
-    
+
     .car-details {
       h3 {
         margin: 0 0 5px 0;
         font-size: 16px;
       }
-      
+
       p {
         margin: 0;
         color: #e74c3c;
@@ -870,12 +877,12 @@
       }
     }
   }
-  
+
   .contact-info {
     display: grid;
     gap: 10px;
   }
-  
+
   .time-slots {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -883,53 +890,65 @@
     max-height: 200px;
     overflow-y: auto;
   }
-  
+
+  .time-slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+
   .time-slot {
-    padding: 12px;
+    padding: 12px 8px;
     border: 2px solid #e0e0e0;
-    border-radius: 6px;
+    border-radius: 8px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &.available {
-      border-color: #bdc3c7;
-      
+      border-color: #4CAF50;
+      background-color: #f8fff8;
+
       &:hover {
-        border-color: #3498db;
-        background: #f8f9fa;
+        background-color: #e8f5e8;
+        border-color: #2E7D32;
       }
     }
-    
+
     &.selected {
-      border-color: #2ecc71;
-      background: #2ecc71;
+      background-color: #4CAF50;
       color: white;
+      border-color: #2E7D32;
     }
-    
+
     &.unavailable {
-      border-color: #e74c3c;
-      background: #e74c3c;
-      color: white;
+      background-color: #f5f5f5;
+      color: #9e9e9e;
       cursor: not-allowed;
-      
-      .status {
-        font-size: 12px;
-        opacity: 0.8;
-      }
+      border-color: #e0e0e0;
     }
-    
+
     .time {
-      font-weight: 600;
+      font-weight: bold;
+      display: block;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #f44336;
+      display: block;
+      margin-top: 4px;
     }
   }
-  
+
   .no-slots {
     text-align: center;
-    padding: 20px;
-    color: #7f8c8d;
-    background: #f8f9fa;
-    border-radius: 6px;
+    padding: 16px;
+    color: #757575;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 8px;
   }
 }
 
@@ -963,20 +982,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   h2 {
     margin: 0;
     color: #333;
     font-size: 20px;
   }
-  
+
   .close-btn {
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
     color: #666;
-    
+
     &:hover {
       color: #333;
     }
@@ -993,7 +1012,7 @@
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  
+
   button {
     padding: 12px 24px;
     border: none;
@@ -1002,24 +1021,24 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
+
   .btn-cancel {
     background: #95a5a6;
     color: white;
-    
+
     &:hover {
       background: #7f8c8d;
     }
   }
-  
+
   .btn-confirm {
     background: #2ecc71;
     color: white;
-    
+
     &:hover:not(:disabled) {
       background: #27ae60;
     }
-    
+
     &:disabled {
       background: #bdc3c7;
       cursor: not-allowed;
@@ -1029,28 +1048,29 @@
 
 .form-group {
   margin-bottom: 20px;
-  
+
   label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
     color: #333;
   }
-  
-  input, textarea {
+
+  input,
+  textarea {
     width: 100%;
     padding: 12px;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.3s ease;
-    
+
     &:focus {
       outline: none;
       border-color: #3498db;
     }
   }
-  
+
   textarea {
     height: 80px;
     resize: vertical;

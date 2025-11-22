@@ -8,6 +8,7 @@ import { ReportComponent } from './dashboard-admin/report/report.component';
 import { HistoryComponent } from './dashboard-admin/history/history.component';
 import { AccountUserComponent } from './dashboard-admin/account-user/account-user.component';
 import { AdminLayoutComponent } from './dashboard-admin/admin-layout/admin-layout.component';
+import { StoreManagementComponent } from './dashboard-admin/store-management/store-management.component';
 
 const routes: Routes = [
   { path: 'admin/dashboard-admin', 
@@ -20,6 +21,7 @@ const routes: Routes = [
        { path: 'history', component: HistoryComponent },
        { path: 'account-user', component: AccountUserComponent },
        { path: 'profile', component: AdminLayoutComponent },
+       { path: 'store-management', component: StoreManagementComponent }
        
     ]
   },

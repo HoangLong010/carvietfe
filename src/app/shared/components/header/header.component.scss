@@ -196,3 +196,48 @@ body {
     text-decoration: none;
     font-size: 16px;
 }
+
+.main-nav-list ul li a.active {
+    background-color: white; /* Màu vàng nhạt */
+    color: #1a2a4b;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(26, 42, 75, 0.2);
+    border: 2px solid #1a2a4b; /* Viền đậm để nhận biết */
+}
+
+.main-nav-list ul li a:hover {
+    background-color: white; /* Màu vàng nhạt hơn khi hover */
+    color: #1a2a4b;
+    box-shadow: 0 2px 8px rgba(26, 42, 75, 0.15);
+    transform: translateY(-1px);
+}
+
+.main-nav-list ul li {
+    position: relative;
+}
+
+.main-nav-list ul li a {
+    color: #1a2a4b;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 2px solid #1a2a4b; /* Viền mặc định */
+    position: relative;
+    display: block;
+}
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a2a4b;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 2px solid #1a2a4b;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}

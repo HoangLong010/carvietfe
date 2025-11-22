@@ -7,6 +7,8 @@ import { ReportComponent } from './dashboard-store/report/report.component';
 import { ProfileComponent } from './dashboard-store/profile/profile.component';
 import { ChatComponent } from './dashboard-store/chat/chat.component';
 import { ScheduleManagementComponent } from './dashboard-store/schedule-management/schedule-management.component';
+import { DealerAppointmentsComponent } from './dashboard-store/dealer-appointments/dealer-appointments.component';
+import { BrandComponent } from './dashboard-store/brand/brand.component';
 
 const routes: Routes = [
   { path: 'dashboard-store', 
@@ -17,7 +19,9 @@ const routes: Routes = [
     { path: 'report', component: ReportComponent },
     { path: 'profile', component: ProfileComponent},
     { path: 'chat', component: ChatComponent},
-    { path: 'schedule-management', component: ScheduleManagementComponent}
+    { path: 'schedule-management', component: ScheduleManagementComponent},
+    { path: 'appointment-management', component: DealerAppointmentsComponent},
+    { path: 'brand-management', component: BrandComponent}
   ]
 },
 {path: 'store/report-store', component: ReportComponent}

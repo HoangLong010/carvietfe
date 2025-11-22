@@ -17,6 +17,8 @@ import { Router, RouterModule } from '@angular/router';
 import { FineCheckComponent } from './components/fine-check/fine-check.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatComponent } from './components/chat/chat.component';
+import { UserAppointmentsComponent } from './components/user-appointments/user-appointments.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { ChatComponent } from './components/chat/chat.component';
     StoreComponent,
     DetailStoreComponent,
     FineCheckComponent,
-    ChatComponent
+    ChatComponent,
+    UserAppointmentsComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +49,8 @@ import { ChatComponent } from './components/chat/chat.component';
     ToastNotificationComponent,
     HeaderComponent,
     HomeComponent,
-    FooterComponent
+    FooterComponent,
+    LoadingComponent
   ]
 })
 export class SharedModule { }

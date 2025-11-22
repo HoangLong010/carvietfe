@@ -132,4 +132,13 @@ export class LoginComponent implements OnInit {
     this.toastMessage = '';
     this.toastType = 'error'; // Đặt lại về mặc định hoặc theo logic của bạn
   }
+
+   navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
+
+  // Điều hướng đến trang đăng ký người bán
+  navigateToRegisterStore() {
+    this.router.navigate(['/register-store']);
+  }
 }

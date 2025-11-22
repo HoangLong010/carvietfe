@@ -12,6 +12,7 @@ import { DetailStoreComponent } from './shared/components/detail-store/detail-st
 import { FineCheckComponent } from './shared/components/fine-check/fine-check.component';
 import { ChatComponent } from './shared/components/chat/chat.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { UserAppointmentsComponent } from './shared/components/user-appointments/user-appointments.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,9 @@ const routes: Routes = [
   },
   {
     path: 'chat', component: ChatComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: 'user-appointments', component: UserAppointmentsComponent, canActivate: [AuthGuard]
   },
   { path: 'profile', component: ProfileComponent },
   { path: 'store', component: StoreComponent },

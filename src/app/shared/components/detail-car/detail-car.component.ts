@@ -85,6 +85,7 @@ export class DetailCarComponent implements OnInit {
     customerEmail: '',
     notes: ''
   };
+  selectedSlot: TimeSlotResponse | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -223,18 +224,25 @@ export class DetailCarComponent implements OnInit {
   closeAppointmentModal() {
     this.isAppointmentModalOpen = false;
     this.selectedDate = '';
+    this.selectedSlot = null;
     this.selectedTime = '';
     this.availableSlots = [];
   }
 
+  isSlotSelected(slot: TimeSlotResponse): boolean {
+    return this.selectedSlot === slot;
+  }
+
   // Khi chọn ngày
   onDateChange() {
+    this.selectedSlot = null;
     this.selectedTime = '';
     if (this.selectedDate && this.car) {
       this.appointmentService.getAvailableTimeSlots(this.car.id, this.selectedDate)
         .subscribe({
-          next: (slots) => {
-            this.availableSlots = slots;
+          next: (response) => {
+            this.availableSlots = response || [];
+            console.log('Available slots:', this.availableSlots); // Debug
           },
           error: (err) => {
             console.error('Lỗi khi tải khung giờ:', err);
@@ -247,16 +255,32 @@ export class DetailCarComponent implements OnInit {
   // Khi chọn khung giờ
   selectTimeSlot(slot: TimeSlotResponse) {
     if (!slot.isAvailable) return;
-    this.selectedTime = slot.startTime;
+    this.selectedSlot = slot;
+    this.selectedTime = slot.startTime; // Đồng bộ cả hai nếu cần
   }
+
+  // Và formatTime không cần thiết nữa
 
   // Đặt lịch
   bookAppointment() {
-    if (!this.selectedTime || !this.car) return;
+    // Kiểm tra cả selectedSlot và các trường bắt buộc
+    if (!this.selectedSlot || !this.car || !this.selectedDate) {
+      alert('Vui lòng chọn đầy đủ thông tin: ngày và khung giờ.');
+      return;
+    }
+
+    // Kiểm tra thông tin người dùng
+    if (!this.appointmentData.customerName || !this.appointmentData.customerPhone || !this.appointmentData.customerEmail) {
+      alert('Vui lòng điền đầy đủ thông tin liên hệ.');
+      return;
+    }
 
     this.appointmentData.carId = this.car.id;
+    this.appointmentData.userId = this.authService.getUserId() || '';
     this.appointmentData.appointmentDate = this.selectedDate;
-    this.appointmentData.appointmentTime = this.selectedTime;
+    this.appointmentData.appointmentTime = this.selectedSlot.startTime;
+
+    console.log('Booking data:', this.appointmentData); // Debug
 
     this.appointmentService.bookAppointment(this.appointmentData)
       .subscribe({
@@ -272,8 +296,11 @@ export class DetailCarComponent implements OnInit {
   }
 
   // Format time để hiển thị
-  formatTime(time: string): string {
-    return time.substring(0, 5);
+  formatTime(timeArray: number[]): string {
+    if (!timeArray || timeArray.length < 2) return '';
+    const hour = timeArray[0].toString().padStart(2, '0');
+    const minute = timeArray[1].toString().padStart(2, '0');
+    return `${hour}:${minute}`;
   }
 
 

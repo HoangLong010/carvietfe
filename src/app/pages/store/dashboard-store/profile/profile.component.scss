@@ -1,0 +1,315 @@
+/* General styling for the profile page wrapper */
+.profile-page-wrapper {
+  background-color: #f0f2f5; /* Light background for the whole page */
+  padding: 20px;
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+}
+
+/* Header Section Styling */
+.profile-header {
+  background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); /* Purple to blue gradient */
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 30px 40px;
+  width: 95%; /* Adjust width as needed */
+  max-width: 1300px; /* Max width for larger screens */
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  position: relative; /* For VIP badge positioning */
+  overflow: hidden; /* Hide overflow for rounded corners */
+}
+
+.profile-header .vip-badge {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-color: #ffc107; /* Yellow for VIP */
+  color: #333;
+  padding: 5px 15px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  font-weight: bold;
+  font-size: 0.8em;
+  transform: translateY(-100%); /* Initially hide it, will animate in */
+  animation: slideInBadge 0.5s forwards 0.5s; /* Animation for badge */
+}
+
+@keyframes slideInBadge {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.profile-header .header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-header .header-avatar {
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5em;
+  color: white;
+}
+
+.profile-header .header-text h2 {
+  margin: 0;
+  font-size: 2.2em;
+  font-weight: 700;
+}
+
+.profile-header .header-text p {
+  margin: 5px 0 0;
+  font-size: 1em;
+  opacity: 0.9;
+}
+
+.profile-header .header-logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.profile-header .ssp-icon {
+  font-size: 1.5em;
+  margin-right: 8px;
+  color: #ffeb3b; /* Yellow star */
+}
+
+/* Main Content Area Styling */
+.profile-main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Personal info takes 2/3, actions take 1/3 */
+  gap: 30px;
+  width: 95%;
+  max-width: 1300px;
+}
+
+.info-section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.section-header .section-icon {
+  font-size: 1.8em;
+  color: #6a11cb; /* Purple icon */
+  margin-right: 15px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Info Grid for Personal Information */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Two columns, responsive */
+  gap: 20px;
+}
+
+.info-card {
+  background-color: #f9f9f9; /* Light background for info cards */
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  /* Updated box-shadow for a subtle lift */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle initial shadow */
+  border: 1px solid #eee;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition for hover effect */
+}
+
+.info-card:hover { /* Hover effect for info cards */
+  transform: translateY(-5px); /* Lift up slightly */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* More pronounced shadow on hover */
+}
+
+.info-card.full-width {
+  grid-column: 1 / -1; /* Make it span full width in the grid */
+}
+
+.info-card .info-icon-wrapper {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4em;
+  color: white;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific colors for info icons */
+.info-icon-wrapper.email-color { background-color: #4CAF50; } /* Green */
+.info-icon-wrapper.phone-color { background-color: #FF9800; } /* Orange */
+.info-icon-wrapper.address-color { background-color: #2196F3; } /* Blue */
+.info-icon-wrapper.name-color { background-color: #9C27B0; } /* Purple */
+.info-icon-wrapper.role-color { background-color: #E91E63; } /* Pink */
+
+
+.info-card label {
+  font-size: 0.9em;
+  color: #777;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.info-card input[type="text"] {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  color: #333;
+  background-color: #f0f0f0; /* Light gray background for inputs */
+  transition: border-color 0.3s ease;
+}
+
+.info-card input[type="text"]:focus {
+  outline: none;
+  border-color: #2575fc; /* Blue border on focus */
+  box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
+}
+
+.info-card:hover {
+    cursor: pointer;
+}
+
+/* Quick Actions Section */
+.quick-actions-section .section-header .section-icon {
+  color: #2575fc; /* Blue icon for actions */
+}
+
+.actions-grid {
+  display: flex;
+  flex-direction: column; /* Stack action cards vertically */
+  gap: 15px;
+}
+
+.action-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  /* Enhanced box-shadow for a subtle lift */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle initial shadow */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-card:hover {
+  transform: translateY(-5px); /* Lift up slightly */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+}
+
+.action-card .action-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px; /* Slightly rounded square */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3em;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific colors for action icons */
+.action-icon-wrapper.action-color-1 { background-color: #673AB7; } /* Deep Purple */
+.action-icon-wrapper.action-color-2 { background-color: #00BCD4; } /* Cyan */
+.action-icon-wrapper.action-color-3 { background-color: #FF5722; } /* Deep Orange */
+
+
+.action-card span {
+  font-size: 1em;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .profile-header .header-content {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .profile-header .header-logo {
+    margin-top: 15px;
+  }
+
+  .profile-main-content {
+    grid-template-columns: 1fr; /* Stack sections vertically */
+    gap: 20px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr; /* Stack info cards vertically */
+  }
+
+  .info-card.full-width {
+    grid-column: auto; /* Reset full-width behavior */
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    padding: 15px;
+  }
+
+  .profile-header .header-text h2 {
+    font-size: 1.8em;
+  }
+
+  .profile-header .header-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5em;
+  }
+
+  .profile-main-content {
+    padding: 15px;
+  }
+
+  .info-section {
+    padding: 20px;
+  }
+}

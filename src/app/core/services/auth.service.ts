@@ -90,7 +90,6 @@ export class AuthService {
 
   getUserId(): string | null {
     try {
-      debugger
       // Lấy chuỗi userProfile từ localStorage
       const userProfileString = localStorage.getItem('userProfile');
 

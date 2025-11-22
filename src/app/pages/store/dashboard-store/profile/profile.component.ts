@@ -7,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
+  userInfo: any;
 
+  ngOnInit(): void {
+    const profile = localStorage.getItem('userProfile');
+    if (profile) {
+      this.userInfo = JSON.parse(profile).data;
+    }
+  }
 }

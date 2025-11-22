@@ -1,0 +1,48 @@
+<!-- src/app/components/brand/brand.component.html -->
+<div class="brand-container">
+  <h2>Quản lý nhãn hàng</h2>
+
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchBrandName" placeholder="Tìm kiếm theo tên nhãn hàng">
+    <button (click)="onSearch()">Tìm kiếm</button>
+    <button (click)="addBrand()">Thêm mới</button>
+  </div>
+
+  <div *ngIf="showForm" class="brand-form">
+    <h3>{{ isEditing ? 'Cập nhật nhãn hàng' : 'Thêm nhãn hàng mới' }}</h3>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="brandName">Tên nhãn hàng:</label>
+        <input type="text" id="brandName" [(ngModel)]="brandName" name="brandName" required>
+      </div>
+      <button type="submit">{{ isEditing ? 'Cập nhật' : 'Thêm mới' }}</button>
+      <button type="button" (click)="resetForm()">Hủy</button>
+    </form>
+  </div>
+
+  <table class="brand-table">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên nhãn hàng</th>
+        <th>Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let brand of brands; let i = index">
+        <td>{{ i + 1 + page * size }}</td>
+        <td>{{ brand.brandName }}</td>
+        <td>
+          <button (click)="editBrand(brand)">Sửa</button>
+          <button (click)="deleteBrand(brand)">Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button [disabled]="page === 0" (click)="onPageChange(page - 1)">Trước</button>
+    <span>Trang {{ page + 1 }} / {{ totalPages }}</span>
+    <button [disabled]="page >= totalPages - 1" (click)="onPageChange(page + 1)">Sau</button>
+  </div>
+</div>

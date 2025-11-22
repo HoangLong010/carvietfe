@@ -4,15 +4,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/enviroment';
 
-export interface ApiResponse<T> {
+interface ApiResponse<T> {
   data: T;
   success: boolean;
+  code: number;
+  error_code: number;
   message: string;
-  statusCode: number;
+  description: string;
+  timestamp: number;
 }
 
 export interface TimeSlotResponse {
-  startTime: string;
+  startTime: string; // [hour, minute]
   endTime: string;
   isAvailable: boolean;
 }
@@ -33,8 +36,8 @@ export interface AppointmentResponse {
   carId: string;
   userId: string;
   dealerId: string;
-  appointmentDate: string;
-  appointmentTime: string;
+  appointmentDate: number[]; // [year, month, day]
+  appointmentTime: number[]; // [hour, minute]
   durationMinutes: number;
   customerName: string;
   customerPhone: string;
@@ -42,8 +45,22 @@ export interface AppointmentResponse {
   notes: string;
   status: number;
   statusText: string;
+  carModel: string;
+  carYear: number;
+  carPrice: number;
+  carImageUrl: string;
+  dealerName: string;
+  dealerAddress: string;
+  dealerPhone: string;
 }
 
+export interface AppointmentStatistics {
+  pending: number;
+  confirmed: number;
+  completed: number;
+  cancelled: number;
+  total: number;
+}
 export interface DealerScheduleRequest {
   dealerId: string;
   dayOfWeek: number;
@@ -72,85 +89,216 @@ export class AppointmentService {
 
   constructor(private http: HttpClient) { }
 
-  // Lấy khung giờ có sẵn
+  // ===== API NGƯỜI DÙNG =====
+
+  // Lấy khung giờ có sẵn - FIX: Unwrap ApiResponse
+  // Trong appointment.service.ts
+  getAllDealerAppointments(dealerId: string): Observable<AppointmentResponse[]> {
+    return this.http.get<ApiResponse<AppointmentResponse[]>>(
+      `${this.apiUrl}/dealer/${dealerId}/appointments/all`
+    ).pipe(
+      map(response => {
+        // Chuyển đổi dữ liệu ngày và giờ từ array sang string
+        return response.data.map(appointment => this.transformAppointmentData(appointment));
+      })
+    );
+  }
+
+  // Lấy thống kê lịch hẹn
+  getAppointmentStatistics(dealerId: string): Observable<AppointmentStatistics> {
+    return this.http.get<ApiResponse<AppointmentStatistics>>(
+      `${this.apiUrl}/dealer/${dealerId}/statistics`
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+  // Lấy lịch hẹn của dealer theo trạng thái
+  getDealerAppointmentsByStatus(dealerId: string, status: number): Observable<AppointmentResponse[]> {
+    let params = new HttpParams().set('status', status.toString());
+    return this.http.get<ApiResponse<AppointmentResponse[]>>(
+      `${this.apiUrl}/dealer/${dealerId}/appointments/status`,
+      { params }
+    ).pipe(
+      map(response => response.data.map(appointment => this.transformAppointmentData(appointment)))
+    );
+  }
+
+  // Từ chối lịch hẹn
+  rejectAppointment(appointmentId: string, dealerId: string, reason: string): Observable<any> {
+    let params = new HttpParams()
+      .set('dealerId', dealerId)
+      .set('reason', reason);
+    
+    return this.http.put<ApiResponse<any>>(
+      `${this.apiUrl}/${appointmentId}/reject`,
+      {},
+      { params }
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+
+  // Hoàn thành lịch hẹn
+  completeAppointment(appointmentId: string, dealerId: string): Observable<any> {
+    let params = new HttpParams().set('dealerId', dealerId);
+    return this.http.put<ApiResponse<any>>(
+      `${this.apiUrl}/${appointmentId}/complete`,
+      {},
+      { params }
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+
   getAvailableTimeSlots(carId: string, date: string): Observable<TimeSlotResponse[]> {
-    const params = new HttpParams()
-      .set('carId', carId)
-      .set('date', date);
-    return this.http.get<TimeSlotResponse[]>(`${this.apiUrl}/available-slots`, { params });
+    return this.http.get<any>(`${this.apiUrl}/available-slots`, {
+      params: { carId, date }
+    }).pipe(
+      map(response => {
+        // Convert từ number[] sang string
+        return response.data.map((slot: any) => ({
+          ...slot,
+          startTime: this.formatTimeArrayToString(slot.startTime),
+          endTime: this.formatTimeArrayToString(slot.endTime)
+        }));
+      })
+    );
   }
 
-  // Đặt lịch hẹn
+  private transformAppointmentData(appointment: any): AppointmentResponse {
+    // Chuyển đổi appointmentDate từ [2025, 11, 12] thành "2025-11-12"
+    let appointmentDate = appointment.appointmentDate;
+    if (Array.isArray(appointmentDate)) {
+      const [year, month, day] = appointmentDate;
+      appointmentDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    }
+
+    // Chuyển đổi appointmentTime từ [8, 0] thành "08:00"
+    let appointmentTime = appointment.appointmentTime;
+    if (Array.isArray(appointmentTime)) {
+      const [hours, minutes] = appointmentTime;
+      appointmentTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+
+    return {
+      ...appointment,
+      appointmentDate,
+      appointmentTime
+    };
+  }
+
+  private formatTimeArrayToString(timeArray: number[]): string {
+    if (!timeArray || timeArray.length < 2) return '';
+    const hour = timeArray[0].toString().padStart(2, '0');
+    const minute = timeArray[1].toString().padStart(2, '0');
+    return `${hour}:${minute}`;
+  }
+
+  // Đặt lịch hẹn - FIX: Unwrap ApiResponse
   bookAppointment(request: BookAppointmentRequest): Observable<AppointmentResponse> {
-    return this.http.post<AppointmentResponse>(`${this.apiUrl}/book`, request);
+    return this.http.post<ApiResponse<AppointmentResponse>>(
+      `${this.apiUrl}/book`,
+      request
+    ).pipe(
+      map(response => response.data)
+    );
   }
 
-  // Lấy lịch hẹn của người dùng
+  // Lấy lịch hẹn của người dùng - FIX: Unwrap ApiResponse
   getUserAppointments(userId: string): Observable<AppointmentResponse[]> {
-    return this.http.get<AppointmentResponse[]>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<ApiResponse<AppointmentResponse[]>>(
+      `${this.apiUrl}/user/${userId}`
+    ).pipe(
+      map(response => response.data || [])
+    );
   }
 
-  // Hủy lịch hẹn
-  cancelAppointment(appointmentId: string, userId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${appointmentId}/cancel`, null, {
-      params: { userId }
-    });
+  // Hủy lịch hẹn - FIX: Unwrap ApiResponse
+  cancelAppointment(appointmentId: string, userId: string): Observable<string> {
+    return this.http.post<ApiResponse<string>>(
+      `${this.apiUrl}/${appointmentId}/cancel`,
+      null,
+      { params: { userId } }
+    ).pipe(
+      map(response => response.data)
+    );
   }
 
-  // Lấy lịch hẹn của đại lý
+  // ===== API CỬA HÀNG =====
+
+  // Lấy lịch hẹn của đại lý - FIX: Unwrap ApiResponse
   getDealerAppointments(dealerId: string, date: string): Observable<AppointmentResponse[]> {
-    const params = new HttpParams().set('date', date);
-    return this.http.get<AppointmentResponse[]>(`${this.apiUrl}/dealer/${dealerId}/appointments`, { params });
+    let params = new HttpParams().set('date', date);
+    return this.http.get<ApiResponse<AppointmentResponse[]>>(
+      `${this.apiUrl}/dealer/${dealerId}/appointments`,
+      { params }
+    ).pipe(
+      map(response => response.data.map(appointment => this.transformAppointmentData(appointment)))
+    );
   }
 
-  // Xác nhận lịch hẹn
+  // Xác nhận lịch hẹn - FIX: Unwrap ApiResponse
   confirmAppointment(appointmentId: string, dealerId: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${appointmentId}/confirm`, null, {
-      params: { dealerId }
-    });
+    let params = new HttpParams().set('dealerId', dealerId);
+    return this.http.put<ApiResponse<any>>(
+      `${this.apiUrl}/${appointmentId}/confirm`,
+      {},
+      { params }
+    ).pipe(
+      map(response => response.data)
+    );
   }
 
-  // Quản lý lịch làm việc
+  // ===== QUẢN LÝ LỊCH LÀM VIỆC =====
+
   getDealerSchedules(dealerId: string): Observable<DealerScheduleResponse[]> {
-  return this.http.get<ApiResponse<DealerScheduleResponse[]>>(
-    `${this.apiUrl}/dealer/${dealerId}/schedules`
-  ).pipe(
-    map(response => response.data || [])
-  );
-}
+    return this.http.get<ApiResponse<DealerScheduleResponse[]>>(
+      `${this.apiUrl}/dealer/${dealerId}/schedules`
+    ).pipe(
+      map(response => response.data || [])
+    );
+  }
 
   getDealerScheduleByDay(dealerId: string, dayOfWeek: number): Observable<DealerScheduleResponse> {
-    return this.http.get<DealerScheduleResponse>(`${this.apiUrl}/dealer/${dealerId}/schedules/${dayOfWeek}`);
+    return this.http.get<ApiResponse<DealerScheduleResponse>>(
+      `${this.apiUrl}/dealer/${dealerId}/schedules/${dayOfWeek}`
+    ).pipe(
+      map(response => response.data)
+    );
   }
 
   createDealerSchedule(request: DealerScheduleRequest): Observable<DealerScheduleResponse> {
-  return this.http.post<ApiResponse<DealerScheduleResponse>>(
-    `${this.apiUrl}/dealer/schedules`, 
-    request
-  ).pipe(
-    map(response => response.data)
-  );
-}
+    return this.http.post<ApiResponse<DealerScheduleResponse>>(
+      `${this.apiUrl}/dealer/schedules`,
+      request
+    ).pipe(
+      map(response => response.data)
+    );
+  }
 
   updateDealerSchedule(scheduleId: string, request: DealerScheduleRequest): Observable<DealerScheduleResponse> {
-  return this.http.put<ApiResponse<DealerScheduleResponse>>(
-    `${this.apiUrl}/dealer/schedules/${scheduleId}`, 
-    request
-  ).pipe(
-    map(response => response.data)
-  );
-}
+    return this.http.put<ApiResponse<DealerScheduleResponse>>(
+      `${this.apiUrl}/dealer/schedules/${scheduleId}`,
+      request
+    ).pipe(
+      map(response => response.data)
+    );
+  }
 
   updateDealerSchedules(requests: DealerScheduleRequest[]): Observable<DealerScheduleResponse[]> {
-  return this.http.put<ApiResponse<DealerScheduleResponse[]>>(
-    `${this.apiUrl}/dealer/schedules/batch`, 
-    requests
-  ).pipe(
-    map(response => response.data || [])
-  );
-}
+    return this.http.put<ApiResponse<DealerScheduleResponse[]>>(
+      `${this.apiUrl}/dealer/schedules/batch`,
+      requests
+    ).pipe(
+      map(response => response.data || [])
+    );
+  }
 
-  deleteDealerSchedule(scheduleId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/dealer/schedules/${scheduleId}`);
+  deleteDealerSchedule(scheduleId: string): Observable<string> {
+    return this.http.delete<ApiResponse<string>>(
+      `${this.apiUrl}/dealer/schedules/${scheduleId}`
+    ).pipe(
+      map(response => response.data)
+    );
   }
 }

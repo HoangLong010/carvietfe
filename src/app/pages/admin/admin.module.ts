@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { AccountUserComponent } from './dashboard-admin/account-user/account-user.component';
 import { AdminLayoutComponent } from './dashboard-admin/admin-layout/admin-layout.component';
 import { SharedModule } from '../../shared/shared.module';
+import { StoreManagementComponent } from './dashboard-admin/store-management/store-management.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { SharedModule } from '../../shared/shared.module';
     ReportComponent,
     HistoryComponent,
     AccountUserComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    StoreManagementComponent
   ],
   imports: [
     CommonModule,

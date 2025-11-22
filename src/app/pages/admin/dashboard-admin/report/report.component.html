@@ -1,6 +1,6 @@
 <div class="header-section">
-    <h1>Báo cáo theo kênh/ chương trình</h1>
-    <p>Tổng hợp các báo cáo theo kênh/ chương trình, hỗ trợ tìm kiếm, theo dõi và quản lý hiệu quả.</p>
+    <h1>Báo cáo theo cửa hàng</h1>
+    <p>Tổng hợp các báo cáo cửa hàng hỗ trợ tìm kiếm, theo dõi và quản lý hiệu quả.</p>
 </div>
 
 <div class="search-criteria-card">
@@ -8,7 +8,6 @@
         <i class="fas fa-filter icon-filter"></i>
         <h3>Điều kiện tìm kiếm</h3>
     </div>
-        
 
     <p class="search-description">Điền thông tin để lọc kết quả tìm kiếm chính xác hơn</p>
 
@@ -16,111 +15,111 @@
         <div class="form-group date-range">
             <label for="startDate">Thực hiện từ ngày</label>
             <div class="date-inputs">
-                <input type="date" id="startDate" value="2025-07-11">
+                <input type="date" id="startDate" [(ngModel)]="startDate">
                 <span>-</span>
-                <input type="date" id="endDate" value="2025-07-27">
+                <input type="date" id="endDate" [(ngModel)]="endDate">
             </div>
         </div>
 
         <div class="form-group channel-select">
-            <label for="channel">Kênh</label>
-            <select id="channel">
-                <option value="">Chọn Kênh</option>
-                <option value="vtv1">Kênh VTV1</option>
-                <option value="vtv2">Kênh VTV2</option>
-                <option value="vtv3">Kênh VTV3</option>
+            <label for="channel">Cửa hàng</label>
+            <select id="channel" [(ngModel)]="selectedStore">
+                <option value="">Tất cả cửa hàng</option>
+                <!-- TODO: Load from API -->
+                <option *ngFor="let store of stores" [value]="store.id">
+                    {{ store.name }}
+                </option>
             </select>
             <i class="fas fa-caret-down dropdown-arrow"></i>
         </div>
 
-        <button class="search-button">
-            <i class="fas fa-search"></i>
-            Tìm kiếm
+        <button class="search-button" (click)="onSearch()" [disabled]="isLoading">
+            <i class="fas fa-search" *ngIf="!isLoading"></i>
+            <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+            {{ isLoading ? 'Đang tải...' : 'Tìm kiếm' }}
         </button>
     </div>
 </div>
 
+<!-- Summary Cards -->
 <div class="summary-cards-container">
     <div class="summary-card">
-        <strong>2</strong>
-        <span>Tổng số inventory</span>
+        <strong>{{ generalData?.totalCar ?? 0 }}</strong>
+        <span>Tổng số xe</span>
     </div>
     <div class="summary-card highlight">
-        <strong>100%</strong>
-        <span>Tỉ lệ sử dụng inventory</span>
+        <strong>{{ generalData?.totalCarSold ?? 0 }}</strong>
+        <span>Tổng số xe đã bán</span>
     </div>
     <div class="summary-card">
-        <strong>110 s</strong>
-        <span>Tổng thời gian đã bán</span>
+        <strong>{{ generalData?.totalCarNotSold ?? 0 }}</strong>
+        <span>Tổng số xe chưa bán</span>
     </div>
     <div class="summary-card">
-        <strong>2090 s</strong>
-        <span>Tổng thời gian trống</span>
+        <strong>{{ generalData?.totalSchedule ?? 0 }}</strong>
+        <span>Tổng số lượt đặt xem xe</span>
     </div>
     <div class="summary-card">
-        <strong>120,000</strong>
-        <span>Tổng doanh thu</span>
+        <strong>{{ generalData?.totalFavourite ?? 0 }}</strong>
+        <span>Tổng số lượt yêu thích</span>
     </div>
 </div>
 
+<!-- Dashboard Charts -->
 <div class="dashboard-container">
-    </div>
-
-<div class="dashboard-container">
-
     <div class="dashboard-row">
-
+        <!-- Booking Status Chart -->
         <div class="card inventory-ratio-card">
-            <h3>Tỷ lệ trạng thái inventory</h3>
+            <h3>Tỷ lệ trạng thái đặt xe</h3>
             <div class="chart-container">
-                <div class="chart-center-text">
-                    <p>Bán một phần : 100</p>
-                </div>
                 <canvas id="inventory-ratio-chart"></canvas>
             </div>
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-label">
-                        <span class="color-box" style="background-color: #00bcd4;"></span>
-                        Trống
-                    </div>
-                    <span>0%</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-label">
-                        <span class="color-box" style="background-color: #00bcd4;"></span>
-                        Bán một phần
-                    </div>
-                    <span>100%</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-label">
                         <span class="color-box" style="background-color: #f0f2f5;"></span>
-                        Bán full
+                        Chờ xác nhận
                     </div>
-                    <span>0%</span>
+                    <span id="pending-percent">0%</span>
                 </div>
-            </div>
-            <div class="inventory-summary">
-                <h4>Số Inventory</h4>
-                <p>Trống <span>0</span></p>
-                <p>Bán một phần <span>2</span></p>
-                <p>Bán full <span>0</span></p>
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #00bcd4;"></span>
+                        Đã xác nhận
+                    </div>
+                    <span id="confirmed-percent">0%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #4caf50;"></span>
+                        Đã hoàn thành
+                    </div>
+                    <span id="completed-percent">0%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-label">
+                        <span class="color-box" style="background-color: #f44336;"></span>
+                        Đã hủy
+                    </div>
+                    <span id="cancelled-percent">0%</span>
+                </div>
             </div>
         </div>
 
+        <!-- Car by Brand Chart -->
         <div class="card">
-            <h3>Số lượng inventory theo kênh</h3>
-            <p class="unit-text">Số lượng quảng cáo</p>
+            <h3>Số lượng xe theo hãng xe</h3>
+            <p class="unit-text">Số lượng xe theo từng hãng</p>
             <div class="chart-container" id="inventory-by-channel-chart-container">
                 <canvas id="inventory-by-channel-chart"></canvas>
             </div>
-            <div class="chart-footer">Kênh</div>
+            <div class="chart-footer">Hãng xe</div>
         </div>
 
+        <!-- Revenue by Brand Chart -->
         <div class="card">
             <div class="card-header">
-                <h3>Tổng doanh thu theo kênh</h3>
+                <h3>Tổng doanh thu theo hãng xe</h3>
                 <i class="fa-regular fa-thumbs-up" style="color: #667eea; font-size: 1.2em;"></i>
             </div>
             <p class="unit-text">Đơn vị: VNĐ</p>
@@ -131,23 +130,23 @@
     </div>
 
     <div class="dashboard-row">
-
+        <!-- Top 5 Brands Chart -->
         <div class="card fill-rate-card">
-            <h3>Báo cáo tỷ lệ lấp đầy của inventory theo giờ</h3>
+            <h3>Top 5 hãng xe bán chạy nhất</h3>
             <div class="chart-container">
                 <canvas id="fill-rate-chart"></canvas>
             </div>
-            <div class="chart-footer">Giờ</div>
+            <div class="chart-footer">Số lượng xe đã bán</div>
         </div>
 
+        <!-- Revenue by Time Chart -->
         <div class="card">
             <h3>Doanh thu theo thời gian</h3>
             <p class="unit-text">Đơn vị: VNĐ</p>
-            <p class="unit-text" style="margin-top: -15px; font-weight: bold; color: #555;">Tổng Tháng</p>
+            <p class="unit-text" style="margin-top: -15px; font-weight: bold; color: #555;">Theo ngày</p>
             <div class="chart-container">
                 <canvas id="revenue-by-time-chart"></canvas>
             </div>
         </div>
     </div>
-
 </div>

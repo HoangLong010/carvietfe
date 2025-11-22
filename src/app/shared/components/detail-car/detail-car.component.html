@@ -213,6 +213,7 @@
       </div>
 
       <!-- Modal đặt lịch -->
+      <!-- Modal đặt lịch -->
       <div class="modal-overlay" *ngIf="isAppointmentModalOpen" (click)="closeAppointmentModal()">
         <div class="modal-content appointment-modal" (click)="$event.stopPropagation()">
           <div class="modal-header">
@@ -252,14 +253,19 @@
                 <label>Chọn khung giờ</label>
                 <div class="time-slots" *ngIf="availableSlots.length > 0">
                   <div *ngFor="let slot of availableSlots" class="time-slot" [class.available]="slot.isAvailable"
-                    [class.selected]="selectedTime === slot.startTime" [class.unavailable]="!slot.isAvailable"
+                    [class.selected]="isSlotSelected(slot)" [class.unavailable]="!slot.isAvailable"
                     (click)="selectTimeSlot(slot)">
-                    <span class="time">{{ formatTime(slot.startTime) }} - {{ formatTime(slot.endTime) }}</span>
+                    <span class="time">
+                      {{ slot.startTime }} - {{ slot.endTime }}
+                    </span>
                     <span class="status" *ngIf="!slot.isAvailable">Đã có lịch</span>
                   </div>
                 </div>
                 <div *ngIf="availableSlots.length === 0 && selectedDate" class="no-slots">
                   Không có khung giờ trống cho ngày này
+                </div>
+                <div *ngIf="selectedSlot" class="selected-time-info">
+                  Đã chọn: <strong>{{ selectedSlot.startTime }} - {{ selectedSlot.endTime }}</strong>
                 </div>
               </div>
 
@@ -271,7 +277,7 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn-cancel" (click)="closeAppointmentModal()">Hủy</button>
-                <button type="submit" class="btn-confirm" [disabled]="!selectedTime || !appointmentForm.form.valid">
+                <button type="submit" class="btn-confirm" [disabled]="!selectedSlot || !appointmentForm.form.valid">
                   Xác nhận đặt lịch
                 </button>
               </div>

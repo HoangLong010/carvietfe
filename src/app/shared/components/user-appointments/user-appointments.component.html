@@ -1,0 +1,199 @@
+<app-header></app-header>
+<div class="user-appointments-container">
+  <div class="header-section">
+    <h1>📅 Lịch hẹn xem xe của tôi</h1>
+    <p>Quản lý các lịch hẹn xem xe của bạn</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-section">
+    <button class="tab-btn" [class.active]="selectedTab === 'all'" (click)="selectTab('all')">
+      📋 Tất cả ({{ appointments.length }})
+    </button>
+    <button class="tab-btn" [class.active]="selectedTab === 'upcoming'" (click)="selectTab('upcoming')">
+      🔔 Sắp tới
+    </button>
+    <button class="tab-btn" [class.active]="selectedTab === 'past'" (click)="selectTab('past')">
+      📜 Đã qua
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Đang tải...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredAppointments.length === 0" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h3>Chưa có lịch hẹn nào</h3>
+    <p *ngIf="selectedTab === 'all'">Bạn chưa đặt lịch xem xe nào. Hãy tìm xe ưng ý và đặt lịch ngay!</p>
+    <p *ngIf="selectedTab === 'upcoming'">Bạn không có lịch hẹn sắp tới.</p>
+    <p *ngIf="selectedTab === 'past'">Bạn không có lịch hẹn nào trong quá khứ.</p>
+    <button class="btn-primary" routerLink="/car-old">🚗 Tìm xe ngay</button>
+  </div>
+
+  <!-- Appointments List -->
+  <div class="appointments-list" *ngIf="!isLoading && filteredAppointments.length > 0">
+    <div *ngFor="let appointment of filteredAppointments" class="appointment-card"
+      [class]="getStatusInfo(appointment.status).class">
+
+      <!-- Countdown badge -->
+      <div class="countdown-badge"
+        *ngIf="getDaysUntilAppointment(appointment.appointmentDate) >= 0 && appointment.status !== 3 && appointment.status !== 2">
+        <span *ngIf="getDaysUntilAppointment(appointment.appointmentDate) === 0">🔥 Hôm nay</span>
+        <span *ngIf="getDaysUntilAppointment(appointment.appointmentDate) === 1">⏰ Ngày mai</span>
+        <span *ngIf="getDaysUntilAppointment(appointment.appointmentDate) > 1">
+          Còn {{ getDaysUntilAppointment(appointment.appointmentDate) }} ngày
+        </span>
+      </div>
+
+      <div class="card-content" (click)="openDetailModal(appointment)">
+        <div class="car-section">
+          <img [src]="appointment.carImageUrl || 'https://via.placeholder.com/120x80?text=Car'"
+            [alt]="appointment.carModel" class="car-image">
+          <div class="car-info">
+            <h3>{{ appointment.carModel }} {{ appointment.carYear }}</h3>
+            <p class="car-price">{{ appointment.carPrice | number }} đ</p>
+            <p class="dealer-name">🏪 {{ appointment.dealerName }}</p>
+          </div>
+        </div>
+
+        <div class="appointment-info">
+          <div class="info-row">
+            <span class="icon">📅</span>
+            <span class="text">{{ formatDate(appointment.appointmentDate) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="icon">🕐</span>
+            <span class="text">{{ formatTime(appointment.appointmentTime) }} ({{ appointment.durationMinutes }}
+              phút)</span>
+          </div>
+          <div class="info-row">
+            <span class="icon">📍</span>
+            <span class="text">{{ appointment.dealerAddress }}</span>
+          </div>
+          <div class="info-row">
+            <span class="icon">📞</span>
+            <span class="text">{{ appointment.dealerPhone }}</span>
+          </div>
+        </div>
+
+        <div class="status-section">
+          <span class="status-badge" [class]="getStatusInfo(appointment.status).class">
+            {{ getStatusInfo(appointment.status).icon }} {{ getStatusInfo(appointment.status).text }}
+          </span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-detail" (click)="openDetailModal(appointment); $event.stopPropagation()">
+          <i class="fas fa-info-circle"></i> Chi tiết
+        </button>
+        <button class="btn-view-car" (click)="goToCarDetail(appointment.carId); $event.stopPropagation()">
+          <i class="fas fa-car"></i> Xem xe
+        </button>
+        <button *ngIf="canCancel(appointment)" class="btn-cancel-appointment"
+          (click)="openCancelModal(appointment); $event.stopPropagation()">
+          <i class="fas fa-times"></i> Hủy lịch
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" *ngIf="isDetailModalOpen" (click)="closeDetailModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>📋 Chi tiết lịch hẹn</h2>
+      <button class="close-btn" (click)="closeDetailModal()">&times;</button>
+    </div>
+
+    <div class="modal-body" *ngIf="selectedAppointment">
+      <div class="detail-section">
+        <h3>🚗 Thông tin xe</h3>
+        <div class="car-detail">
+          <img [src]="selectedAppointment.carImageUrl || 'https://via.placeholder.com/200x130?text=Car'" alt="Car">
+          <div>
+            <p><strong>Mẫu xe:</strong> {{ selectedAppointment.carModel }} {{ selectedAppointment.carYear }}</p>
+            <p><strong>Giá:</strong> {{ selectedAppointment.carPrice | number }} đ</p>
+            <button class="btn-link" (click)="goToCarDetail(selectedAppointment.carId)">
+              Xem chi tiết xe →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>🏪 Thông tin cửa hàng</h3>
+        <p><strong>Tên:</strong> {{ selectedAppointment.dealerName }}</p>
+        <p><strong>Địa chỉ:</strong> {{ selectedAppointment.dealerAddress }}</p>
+        <p><strong>Số điện thoại:</strong> {{ selectedAppointment.dealerPhone }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>📅 Thông tin lịch hẹn</h3>
+        <!-- Trong modal chi tiết -->
+        <p><strong>Ngày:</strong> {{ formatDate(selectedAppointment?.appointmentDate ?? []) }}</p>
+        <p><strong>Giờ:</strong> {{ formatTime(selectedAppointment?.appointmentTime ?? []) }}</p>
+        <p><strong>Thời lượng:</strong> {{ selectedAppointment?.durationMinutes }} phút</p>
+        <p><strong>Trạng thái:</strong>
+          <span class="status-badge" [class]="getStatusInfo(selectedAppointment?.status ?? 0).class">
+            {{ getStatusInfo(selectedAppointment?.status ?? 0).icon }} {{ getStatusInfo(selectedAppointment?.status ??
+            0).text }}
+          </span>
+        </p>
+      </div>
+
+      <div class="detail-section" *ngIf="selectedAppointment.notes">
+        <h3>📝 Ghi chú của bạn</h3>
+        <p>{{ selectedAppointment?.notes }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>👤 Thông tin liên hệ</h3>
+        <p><strong>Họ tên:</strong> {{ selectedAppointment?.customerName }}</p>
+        <p><strong>Số điện thoại:</strong> {{ selectedAppointment?.customerPhone }}</p>
+        <p><strong>Email:</strong> {{ selectedAppointment?.customerEmail }}</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-close" (click)="closeDetailModal()">Đóng</button>
+      <button *ngIf="selectedAppointment && canCancel(selectedAppointment)" class="btn-cancel-modal"
+        (click)="selectedAppointment && openCancelModal(selectedAppointment)">
+        Hủy lịch hẹn
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Cancel Modal -->
+<div class="modal-overlay" *ngIf="isCancelModalOpen" (click)="closeCancelModal()">
+  <div class="modal-content modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>❌ Hủy lịch hẹn</h2>
+      <button class="close-btn" (click)="closeCancelModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <p>Bạn có chắc muốn hủy lịch hẹn xem xe <strong>{{ selectedAppointment?.carModel }}</strong> vào ngày <strong>{{
+          selectedAppointment && formatDate(selectedAppointment.appointmentDate) }}</strong>?</p>
+      <p class="warning-text">⚠️ Hành động này không thể hoàn tác.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel-action" (click)="closeCancelModal()">Không, giữ lịch</button>
+      <button class="btn-confirm-cancel" (click)="cancelAppointment()">Có, hủy lịch</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-notification" *ngIf="showToast" [class]="toastType">
+  <span>{{ toastMessage }}</span>
+  <button class="toast-close" (click)="hideToast()">&times;</button>
+</div>
+<app-footer></app-footer>

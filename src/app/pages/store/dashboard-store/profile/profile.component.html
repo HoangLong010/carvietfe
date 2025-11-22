@@ -1,1 +1,105 @@
-<p>profile works!</p>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<div class="profile-page-wrapper">
+  <!-- Header Section -->
+  <div class="profile-header">
+    <div class="vip-badge">VIP</div>
+    <div class="header-content">
+      <div class="header-avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="header-text">
+        <h2>Xin chào, !</h2>
+        <p>Chào mừng bạn quay trở lại hệ thống SSP</p>
+      </div>
+    </div>
+    <div class="header-logo">
+      <i class="bi bi-star-fill ssp-icon"></i> SSP
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="profile-main-content">
+    <!-- Personal Information Section -->
+    <div class="info-section personal-info-section">
+      <div class="section-header">
+        <i class="bi bi-person-circle section-icon"></i>
+        <h3>Thông tin cá nhân</h3>
+      </div>
+      <div class="info-grid">
+        <!-- Email Card -->
+        <div class="info-card">
+          <div class="info-icon-wrapper email-color">
+            <i class="bi bi-envelope-fill"></i>
+          </div>
+          <label for="email">Địa chỉ Email</label>
+          <input type="text" id="email" [value]="userInfo?.email || 'dat@gamil.com'" readonly>
+        </div>
+
+        <!-- Phone Number Card -->
+        <div class="info-card">
+          <div class="info-icon-wrapper phone-color">
+            <i class="bi bi-phone-fill"></i>
+          </div>
+          <label for="phone">Số điện thoại</label>
+          <input type="text" id="phone" [value]="userInfo?.phoneNumber || '0123456789'" readonly>
+        </div>
+
+        <!-- Address Card -->
+        <div class="info-card full-width">
+          <div class="info-icon-wrapper address-color">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <label for="address">Địa chỉ</label>
+          <input type="text" id="address" [value]="userInfo?.address || 'Hà Nội'" readonly>
+        </div>
+
+        <!-- Full Name Card (Added based on previous userInfo structure) -->
+        <div class="info-card full-width">
+          <div class="info-icon-wrapper name-color">
+            <i class="bi bi-person-badge-fill"></i>
+          </div>
+          <label for="fullName">Họ tên</label>
+          <input type="text" id="fullName" [value]="userInfo?.fullName || 'Đạt Nguyễn'" readonly>
+        </div>
+
+        <!-- Role Info Card (Added based on previous userInfo structure) -->
+        <div class="info-card full-width">
+          <div class="info-icon-wrapper role-color">
+            <i class="bi bi-person-rolodex"></i>
+          </div>
+          <label for="role">Vai trò</label>
+          <input type="text" id="role" [value]="userInfo?.roleInfo?.name || 'Admin'" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="info-section quick-actions-section">
+      <div class="section-header">
+        <i class="bi bi-gear-fill section-icon"></i>
+        <h3>Hành động nhanh</h3>
+      </div>
+      <div class="actions-grid">
+        <div class="action-card">
+          <div class="action-icon-wrapper action-color-1">
+            <i class="bi bi-key-fill"></i>
+          </div>
+          <span>Đổi mật khẩu</span>
+        </div>
+        <div class="action-card">
+          <div class="action-icon-wrapper action-color-2">
+            <i class="bi bi-bell-fill"></i>
+          </div>
+          <span>Cài đặt thông báo</span>
+        </div>
+        <div class="action-card">
+          <div class="action-icon-wrapper action-color-3">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <span>Lịch sử hoạt động</span>
+        </div>
+        <!-- Add more action cards as needed -->
+      </div>
+    </div>
+  </div>
+</div>
