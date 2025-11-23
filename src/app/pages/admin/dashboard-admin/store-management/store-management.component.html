@@ -56,6 +56,7 @@
             <th>Lịch hẹn</th>
             <th>Lượt yêu thích</th>
             <th>Ngày tạo</th>
+            <th>Trạng thái</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -63,10 +64,8 @@
           <tr *ngFor="let store of stores; let i = index">
             <td>{{ i + 1 + currentPage * pageSize }}</td>
             <td>
-              <img [src]="store.logoUrl || '/assets/default-store-logo.png'" 
-                   alt="Logo" 
-                   class="store-logo"
-                   onerror="this.src='/assets/default-store-logo.png'">
+              <img [src]="store.logoUrl || '/assets/default-store-logo.png'" alt="Logo" class="store-logo"
+                onerror="this.src='/assets/default-store-logo.png'">
             </td>
             <td>{{ store.storeName }}</td>
             <td>{{ store.address }}</td>
@@ -97,6 +96,11 @@
               </span>
             </td>
             <td>{{ formatDate(store.createdDate) }}</td>
+            <td>
+              <span [ngClass]="store.status === 1 ? 'status-active' : 'status-no-active'">
+                {{ getStatus(store.status) }}
+              </span>
+            </td>
             <td class="action-buttons">
               <div class="form-row">
                 <div class="form-group half">
@@ -107,6 +111,13 @@
                 <div class="form-group half">
                   <button class="btn-delete" (click)="handleDeleteStore(store.id)" title="Xóa">
                     <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="form-group half">
+                  <button class="btn-toggle-status" [class.active]="store.status === 1"
+                    [class.inactive]="store.status === 0" (click)="toggleStoreStatus(store)"
+                    [title]="store.status === 1 ? 'Vô hiệu hóa cửa hàng' : 'Kích hoạt cửa hàng'">
+                    <i [class]="store.status === 1 ? 'fas fa-toggle-on' : 'fas fa-toggle-off'"></i>
                   </button>
                 </div>
               </div>
@@ -132,7 +143,8 @@
       <div class="form-row">
         <div class="form-group half">
           <label>Tên cửa hàng *</label>
-          <input type="text" [(ngModel)]="selectedStore.storeName" name="storeName" required #storeNameModel="ngModel" />
+          <input type="text" [(ngModel)]="selectedStore.storeName" name="storeName" required
+            #storeNameModel="ngModel" />
           <div class="error-message" *ngIf="storeNameModel.invalid && storeNameModel.touched">
             Tên cửa hàng không được để trống.
           </div>

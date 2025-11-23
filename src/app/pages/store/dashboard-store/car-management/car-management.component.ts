@@ -118,6 +118,7 @@ export class CarManagementComponent implements OnInit {
       title: '',
       description: '',
       brandId: null as any,
+      brandName: '',
       model: '',
       variant: '',
       year: new Date().getFullYear(),
@@ -141,6 +142,7 @@ export class CarManagementComponent implements OnInit {
       registeredUntil: new Date().toISOString().substring(0, 10), // Mặc định hôm nay
       images: [],
       store: null,
+      sellStatus: 0
     } as CarResponseItem;
   }
 
@@ -329,6 +331,14 @@ export class CarManagementComponent implements OnInit {
     }
   }
 
+  getCarStatusSell(sellStatus: number | null | undefined): string {
+    switch (sellStatus) {
+      case 0: return 'Chưa bán';
+      case 1: return 'Đã bán';  
+      default: return 'Không xác định';
+    }
+  }
+
   getDealerNameById(dealerId: string | null | undefined): string {
     const dealer = this.dealers.find(d => d.id === dealerId);
     return dealer ? dealer.username : 'Không xác định';
@@ -399,6 +409,35 @@ export class CarManagementComponent implements OnInit {
       // Nếu ID chưa có (người dùng CHỌN để giữ lại), thì thêm vào
       this.keepImageIds.push(imageId);
     }
+  }
+  toggleSellStatus(car: CarResponseItem): void {
+    this.resetToast();
+    
+    const newSellStatus = car.sellStatus === 0 ? 1 : 0;
+    const dealerId = car.dealerId || this.getCurrentDealerId() || undefined;
+
+    this.carService.updateSellStatus(car.carId, newSellStatus, dealerId).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          // Cập nhật trạng thái ngay lập tức trong giao diện
+          car.sellStatus = newSellStatus;
+          
+          this.toastMessage = `Đã ${newSellStatus === 1 ? 'đánh dấu đã bán' : 'đánh dấu chưa bán'} cho xe "${car.title}"`;
+          this.toastType = 'success';
+          this.showToast = true;
+        } else {
+          this.toastMessage = response.message || 'Cập nhật trạng thái bán thất bại';
+          this.toastType = 'error';
+          this.showToast = true;
+        }
+      },
+      error: (error) => {
+        console.error('Lỗi khi cập nhật trạng thái bán:', error);
+        this.toastMessage = error.error?.message || 'Đã có lỗi xảy ra khi cập nhật trạng thái bán';
+        this.toastType = 'error';
+        this.showToast = true;
+      }
+    });
   }
 
   saveEdit(): void {

@@ -11,6 +11,7 @@ export interface CarResponseItem {
   description: string;
   title: string;
   brandId: string; // Hãng xe
+  brandName: string;
   model: string;
   variant: string; // Phiên bản
   year: number; // Năm sản xuất
@@ -36,13 +37,14 @@ export interface CarResponseItem {
   images: CarImage[];
   store: Store | null
   isFavorite?: boolean; // Trạng thái yêu thích
+  sellStatus: number;
 }
 
-  export interface Store {
-    id: string;
-    storeName: string; // Tên cửa hàng
-    address: string;    // Địa chỉ cửa hàng
-    phone: string;      // Số điện thoại cửa hàng
+export interface Store {
+  id: string;
+  storeName: string; // Tên cửa hàng
+  address: string;    // Địa chỉ cửa hàng
+  phone: string;      // Số điện thoại cửa hàng
 }
 
 export interface CarImage {
@@ -101,13 +103,13 @@ export interface CarUpdatePayload {
   fuelConsumption: number;
   airbags: number;
   registeredUntil: string;
-  dealerId: string; 
+  dealerId: string;
 }
 
 // Giao diện cho payload xóa mềm (soft delete)
 export interface CarSoftDeletePayload {
-  carId: string; 
-  deleted: boolean; 
+  carId: string;
+  deleted: boolean;
 }
 
 // Giao diện cho một đối tượng đại lý (nhận được từ API select)
@@ -157,7 +159,7 @@ export class CarService {
     seats?: number,        // RequestParam
     location?: string      // RequestParam
   ): Observable<CarListResponse> {
-    
+
     let params = new HttpParams();
     params = params.append('page', page.toString());
     params = params.append('size', size.toString());
@@ -168,19 +170,19 @@ export class CarService {
     let headers = new HttpHeaders();
     if (dealerId) {
       // Thêm dealerId vào header (khớp với @RequestHeader)
-      headers = headers.set('dealerId', dealerId); 
+      headers = headers.set('dealerId', dealerId);
     }
 
     // Hàm tiện ích để thêm tham số nếu có giá trị
     const appendParam = (key: string, value: any) => {
-        if (value !== undefined && value !== null && value !== '') {
-            if (typeof value === 'object' && !(value instanceof Date) && !Array.isArray(value)) {
-                 // Ngăn chặn lỗi [object Object] khi có lỗi lập trình
-                 console.error(`Lỗi lập trình: Giá trị cho tham số '${key}' là một object và bị bỏ qua.`);
-                 return;
-            }
-            params = params.append(key, value.toString());
+      if (value !== undefined && value !== null && value !== '') {
+        if (typeof value === 'object' && !(value instanceof Date) && !Array.isArray(value)) {
+          // Ngăn chặn lỗi [object Object] khi có lỗi lập trình
+          console.error(`Lỗi lập trình: Giá trị cho tham số '${key}' là một object và bị bỏ qua.`);
+          return;
         }
+        params = params.append(key, value.toString());
+      }
     };
 
     // Thêm tất cả các tham số RequestParam
@@ -201,13 +203,13 @@ export class CarService {
   }
 
   createCar(formData: FormData, dealerId: string): Observable<any> {
-    let headers = new HttpHeaders();
-    // BẮT BUỘC phải có dealerId trong Header theo curl
-    headers = headers.set('dealerId', dealerId); 
+    let headers = new HttpHeaders();
+    // BẮT BUỘC phải có dealerId trong Header theo curl
+    headers = headers.set('dealerId', dealerId);
 
-    // Không cần set Content-Type: multipart/form-data, HttpClient tự làm việc này khi gửi FormData
-    return this.http.post(`${environment.apiUrl}/car/create`, formData, { headers });
-  }
+    // Không cần set Content-Type: multipart/form-data, HttpClient tự làm việc này khi gửi FormData
+    return this.http.post(`${environment.apiUrl}/car/create`, formData, { headers });
+  }
 
   // --- CÁC HÀM KHÁC GIỮ NGUYÊN (updateCar, deleteCar, getDealersForSelection) ---
 
@@ -217,10 +219,26 @@ export class CarService {
   updateCar(carId: string, formData: FormData, dealerId?: string): Observable<any> {
     let headers = new HttpHeaders();
     if (dealerId) {
-        headers = headers.set('dealerId', dealerId);
+      headers = headers.set('dealerId', dealerId);
     }
     return this.http.post(`${environment.apiUrl}/car/update/${carId}`, formData, { headers });
-}
+  }
+
+  // Cập nhật trạng thái bán xe
+  updateSellStatus(carId: string, sellStatus: number, dealerId?: string): Observable<any> {
+    let headers = new HttpHeaders();
+    if (dealerId) {
+      headers = headers.set('dealerId', dealerId);
+    }
+
+    const params = new HttpParams().set('sellStatus', sellStatus.toString());
+
+    return this.http.post(
+      `${environment.apiUrl}/car/update-sell-status/${carId}`,
+      null,
+      { headers, params }
+    );
+  }
 
 
   /**
@@ -229,11 +247,11 @@ export class CarService {
   deleteCar(carId: string, dealerId?: string): Observable<any> {
     let headers = new HttpHeaders();
     if (dealerId) {
-      headers = headers.set('dealerId', dealerId); 
+      headers = headers.set('dealerId', dealerId);
     }
     const softDeletePayload: CarSoftDeletePayload = {
-        carId: carId,
-        deleted: true 
+      carId: carId,
+      deleted: true
     };
     return this.http.post(`${environment.apiUrl}/car/delete/${carId}`, softDeletePayload, { headers: headers });
   }

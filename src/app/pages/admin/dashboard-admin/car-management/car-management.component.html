@@ -73,7 +73,7 @@
           <tr *ngFor="let car of cars; let i = index">
             <td>{{ i + 1 + currentPage * pageSize }}</td>
             <td>{{ car.title }}</td>
-            <td>{{ car.brandId }}</td>
+            <td>{{ car.brandName }}</td>
             <td>{{ car.model }}</td>
             <td>{{ car.variant }}</td>
             <td>{{ car.price | currency:'VND':'symbol':'1.0-0' }}</td>

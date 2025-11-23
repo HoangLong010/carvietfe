@@ -30,14 +30,6 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="dealer">Đại lý</label>
-                <select id="dealer" [(ngModel)]="filter.dealerId">
-                    <option [ngValue]="null">Tất cả</option>
-                    <option *ngFor="let dealer of dealers" [ngValue]="dealer.id">{{ dealer.username }}</option>
-                </select>
-            </div>
-
             <button class="search-button" (click)="performSearch()">
                 <i class="fas fa-search"></i>
                 Tìm kiếm
@@ -69,6 +61,7 @@
                         <th>Đại lý</th>
                         <th>Năm sản xuất</th>
                         <th>Mô tả</th>
+                        <th>Trạng thái bán</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -76,7 +69,7 @@
                     <tr *ngFor="let car of cars; let i = index">
                         <td>{{ i + 1 + currentPage * pageSize }}</td>
                         <td>{{ car.title }}</td>
-                        <td>{{ car.brandId }}</td>
+                        <td>{{ car.brandName }}</td>
                         <td>{{ car.model }}</td>
                         <td>{{ car.variant }}</td>
                         <td>{{ car.price | currency:'VND':'symbol':'1.0-0' }}</td>
@@ -88,6 +81,11 @@
                         <td>{{ getDealerNameById(car.dealerId) }}</td>
                         <td>{{ car.year }}</td>
                         <td>{{ car.description }}</td>
+                        <td>
+                            <span [ngClass]="car.sellStatus === 1 ? 'status-sold' : 'status-available'">
+                                {{ getCarStatusSell(car.sellStatus) }}
+                            </span>
+                        </td>
                         <td class="action-buttons">
                             <div class="form-row">
                                 <div class="form-group half">
@@ -100,6 +98,14 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
+                                <div class="form-group half">
+                                    <button class="btn-toggle-sell-status" [class.sold]="car.sellStatus === 1"
+                                        [class.available]="car.sellStatus === 0" (click)="toggleSellStatus(car)"
+                                        [title]="car.sellStatus === 1 ? 'Đánh dấu chưa bán' : 'Đánh dấu đã bán'">
+                                        <i [class]="car.sellStatus === 1 ? 'fas fa-undo' : 'fas fa-check'"></i>
+                                    </button>
+                                </div>
+
                             </div>
                         </td>
                     </tr>

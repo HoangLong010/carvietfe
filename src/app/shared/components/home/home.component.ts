@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 10;
   pagesCount: number = 1;
+  currentTotalElementsCount: number = 0;
 
   // Biến filter với các thuộc tính khớp với API
   filter: any = {
@@ -62,13 +63,13 @@ export class HomeComponent implements OnInit {
   }
 
   checkAuthStatus(): void {
-  console.log('=== Auth Status ===');
-  console.log('isLoggedIn:', this.authService.isLoggedIn());
-  console.log('userId:', this.authService.getUserId());
-  console.log('accessToken exists:', !!this.authService.getAccessToken());
-  console.log('userProfile:', this.authService.getUserProfile());
-  console.log('===================');
-}
+    console.log('=== Auth Status ===');
+    console.log('isLoggedIn:', this.authService.isLoggedIn());
+    console.log('userId:', this.authService.getUserId());
+    console.log('accessToken exists:', !!this.authService.getAccessToken());
+    console.log('userProfile:', this.authService.getUserProfile());
+    console.log('===================');
+  }
 
   // Setup event listeners cho các filter trong giao diện
   setupFilterListeners(): void {
@@ -260,6 +261,8 @@ export class HomeComponent implements OnInit {
         this.cars = res.data.content;
         this.currentPage = res.data.currentPage;
         this.pagesCount = res.data.pagesCount || 1;
+        this.currentTotalElementsCount = res.data.currentTotalElementsCount || 0;
+        this.pageSize = res.data.pageSize;
       } else {
         this.cars = [];
       }

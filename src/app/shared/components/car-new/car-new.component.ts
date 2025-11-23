@@ -13,6 +13,7 @@ export class CarNewComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 10;
   pagesCount: number = 1;
+  currentTotalElementsCount: number = 0;
 
   constructor(private carService: CarService, private router: Router) {}
 
@@ -34,6 +35,8 @@ export class CarNewComponent implements OnInit {
         this.cars = res.data.content;
         this.currentPage = res.data.currentPage;
         this.pagesCount = res.data.pagesCount || 1;
+        this.currentTotalElementsCount = res.data.currentTotalElementsCount || 0;
+        this.pageSize = res.data.pageSize;
       }
     });
   }

@@ -55,10 +55,12 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
 @mixin hover-lift {
   transition: transform $transition-fast, box-shadow $transition-fast;
+
   &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: $shadow-md;
   }
+
   &:active:not(:disabled) {
     transform: translateY(0);
   }
@@ -121,7 +123,9 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     @include hover-lift;
     box-shadow: $shadow-sm;
 
-    i { font-size: 1.1rem; }
+    i {
+      font-size: 1.1rem;
+    }
 
     &:hover {
       box-shadow: $shadow-lg;
@@ -131,7 +135,7 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
-    
+
     .btn-create-new {
       width: 100%;
       justify-content: center;
@@ -194,7 +198,8 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         letter-spacing: 0.03em;
       }
 
-      input, select {
+      input,
+      select {
         padding: 11px 14px;
         border: 1.5px solid $border-medium;
         border-radius: $radius-sm;
@@ -231,7 +236,9 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         background: $accent-hover;
       }
 
-      i { font-size: 1rem; }
+      i {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -343,7 +350,8 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     @include flex-center;
     gap: 8px;
 
-    .btn-edit, .btn-delete {
+    .btn-edit,
+    .btn-delete {
       @include flex-center;
       width: 36px;
       height: 36px;
@@ -352,7 +360,9 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       transition: all $transition-fast;
 
-      i { font-size: 15px; }
+      i {
+        font-size: 15px;
+      }
     }
 
     .btn-edit {
@@ -382,7 +392,8 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // Status badges
-.status-new, .status-used {
+.status-new,
+.status-used {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 12px;
@@ -483,7 +494,7 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   // Header section
-  > h2 {
+  >h2 {
     position: sticky;
     top: 0;
     background: linear-gradient(180deg, white, #fafbfc);
@@ -497,7 +508,7 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
   }
 
-  > h3 {
+  >h3 {
     font-size: 1.1rem;
     font-weight: 700;
     color: $text-dark;
@@ -514,8 +525,13 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -523,6 +539,7 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     transform: translateY(20px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -564,7 +581,9 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     padding: 12px 14px;
     border: 1.5px solid $border-medium;
     border-radius: $radius-sm;
@@ -768,8 +787,8 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 @media (max-width: 968px) {
   .modal-content {
     max-width: 95%;
-    
-    > h2 {
+
+    >h2 {
       font-size: 1.3rem;
       padding: 20px 24px;
     }
@@ -806,12 +825,12 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: $radius-lg;
     max-width: 100%;
 
-    > h2 {
+    >h2 {
       font-size: 1.2rem;
       padding: 18px 20px;
     }
 
-    > h3 {
+    >h3 {
       margin: 20px 20px 12px;
       font-size: 1rem;
     }
@@ -844,7 +863,56 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
 
-.text-center { text-align: center; }
-.text-right { text-align: right; }
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.btn-toggle-sell-status {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.sold {
+    background-color: #ffc107; // Màu vàng cho trạng thái đã bán
+    color: #000;
+
+    &:hover {
+      background-color: #e0a800;
+    }
+  }
+
+  &.available {
+    background-color: #28a745; // Màu xanh cho trạng thái chưa bán
+    color: #fff;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  i {
+    margin-right: 4px;
+  }
+}
+
+// Điều chỉnh lại form-row để chứa 3 nút
+.form-row {
+  display: flex;
+  gap: 4px;
+
+  .form-group.half {
+    flex: 1;
+  }
+}
 
 // ==================== END ====================

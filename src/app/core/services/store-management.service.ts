@@ -18,6 +18,7 @@ export interface StoreManagement {
   createdDate: string;
   carSold: number;
   carAvailable: number;
+  status: number; // 1: Hoạt động, 0: Không hoạt động
   totalCars: number;
   totalAppointments: number;
   pendingAppointments: number;
@@ -100,6 +101,18 @@ export class StoreManagementService {
     return this.http.put<ApiResponse>(
       `${environment.apiUrl}/admin/store-management/${storeId}`,
       payload
+    );
+  }
+  /**
+    * Cập nhật trạng thái cửa hàng (duyệt cửa hàng)
+    */
+  updateStoreStatus(storeId: string, status: number): Observable<ApiResponse> {
+    const params = new HttpParams().set('status', status.toString());
+
+    return this.http.post<ApiResponse>(
+      `${environment.apiUrl}/admin/store-management/update-status/${storeId}`,
+      null,
+      { params }
     );
   }
 

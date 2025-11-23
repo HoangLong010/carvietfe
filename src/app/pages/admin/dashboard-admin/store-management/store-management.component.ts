@@ -22,6 +22,7 @@ interface ApiResponse {
   styleUrl: './store-management.component.scss'
 })
 export class StoreManagementComponent implements OnInit {
+
   // Trạng thái phân trang
   currentPage = 0;
   pageSize = 10;
@@ -35,9 +36,9 @@ export class StoreManagementComponent implements OnInit {
     storeName: string;
     address: string;
   } = {
-    storeName: '',
-    address: ''
-  };
+      storeName: '',
+      address: ''
+    };
 
   stores: StoreManagement[] = [];
 
@@ -50,7 +51,7 @@ export class StoreManagementComponent implements OnInit {
   toastType: 'success' | 'error' | 'warning' | 'info' = 'info';
   showToast: boolean = false;
 
-  constructor(private storeManagementService: StoreManagementService) {}
+  constructor(private storeManagementService: StoreManagementService) { }
 
   ngOnInit(): void {
     this.performSearch();
@@ -79,6 +80,14 @@ export class StoreManagementComponent implements OnInit {
         this.showToast = true;
       }
     });
+  }
+
+  getStatus(status: number | null | undefined): string {
+    switch (status) {
+      case 0: return 'Chưa kích hoạt';
+      case 1: return 'Hoạt động';
+      default: return 'Không xác định';
+    }
   }
 
   openEditModal(store: StoreManagement): void {
@@ -150,6 +159,39 @@ export class StoreManagementComponent implements OnInit {
         error: (error) => {
           console.error('Lỗi khi gọi API xóa cửa hàng:', error);
           this.toastMessage = error.error?.message || 'Đã có lỗi xảy ra khi xóa cửa hàng';
+          this.toastType = 'error';
+          this.showToast = true;
+        }
+      });
+    }
+  }
+
+  toggleStoreStatus(store: StoreManagement): void {
+    this.resetToast();
+
+    const newStatus = store.status === 1 ? 0 : 1;
+    const actionName = newStatus === 1 ? 'kích hoạt' : 'vô hiệu hóa';
+
+    // Xác nhận với người dùng
+    if (confirm(`Bạn có chắc muốn ${actionName} cửa hàng "${store.storeName}"?`)) {
+      this.storeManagementService.updateStoreStatus(store.id, newStatus).subscribe({
+        next: (response: ApiResponse) => {
+          if (response.success) {
+            // Cập nhật trạng thái ngay lập tức trong giao diện
+            store.status = newStatus;
+
+            this.toastMessage = `Đã ${actionName} cửa hàng "${store.storeName}" thành công`;
+            this.toastType = 'success';
+            this.showToast = true;
+          } else {
+            this.toastMessage = response.message || `${actionName} cửa hàng thất bại`;
+            this.toastType = 'error';
+            this.showToast = true;
+          }
+        },
+        error: (error) => {
+          console.error('Lỗi khi cập nhật trạng thái cửa hàng:', error);
+          this.toastMessage = error.error?.message || `Đã có lỗi xảy ra khi ${actionName} cửa hàng`;
           this.toastType = 'error';
           this.showToast = true;
         }
