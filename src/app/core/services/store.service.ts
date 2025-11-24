@@ -96,6 +96,16 @@ export interface StoreApiResponse {
   sumTotalTransferMoney: number;
 }
 
+export interface UpdateStoreRequest {
+  storeName?: string;
+  email?: string;
+  address?: string;
+  province?: string;
+  phone?: string;
+  description?: string;
+  website?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -129,4 +139,10 @@ export class StoreService {
   getSelectStore(): Observable<StoreSelectResponse> {
     return this.http.get<StoreSelectResponse>(`${environment.apiUrl}/select/store`);
   }
+
+  updateStore(dealerId: string, request: UpdateStoreRequest): Observable<any> {
+    const url = `${environment.apiUrl}/store/${dealerId}`;
+    return this.http.post<any>(url, request);
+  }
+
 }

@@ -22,8 +22,6 @@ export class CarNewComponent implements OnInit {
   }
 
   loadCars(page: number = 0): void {
-    // FIX: Gửi undefined cho dealerId (Arg 3) và title (Arg 4)
-    // để giá trị 1 (status) nằm đúng ở Arg 5.
     this.carService.getCars(
       page, 
       this.pageSize, 

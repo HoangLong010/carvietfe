@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 
 // Giao diện cho một đối tượng xe nhận được từ API
 export interface CarResponseItem {
+  isExpanded?: boolean;
   carId: string;
   dealerId: string;
   description: string;

@@ -76,6 +76,31 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   line-height: 1.6;
 }
 
+.brand-container {
+  padding: 24px;
+  background: $bg-page;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  color: $text-dark;
+  min-height: 100vh;
+  line-height: 1.6;
+
+  > h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 24px 0;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 640px) {
+    padding: 16px;
+
+    > h2 {
+      font-size: 1.4rem;
+    }
+  }
+}
+
 // ==================== HEADER SECTION ====================
 .header-section {
   background: $card-bg;
@@ -913,6 +938,361 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   .form-group.half {
     flex: 1;
   }
+}
+
+.brand-form {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: $shadow-md;
+  border: 2px solid $primary-light;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $primary;
+    margin: 0 0 24px 0;
+    padding-bottom: 16px;
+    border-bottom: 2px solid $border-light;
+  }
+
+  form {
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: $text-medium;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid $border-medium;
+        border-radius: $radius-sm;
+        font-size: 0.95rem;
+        font-family: inherit;
+        background: white;
+        color: $text-dark;
+        transition: all $transition-fast;
+        box-sizing: border-box;
+
+        &:focus {
+          @include focus-ring;
+        }
+
+        &::placeholder {
+          color: $text-light;
+        }
+      }
+    }
+
+    button {
+      padding: 12px 28px;
+      border-radius: $radius-md;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all $transition-fast;
+      border: none;
+      margin-right: 12px;
+
+      &[type="submit"] {
+        background: linear-gradient(135deg, $primary, $primary-hover);
+        color: white;
+        box-shadow: $shadow-sm;
+        @include hover-lift;
+
+        &:hover {
+          box-shadow: $shadow-md;
+        }
+      }
+
+      &[type="button"] {
+        background: white;
+        color: $text-dark;
+        border: 1.5px solid $border-medium;
+
+        &:hover {
+          background: #f9fafb;
+          border-color: $text-medium;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 20px;
+
+    form {
+      button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==================== BRAND TABLE ====================
+.brand-table {
+  width: 100%;
+  background: $card-bg;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-light;
+  overflow: hidden;
+  border-collapse: collapse;
+
+  thead {
+    background: linear-gradient(180deg, #fafbfc, #f5f6f8);
+
+    th {
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: $text-medium;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid $border-light;
+      white-space: nowrap;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background $transition-fast;
+
+      &:hover {
+        background: #fafbfc;
+      }
+
+      &:not(:last-child) td {
+        border-bottom: 1px solid $border-light;
+      }
+    }
+
+    td {
+      padding: 16px 20px;
+      font-size: 0.92rem;
+      color: $text-dark;
+      vertical-align: middle;
+
+      button {
+        @include flex-center;
+        padding: 8px 16px;
+        border-radius: $radius-sm;
+        border: 1.5px solid;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all $transition-fast;
+        margin-right: 8px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:first-of-type {
+          background: #fff7ed;
+          color: #ea580c;
+          border-color: #fed7aa;
+
+          &:hover {
+            background: #ffedd5;
+            transform: translateY(-2px);
+            box-shadow: $shadow-xs;
+          }
+        }
+
+        &:last-of-type {
+          background: $danger-light;
+          color: $danger;
+          border-color: #fecaca;
+
+          &:hover {
+            background: #fef2f2;
+            transform: translateY(-2px);
+            box-shadow: $shadow-xs;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    thead, tbody, tr, th, td {
+      display: block;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      margin-bottom: 12px;
+      border: 1px solid $border-light;
+      border-radius: $radius-md;
+      padding: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border: none !important;
+      white-space: normal;
+
+      &:before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: $text-medium;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        flex-shrink: 0;
+        margin-right: 12px;
+      }
+
+      button {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+// ==================== PAGINATION ====================
+.pagination {
+  @include flex-center;
+  gap: 16px;
+  margin-top: 24px;
+
+  button {
+    padding: 10px 18px;
+    border: 1.5px solid $border-medium;
+    background: white;
+    color: $text-dark;
+    border-radius: $radius-sm;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover:not(:disabled) {
+      background: $primary;
+      color: white;
+      border-color: $primary;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: #f9fafb;
+      color: $text-light;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  span {
+    font-weight: 600;
+    color: $text-dark;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+
+    button {
+      flex: 1;
+      min-width: 100px;
+    }
+
+    span {
+      width: 100%;
+      text-align: center;
+      order: -1;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+// ==================== DESCRIPTION COLUMN FIX ====================
+.description-wrapper {
+    // 1. Đặt chiều rộng tối đa để không bị vỡ layout bảng
+    max-width: 250px; 
+    min-width: 200px;
+    position: relative;
+
+    .description-content {
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: $text-dark;
+        
+        // 2. Kỹ thuật cắt chữ (Line Clamp)
+        display: -webkit-box;
+        -webkit-line-clamp: 2; // Chỉ hiện tối đa 2 dòng
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all $transition; // Hiệu ứng mượt mà
+    }
+
+    .description-toggle {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $primary; // Dùng màu cam chủ đạo của bạn
+        cursor: pointer;
+        margin-top: 4px;
+        display: inline-block;
+        transition: color $transition-fast;
+
+        &:hover {
+            color: $primary-hover;
+            text-decoration: underline;
+        }
+    }
+
+    // 3. Trạng thái khi bấm "Xem thêm"
+    &.expanded {
+        .description-content {
+            -webkit-line-clamp: unset; // Bỏ giới hạn dòng
+            display: block;
+            overflow: visible;
+        }
+    }
 }
 
 // ==================== END ====================

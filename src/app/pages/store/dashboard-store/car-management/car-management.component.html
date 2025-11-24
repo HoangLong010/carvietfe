@@ -68,7 +68,17 @@
                 <tbody>
                     <tr *ngFor="let car of cars; let i = index">
                         <td>{{ i + 1 + currentPage * pageSize }}</td>
-                        <td>{{ car.title }}</td>
+                        <td>
+                            <div class="description-wrapper" [class.expanded]="car.isExpanded">
+                                <div class="description-content" [title]="car.title">
+                                    {{ car.title }}
+                                </div>
+                                <div class="description-toggle" *ngIf="car.title && car.title.length > 50"
+                                    (click)="car.isExpanded = !car.isExpanded">
+                                    {{ car.isExpanded ? 'Thu gọn' : 'Xem thêm...' }}
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ car.brandName }}</td>
                         <td>{{ car.model }}</td>
                         <td>{{ car.variant }}</td>
@@ -80,7 +90,17 @@
                         </td>
                         <td>{{ getDealerNameById(car.dealerId) }}</td>
                         <td>{{ car.year }}</td>
-                        <td>{{ car.description }}</td>
+                        <td>
+                            <div class="description-wrapper" [class.expanded]="car.isExpanded">
+                                <div class="description-content" [title]="car.description">
+                                    {{ car.description }}
+                                </div>
+                                <div class="description-toggle" *ngIf="car.description && car.description.length > 50"
+                                    (click)="car.isExpanded = !car.isExpanded">
+                                    {{ car.isExpanded ? 'Thu gọn' : 'Xem thêm...' }}
+                                </div>
+                            </div>
+                        </td>
                         <td>
                             <span [ngClass]="car.sellStatus === 1 ? 'status-sold' : 'status-available'">
                                 {{ getCarStatusSell(car.sellStatus) }}

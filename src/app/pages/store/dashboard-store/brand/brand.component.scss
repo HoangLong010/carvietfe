@@ -1,66 +1,482 @@
-// src/app/components/brand/brand.component.scss
+// =====================================================
+// BRAND MANAGEMENT - MODERN SCSS
+// Thiết kế hiện đại, nhất quán với Car Management
+// =====================================================
+
+// ==================== VARIABLES ====================
+$bg-page: #f5f7fa;
+$card-bg: #ffffff;
+$primary: #f26b38;
+$primary-hover: #e65b25;
+$primary-light: #fff4ef;
+$accent: #ff9900;
+$accent-hover: #e68900;
+$text-dark: #2c3e50;
+$text-medium: #546e7a;
+$text-light: #78909c;
+$border-light: #e8eaed;
+$border-medium: #d1d5db;
+$danger: #ef4444;
+$danger-light: #fee;
+$success: #10b981;
+
+// Shadows
+$shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+// Border radius
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 18px;
+
+// Transitions
+$transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ==================== MIXINS ====================
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin focus-ring($color: $primary) {
+  outline: none;
+  border-color: $color;
+  box-shadow: 0 0 0 3px rgba($color, 0.15);
+}
+
+@mixin hover-lift {
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+// ==================== BASE CONTAINER ====================
 .brand-container {
-  padding: 20px;
+  padding: 24px;
+  background: $bg-page;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  color: $text-dark;
+  min-height: 100vh;
+  line-height: 1.6;
 
-  .search-bar {
-    margin-bottom: 20px;
+  > h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 24px 0;
+    letter-spacing: -0.02em;
+  }
 
-    input {
-      margin-right: 10px;
-      padding: 5px;
+  @media (max-width: 640px) {
+    padding: 16px;
+
+    > h2 {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+// ==================== SEARCH BAR ====================
+.search-bar {
+  background: $card-bg;
+  padding: 20px 24px;
+  border-radius: $radius-lg;
+  margin-bottom: 24px;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-light;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 16px;
+    border: 1.5px solid $border-medium;
+    border-radius: $radius-sm;
+    font-size: 0.95rem;
+    background: white;
+    color: $text-dark;
+    transition: all $transition-fast;
+
+    &:focus {
+      @include focus-ring;
     }
 
-    button {
-      margin-right: 10px;
-      padding: 5px 10px;
+    &::placeholder {
+      color: $text-light;
     }
   }
 
-  .brand-form {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-bottom: 20px;
+  button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: $radius-sm;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all $transition-fast;
 
+    &:first-of-type {
+      background: $accent;
+      color: white;
+      @include hover-lift;
+
+      &:hover {
+        background: $accent-hover;
+      }
+    }
+
+    &:last-of-type {
+      background: linear-gradient(135deg, $primary, $primary-hover);
+      color: white;
+      box-shadow: $shadow-sm;
+      @include hover-lift;
+
+      &:hover {
+        box-shadow: $shadow-lg;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    input[type="text"] {
+      width: 100%;
+      min-width: unset;
+    }
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ==================== BRAND FORM ====================
+.brand-form {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: $shadow-md;
+  border: 2px solid $primary-light;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $primary;
+    margin: 0 0 24px 0;
+    padding-bottom: 16px;
+    border-bottom: 2px solid $border-light;
+  }
+
+  form {
     .form-group {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
 
       label {
         display: block;
-        margin-bottom: 5px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: $text-medium;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
       }
 
       input {
         width: 100%;
-        padding: 5px;
+        padding: 12px 14px;
+        border: 1.5px solid $border-medium;
+        border-radius: $radius-sm;
+        font-size: 0.95rem;
+        font-family: inherit;
+        background: white;
+        color: $text-dark;
+        transition: all $transition-fast;
+        box-sizing: border-box;
+
+        &:focus {
+          @include focus-ring;
+        }
+
+        &::placeholder {
+          color: $text-light;
+        }
       }
     }
 
     button {
-      margin-right: 10px;
+      padding: 12px 28px;
+      border-radius: $radius-md;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all $transition-fast;
+      border: none;
+      margin-right: 12px;
+
+      &[type="submit"] {
+        background: linear-gradient(135deg, $primary, $primary-hover);
+        color: white;
+        box-shadow: $shadow-sm;
+        @include hover-lift;
+
+        &:hover {
+          box-shadow: $shadow-md;
+        }
+      }
+
+      &[type="button"] {
+        background: white;
+        color: $text-dark;
+        border: 1.5px solid $border-medium;
+
+        &:hover {
+          background: #f9fafb;
+          border-color: $text-medium;
+        }
+      }
     }
   }
 
-  .brand-table {
-    width: 100%;
-    border-collapse: collapse;
+  @media (max-width: 640px) {
+    padding: 20px;
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
-    }
+    form {
+      button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
 
-    th {
-      background-color: #f2f2f2;
-    }
-  }
-
-  .pagination {
-    margin-top: 20px;
-    text-align: center;
-
-    button {
-      margin: 0 5px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==================== BRAND TABLE ====================
+.brand-table {
+  width: 100%;
+  background: $card-bg;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-light;
+  overflow: hidden;
+  border-collapse: collapse;
+
+  thead {
+    background: linear-gradient(180deg, #fafbfc, #f5f6f8);
+
+    th {
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: $text-medium;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid $border-light;
+      white-space: nowrap;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background $transition-fast;
+
+      &:hover {
+        background: #fafbfc;
+      }
+
+      &:not(:last-child) td {
+        border-bottom: 1px solid $border-light;
+      }
+    }
+
+    td {
+      padding: 16px 20px;
+      font-size: 0.92rem;
+      color: $text-dark;
+      vertical-align: middle;
+
+      button {
+        @include flex-center;
+        padding: 8px 16px;
+        border-radius: $radius-sm;
+        border: 1.5px solid;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all $transition-fast;
+        margin-right: 8px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:first-of-type {
+          background: #fff7ed;
+          color: #ea580c;
+          border-color: #fed7aa;
+
+          &:hover {
+            background: #ffedd5;
+            transform: translateY(-2px);
+            box-shadow: $shadow-xs;
+          }
+        }
+
+        &:last-of-type {
+          background: $danger-light;
+          color: $danger;
+          border-color: #fecaca;
+
+          &:hover {
+            background: #fef2f2;
+            transform: translateY(-2px);
+            box-shadow: $shadow-xs;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    thead, tbody, tr, th, td {
+      display: block;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      margin-bottom: 12px;
+      border: 1px solid $border-light;
+      border-radius: $radius-md;
+      padding: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border: none !important;
+      white-space: normal;
+
+      &:before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: $text-medium;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        flex-shrink: 0;
+        margin-right: 12px;
+      }
+
+      button {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+// ==================== PAGINATION ====================
+.pagination {
+  @include flex-center;
+  gap: 16px;
+  margin-top: 24px;
+
+  button {
+    padding: 10px 18px;
+    border: 1.5px solid $border-medium;
+    background: white;
+    color: $text-dark;
+    border-radius: $radius-sm;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover:not(:disabled) {
+      background: $primary;
+      color: white;
+      border-color: $primary;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: #f9fafb;
+      color: $text-light;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  span {
+    font-weight: 600;
+    color: $text-dark;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+
+    button {
+      flex: 1;
+      min-width: 100px;
+    }
+
+    span {
+      width: 100%;
+      text-align: center;
+      order: -1;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+// ==================== END ====================
