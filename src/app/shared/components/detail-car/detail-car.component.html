@@ -211,8 +211,6 @@
           Đặt lịch xem xe
         </button>
       </div>
-
-      <!-- Modal đặt lịch -->
       <!-- Modal đặt lịch -->
       <div class="modal-overlay" *ngIf="isAppointmentModalOpen" (click)="closeAppointmentModal()">
         <div class="modal-content appointment-modal" (click)="$event.stopPropagation()">
@@ -284,6 +282,144 @@
             </form>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="detail-car-reviews">
+    <!-- Review Statistics -->
+    <div class="review-stats">
+      <div class="stats-header">
+        <h3>Đánh giá từ khách hàng</h3>
+        <button class="btn-write-review" (click)="openReviewModal()">
+          <span class="review-icon">✍️</span>
+          {{ userReview ? 'Sửa đánh giá' : 'Viết đánh giá' }}
+        </button>
+      </div>
+
+      <div class="stats-summary" *ngIf="reviewStats && reviewStats.totalReviews > 0">
+        <div class="average-rating">
+          <div class="rating-number">{{ reviewStats.averageRating | number:'1.1-1' }}</div>
+          <div class="rating-stars">
+            <span *ngFor="let filled of getStarArray(Math!.round(reviewStats.averageRating))"
+              [class.filled]="filled">★</span>
+          </div>
+          <div class="total-reviews">{{ reviewStats.totalReviews }} đánh giá</div>
+        </div>
+
+        <div class="rating-distribution">
+          <div class="rating-bar" *ngFor="let star of [5, 4, 3, 2, 1]">
+            <span class="star-label">{{ star }} ★</span>
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getRatingPercentage(star)"></div>
+            </div>
+            <span class="count">{{ reviewStats.ratingDistribution[star] || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hiển thị khi chưa có đánh giá -->
+      <div class="no-stats" *ngIf="!reviewStats || reviewStats.totalReviews === 0">
+        <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá xe này!</p>
+      </div>
+    </div>
+
+    <!-- User's Review -->
+    <div class="user-review-card" *ngIf="userReview">
+      <div class="user-review-header">
+        <h4>Đánh giá của bạn</h4>
+        <div class="user-review-actions">
+          <button class="btn-edit" (click)="openReviewModal()">Sửa</button>
+          <button class="btn-delete" (click)="deleteReview()">Xóa</button>
+        </div>
+      </div>
+      <div class="review-content">
+        <div class="review-rating">
+          <span *ngFor="let filled of getStarArray(userReview.rating)" class="star filled">★</span>
+        </div>
+        <p class="review-comment">{{ userReview.comment }}</p>
+        <span class="review-date">{{ getTimeAgo(userReview.createdDate) }}</span>
+      </div>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="reviews-list">
+      <h4 class="reviews-title">Tất cả đánh giá ({{ reviewStats?.totalReviews || 0 }})</h4>
+
+      <div class="review-item" *ngFor="let review of reviews">
+        <div class="review-header">
+          <img [src]="review.reviewerAvatar || 'https://via.placeholder.com/50'" [alt]="review.reviewerName"
+            class="reviewer-avatar">
+          <div class="reviewer-info">
+            <div class="reviewer-name">{{ review.reviewerName }}</div>
+            <div class="review-rating">
+              <span *ngFor="let filled of getStarArray(review.rating)" class="star filled">★</span>
+            </div>
+          </div>
+          <span class="review-date">{{ getTimeAgo(review.createdDate) }}</span>
+        </div>
+        <div class="review-content">
+          <p class="review-comment">{{ review.comment }}</p>
+        </div>
+      </div>
+
+      <div class="no-reviews" *ngIf="reviews.length === 0">
+        <p>Chưa có đánh giá nào cho xe này.</p>
+      </div>
+
+      <button class="btn-load-more" *ngIf="currentReviewPage < totalReviewPages - 1" (click)="loadMoreReviews()">
+        Xem thêm đánh giá
+      </button>
+    </div>
+  </div>
+
+  <!-- Review Modal -->
+  <div class="modal-overlay" *ngIf="isReviewModalOpen" (click)="closeReviewModal()">
+    <div class="modal-content review-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ userReview ? 'Chỉnh sửa đánh giá' : 'Viết đánh giá' }}</h2>
+        <button class="close-btn" (click)="closeReviewModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="car-info-mini" *ngIf="car">
+          <img [src]="car.images?.[0]?.imageUrl || 'https://via.placeholder.com/80x60'" [alt]="car.model">
+          <div class="car-name">{{ car.model }} {{ car.year }}</div>
+        </div>
+
+        <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
+          <div class="form-group">
+            <label>Đánh giá của bạn *</label>
+            <div class="star-rating-input">
+              <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star-input"
+                [class.filled]="star <= reviewData.rating || star <= hoveredRating" (click)="setRating(star)"
+                (mouseenter)="setHoveredRating(star)" (mouseleave)="setHoveredRating(0)">
+                ★
+              </span>
+            </div>
+            <div class="rating-label" *ngIf="reviewData.rating > 0">
+              <span *ngIf="reviewData.rating === 5">Xuất sắc</span>
+              <span *ngIf="reviewData.rating === 4">Tốt</span>
+              <span *ngIf="reviewData.rating === 3">Trung bình</span>
+              <span *ngIf="reviewData.rating === 2">Tệ</span>
+              <span *ngIf="reviewData.rating === 1">Rất tệ</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Nhận xét của bạn *</label>
+            <textarea [(ngModel)]="reviewData.comment" name="comment"
+              placeholder="Chia sẻ trải nghiệm của bạn về chiếc xe này..." rows="5" maxlength="1000" required>
+            </textarea>
+            <div class="char-count">{{ reviewData.comment?.length || 0 }}/1000</div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-cancel" (click)="closeReviewModal()">Hủy</button>
+            <button type="submit" class="btn-confirm" [disabled]="!reviewData.rating || !reviewData.comment">
+              {{ userReview ? 'Cập nhật' : 'Gửi đánh giá' }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

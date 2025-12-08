@@ -140,9 +140,25 @@ export class StoreService {
     return this.http.get<StoreSelectResponse>(`${environment.apiUrl}/select/store`);
   }
 
-  updateStore(dealerId: string, request: UpdateStoreRequest): Observable<any> {
-    const url = `${environment.apiUrl}/store/${dealerId}`;
-    return this.http.post<any>(url, request);
+  updateStore(dealerId: string, request: UpdateStoreRequest, logoFile?: File, bannerFile?: File): Observable<any> {
+    const url = `${environment.apiUrl}/store/update/${dealerId}`;
+    
+    const formData = new FormData();
+    
+    // Append JSON data
+    formData.append('request', new Blob([JSON.stringify(request)], {
+      type: 'application/json'
+    }));
+    
+    // Append files if provided
+    if (logoFile) {
+      formData.append('logo', logoFile);
+    }
+    if (bannerFile) {
+      formData.append('banner', bannerFile);
+    }
+
+    return this.http.post<any>(url, formData);
   }
 
 }

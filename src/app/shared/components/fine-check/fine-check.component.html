@@ -19,13 +19,13 @@
         <button 
           class="tab-btn" 
           [class.active]="activeTab === 'csgt'"
-          (click)="activeTab = 'csgt'">
+          (click)="onTabChange('csgt')">
           Tra cứu từ Cục CSGT
         </button>
         <button 
           class="tab-btn" 
           [class.active]="activeTab === 'registry'"
-          (click)="activeTab = 'registry'">
+          (click)="onTabChange('registry')">
           Tra cứu từ Cục Đăng kiểm
         </button>
       </div>
@@ -58,16 +58,53 @@
         </label>
       </div>
 
+      <!-- Plate Color Selection -->
+      <div class="plate-color">
+        <label class="color-label">Màu biển:</label>
+        <div class="color-options">
+          <label class="radio-label">
+            <input type="radio" name="plateColor" value="white" [(ngModel)]="plateColor">
+            <span>Trắng</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="plateColor" value="yellow" [(ngModel)]="plateColor">
+            <span>Vàng</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="plateColor" value="blue" [(ngModel)]="plateColor">
+            <span>Xanh</span>
+          </label>
+        </div>
+      </div>
+
       <!-- Search Input -->
       <div class="search-section">
-        <input 
-          type="text" 
-          class="search-input" 
-          placeholder="99C138957"
-          [(ngModel)]="licensePlate"
-          (keyup.enter)="searchFines()">
-        <button class="search-btn" (click)="searchFines()">
-          <i class="icon-search">→</i>
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Nhập biển số xe (VD: 30A12345)"
+            [(ngModel)]="licensePlate"
+            (keyup.enter)="searchFines()"
+            [disabled]="isLoading">
+          
+          <!-- Tem đăng kiểm cho tab Đăng kiểm -->
+          <input 
+            *ngIf="activeTab === 'registry'"
+            type="text" 
+            class="search-input" 
+            placeholder="Tem đăng kiểm (tùy chọn)"
+            [(ngModel)]="registrationStamp"
+            (keyup.enter)="searchFines()"
+            [disabled]="isLoading">
+        </div>
+        
+        <button 
+          class="search-btn" 
+          (click)="searchFines()"
+          [disabled]="isLoading">
+          <span class="btn-icon" *ngIf="!isLoading">→</span>
+          <span class="btn-text">{{ isLoading ? 'Đang tra cứu...' : 'Tra cứu' }}</span>
         </button>
       </div>
 
@@ -76,58 +113,105 @@
       </p>
 
       <!-- Results Section -->
-      <div class="results-section" *ngIf="searchResults">
-        <div class="success-icon" *ngIf="!searchResults.hasFines">
-          <div class="checkmark-circle">
-            <span class="checkmark">✓</span>
+      <div class="results-section" *ngIf="searchResults && !isLoading">
+        <!-- No Fines -->
+        <div class="no-fines-result" *ngIf="!searchResults.hasFines">
+          <div class="success-icon">
+            <div class="checkmark-circle">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <path d="M15 30 L25 40 L45 20" stroke="white" stroke-width="5" fill="none" 
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="result-message">
+            <h3 class="status-text">Chưa phát hiện lỗi vi phạm</h3>
+            <p class="congratulation">Hãy kiểm tra thường xuyên để cập nhật dữ liệu mới nhất!</p>
           </div>
         </div>
 
-        <div class="result-message">
-          <p class="status-text" *ngIf="!searchResults.hasFines">
-            chưa phát hiện lỗi vi phạm
-          </p>
-          <p class="congratulation" *ngIf="!searchResults.hasFines">
-            Hãy kiểm tra thường xuyên để cập nhật dữ liệu mới nhất !
-          </p>
-
-          <div class="fines-list" *ngIf="searchResults.hasFines">
-            <h3>Danh sách vi phạm</h3>
-            <div class="fine-item" *ngFor="let fine of searchResults.fines">
+        <!-- Has Fines -->
+        <div class="has-fines-result" *ngIf="searchResults.hasFines">
+          <div class="fines-header">
+            <div class="warning-icon">⚠️</div>
+            <h3>Phát hiện {{ searchResults.totalFines }} lỗi vi phạm</h3>
+            <p class="total-amount">Tổng số tiền phạt: <strong>{{ formatCurrency(searchResults.totalAmount!) }}</strong></p>
+          </div>
+          
+          <div class="fines-list">
+            <div class="fine-item" *ngFor="let fine of searchResults.fines; let i = index">
+              <div class="fine-header">
+                <span class="fine-number">#{{ i + 1 }}</span>
+                <span class="fine-status" [class.unpaid]="fine.status === 'Chưa xử lý'">
+                  {{ fine.status || 'Chưa xử lý' }}
+                </span>
+              </div>
               <div class="fine-info">
-                <p><strong>Ngày vi phạm:</strong> {{ fine.date }}</p>
-                <p><strong>Địa điểm:</strong> {{ fine.location }}</p>
-                <p><strong>Hành vi:</strong> {{ fine.violation }}</p>
-                <p><strong>Mức phạt:</strong> {{ fine.amount | currency:'VND' }}</p>
+                <div class="info-row">
+                  <span class="label">Ngày vi phạm:</span>
+                  <span class="value">{{ fine.date }} {{ fine.time }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Địa điểm:</span>
+                  <span class="value">{{ fine.location }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Hành vi:</span>
+                  <span class="value">{{ fine.violation }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Mức phạt:</span>
+                  <span class="value amount">{{ formatCurrency(fine.amount) }}</span>
+                </div>
+                <div class="info-row" *ngIf="fine.decisionNumber">
+                  <span class="label">Số quyết định:</span>
+                  <span class="value">{{ fine.decisionNumber }}</span>
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="update-info" *ngIf="searchResults">
-            <p>Thời gian cập nhật gần nhất: <strong>{{ searchResults.lastUpdate }}</strong></p>
-            <p>Nguồn trả kết quả: <strong>{{ searchResults.source }}</strong></p>
+        <!-- Update Info -->
+        <div class="update-info">
+          <div class="info-item">
+            <span class="icon">🕒</span>
+            <span>Thời gian cập nhật: <strong>{{ searchResults.lastUpdate }}</strong></span>
           </div>
+          <div class="info-item">
+            <span class="icon">📋</span>
+            <span>Nguồn trả kết quả: <strong>{{ searchResults.source }}</strong></span>
+          </div>
+        </div>
 
-          <div class="action-buttons" *ngIf="searchResults">
-            <button class="btn-primary" (click)="updateData()">
-              Cập nhật dữ liệu mới
-            </button>
-            <button class="btn-secondary" (click)="checkOtherPlate()">
-              Kiểm tra biển số khác
-            </button>
-          </div>
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-primary" (click)="updateData()">
+            <span class="btn-icon">🔄</span>
+            Cập nhật dữ liệu mới
+          </button>
+          <button class="btn-secondary" (click)="checkOtherPlate()">
+            <span class="btn-icon">🔍</span>
+            Kiểm tra biển số khác
+          </button>
         </div>
       </div>
 
       <!-- Loading State -->
       <div class="loading" *ngIf="isLoading">
         <div class="spinner"></div>
-        <p>Đang tra cứu...</p>
+        <p class="loading-text">Đang tra cứu dữ liệu...</p>
+        <p class="loading-note">Vui lòng chờ trong giây lát</p>
       </div>
 
       <!-- Error State -->
-      <div class="error-message" *ngIf="errorMessage">
-        <p>{{ errorMessage }}</p>
+      <div class="error-message" *ngIf="errorMessage && !isLoading">
+        <div class="error-icon">⚠️</div>
+        <p class="error-text">{{ errorMessage }}</p>
+        <button class="btn-retry" (click)="searchFines()">
+          <span class="btn-icon">🔄</span>
+          Thử lại
+        </button>
       </div>
     </div>
   </div>
@@ -169,19 +253,15 @@
           <li><strong>Kiểm soát kịp thời các hành vi vi phạm:</strong> Thông qua hệ thống, người điều khiển phương tiện dễ dàng theo dõi, 
             kiểm soát các lỗi vi phạm như vượt đèn đỏ, đi sai làn đường, vi phạm tốc độ,... từ đó chủ động xử lý, nộp phạt theo đúng quy định.</li>
           <li><strong>Đảm bảo điều kiện đăng kiểm xe:</strong> Theo Thông tư 16/2021/TT-BGTVT, phương tiện có vi phạm chưa xử lý sẽ bị từ chối 
-            đăng kiểm. Việc tra cứu phạt nguội giúp chủ xe kịp thời hoàn tất nghĩa vụ pháp lý, tránh gián đoán trong quá trình đăng kiểm định kỳ.</li>
+            đăng kiểm. Việc tra cứu phạt nguội giúp chủ xe kịp thời hoàn tất nghĩa vụ pháp lý, tránh gián đoạn trong quá trình đăng kiểm định kỳ.</li>
           <li><strong>Góp phần nâng cao ý thức chấp hành luật giao thông:</strong> Việc chủ động kiểm tra và theo dõi thông tin vi phạm giúp nâng cao 
             nhận thức pháp luật, đồng thời giảm thiểu rủi ro tai nạn và đảm bảo an toàn giao thông cho bản thân và cộng đồng.</li>
         </ol>
       </div>
 
       <p class="note">
-        👉 Trải nghiệm tiện ích <a href="#">tra cứu phạt nguội</a> ngay trên Carpla.vn
+        👉 Trải nghiệm tiện ích tra cứu phạt nguội ngay trên Carpla.vn
       </p>
-
-      <div class="collapse-btn">
-        <button class="btn-collapse">Thu gọn</button>
-      </div>
     </div>
   </div>
 </div>

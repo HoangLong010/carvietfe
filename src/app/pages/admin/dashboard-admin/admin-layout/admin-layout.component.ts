@@ -8,11 +8,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminLayoutComponent implements OnInit {
   userInfo: any;
+  userName: string = '';
+  createDate: string = '';
+  userAvatar: string = '';
+  address: string = '';
+  phone: string = '';
+  email: string = '';
 
+  constructor() { }
   ngOnInit(): void {
-    const profile = localStorage.getItem('userProfile');
-    if (profile) {
-      this.userInfo = JSON.parse(profile).data;
+    const userProfile = localStorage.getItem('userProfile');
+    if (userProfile) {
+      try {
+        const profile = JSON.parse(userProfile);
+        this.userName = profile?.data?.fullName;
+        this.createDate = profile?.data?.createDate || '';
+        this.address = profile?.data?.address || '';
+        this.userAvatar = profile?.data?.avatar || '';
+        this.phone = profile?.data?.phoneNumber || '';
+        this.email = profile?.data?.email || '';
+      } catch {
+        this.userName = '';
+      }
     }
   }
 }

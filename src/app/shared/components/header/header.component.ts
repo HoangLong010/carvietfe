@@ -10,9 +10,11 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   userName: string = '';
+  createDate: string = ''; // Chứa chuỗi ngày
+  userAvatar: string = ''; // Biến chứa link ảnh
   showUserMenu: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     const userProfile = localStorage.getItem('userProfile');
@@ -20,6 +22,9 @@ export class HeaderComponent implements OnInit {
       try {
         const profile = JSON.parse(userProfile);
         this.userName = profile?.data?.fullName || profile?.data?.username || profile?.data?.email || '';
+        this.createDate = profile?.data?.createDate || '';
+        // Map key 'avatar'
+        this.userAvatar = profile?.data?.avatar || '';
       } catch {
         this.userName = '';
       }

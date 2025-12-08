@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'admin/dashboard-admin', 
     component: DashboardAdminComponent,
     children: [
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: '', redirectTo: 'report', pathMatch: 'full' },
        { path: 'car-management', component: CarManagementComponent },
        { path: 'user-management', component: UserManagementComponent },
        { path: 'report', component: ReportComponent },

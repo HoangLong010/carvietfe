@@ -1,0 +1,234 @@
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-card {
+  background: white;
+  border: 2px solid #1a2a4b;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 16px rgba(26, 42, 75, 0.1);
+  }
+  
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f0f0f0;
+    
+    .car-info-header {
+      h3 {
+        color: #1a2a4b;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
+      
+      .review-date {
+        color: #666;
+        font-size: 14px;
+      }
+    }
+    
+    .rating-display {
+      .star {
+        color: #ddd;
+        font-size: 24px;
+        
+        &.filled {
+          color: #ffd700;
+        }
+      }
+    }
+  }
+  
+  .review-body {
+    .review-comment {
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 16px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+    
+    .review-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      
+      button {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+      
+      .btn-edit {
+        background-color: #ffe600;
+        color: #1a2a4b;
+        border: 2px solid #1a2a4b;
+        
+        &:hover {
+          background-color: #1a2a4b;
+          color: #ffe600;
+        }
+      }
+      
+      .btn-view {
+        background-color: #1a2a4b;
+        color: white;
+        
+        &:hover {
+          background-color: #0d1629;
+        }
+      }
+      
+      .btn-delete {
+        background-color: white;
+        color: #e53935;
+        border: 2px solid #e53935;
+        
+        &:hover {
+          background-color: #e53935;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  .review-edit {
+    .edit-rating,
+    .edit-comment {
+      margin-bottom: 20px;
+      
+      label {
+        display: block;
+        color: #1a2a4b;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+      
+      .star-rating {
+        display: flex;
+        gap: 8px;
+        
+        .star {
+          color: #ddd;
+          font-size: 32px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &.filled {
+            color: #ffd700;
+          }
+          
+          &:hover {
+            transform: scale(1.2);
+          }
+        }
+      }
+      
+      textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #1a2a4b;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        resize: vertical;
+        transition: all 0.3s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: #ffe600;
+          box-shadow: 0 0 0 3px rgba(255, 230, 0, 0.2);
+        }
+      }
+    }
+    
+    .edit-actions {
+      display: flex;
+      gap: 12px;
+      
+      button {
+        flex: 1;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+      }
+      
+      .btn-save {
+        background-color: #4caf50;
+        color: white;
+        
+        &:hover {
+          background-color: #45a049;
+        }
+      }
+      
+      .btn-cancel {
+        background-color: #f5f5f5;
+        color: #333;
+        border: 2px solid #ddd;
+        
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .favorites-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .review-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .review-actions,
+  .edit-actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}

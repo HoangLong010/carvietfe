@@ -16,8 +16,19 @@ export interface FavoriteCarResponse {
   message: string;
 }
 
+export interface CarFavoriteInfo {
+  carId: string;
+  description: string;    // Tên xe
+  brandName: string;
+  model: string;
+  year: number;
+  price: number;
+  location: string;
+  imageUrl?: string;
+}
+
 export interface UserFavoritesResponse {
-  favoriteCarIds: string[];
+  favoriteCars: CarFavoriteInfo[];
   totalFavorites: number;
 }
 

@@ -480,72 +480,75 @@ $transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 // ==================== MODAL ====================
 .modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.5);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.6); // Màu nền tối mờ sang trọng
   backdrop-filter: blur(4px);
-  @include flex-center;
-  z-index: 9999;
-  padding: 20px;
-  animation: fadeIn 0.2s ease;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
-  width: 100%;
-  max-width: 980px;
-  max-height: 90vh;
-  overflow-y: auto;
   background: $card-bg;
-  border-radius: $radius-xl;
-  box-shadow: $shadow-xl;
-  animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 90%;
+  max-width: 900px;
+  height: 90vh; // Cố định chiều cao modal
+  border-radius: 16px;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column; // Layout dọc để cố định header/footer
+  overflow: hidden; // Ngăn scroll ở container ngoài
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
-  // Custom scrollbar
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
+  // 7.1. Modal Header (Cố định)
+  > h2 {
+    padding: 20px 30px;
+    margin: 0;
+    background: #ffffff;
+    // border-bottom: 1px solid $border-color;
+    color: $text-dark;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    // display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  &::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-
-    &:hover {
-      background: #94a3b8;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 24px;
+      background: $primary;
+      margin-right: 12px;
+      border-radius: 2px;
     }
   }
 
-  // Header section
-  >h2 {
-    position: sticky;
-    top: 0;
-    background: linear-gradient(180deg, white, #fafbfc);
-    padding: 24px 28px;
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: $primary;
-    text-align: center;
-    border-bottom: 2px solid $border-light;
-    z-index: 10;
-  }
-
-  >h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: $text-dark;
-    margin: 28px 28px 16px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid $border-light;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
+  // 7.2. Modal Body (Cuộn nội dung)
   form {
-    padding: 20px 28px 28px;
+    flex: 1;
+    overflow-y: auto; // Chỉ cuộn phần nội dung này
+    padding: 30px;
+    
+    // Scrollbar styling
+    &::-webkit-scrollbar { width: 8px; }
+    &::-webkit-scrollbar-track { background: #f1f5f9; }
+    &::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    &::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    > h3 {
+      font-size: 1.1rem;
+      color: $text-medium;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 24px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid $primary-light;
+      
+      &:first-of-type { margin-top: 0; }
+    }
   }
 }
 

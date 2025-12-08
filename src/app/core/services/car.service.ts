@@ -43,6 +43,10 @@ export interface CarResponseItem {
 
 export interface Store {
   id: string;
+  userId: string;
+  logoUrl: string;
+  carSold: number;
+  carAvailable: number;
   storeName: string; // Tên cửa hàng
   address: string;    // Địa chỉ cửa hàng
   phone: string;      // Số điện thoại cửa hàng

@@ -16,7 +16,7 @@ export interface UserResponseItem {
   status: number;
   createdDate: string;
   modifiedDate: string;
-  accountType: number; 
+  accountType: number;
 }
 
 export interface UserResponsePage {
@@ -33,11 +33,11 @@ export interface UserResponsePage {
   providedIn: 'root'
 })
 export class AccountUserService {
- 
-  private  apiGetAll= `${environment.apiUrl}/user/get-all`;
+
+  private apiGetAll = `${environment.apiUrl}/user/get-all`;
   private apiUpdateUser = `${environment.apiUrl}/user/update`
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUsers(
     page: number,
@@ -64,6 +64,21 @@ export class AccountUserService {
   }
 
   updateUser(userId: string, data: any): Observable<any> {
-  return this.http.post(`${this.apiUpdateUser}/${userId}`, data);
-}
+    return this.http.post(`${this.apiUpdateUser}/${userId}`, data);
+  }
+
+  updateUserWithAvatar(userId: string, userData: any, avatarFile?: File): Observable<any> {
+    debugger;
+    const formData = new FormData();
+
+    const dataBlob = new Blob([JSON.stringify(userData)], { type: 'application/json' });
+    formData.append('data', dataBlob);
+
+    // Add avatar if provided
+    if (avatarFile) {
+      formData.append('avatar', avatarFile);
+    }
+
+    return this.http.post(`${this.apiUpdateUser}/${userId}`, formData);
+  }
 }

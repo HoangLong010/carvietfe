@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/enviroment';
 import { AuthService } from '../../../core/services/auth.service';
 import { AppointmentService, BookAppointmentRequest, TimeSlotResponse } from '../../../core/services/appointment.service';
+import { CreateReviewRequest, ReviewResponse, ReviewService, ReviewStatistics } from '../../../core/services/review.service';
 
 // Định nghĩa giao diện ảnh để TypeScript biết kiểu dữ liệu
 interface CarImage {
@@ -52,6 +53,10 @@ interface StoreDetail {
   carsSelling: number; // Thêm trường giả định
   carsSold: number; // Thêm trường giả định
 }
+interface ReviewData {
+  rating: number;
+  comment: string;
+}
 
 @Component({
   selector: 'app-detail-car',
@@ -87,12 +92,30 @@ export class DetailCarComponent implements OnInit {
   };
   selectedSlot: TimeSlotResponse | null = null;
 
+  // Reviews
+
+
+  reviews: ReviewResponse[] = [];
+  reviewStats: ReviewStatistics | null = null;
+  userReview: ReviewResponse | null = null;
+  isReviewModalOpen: boolean = false;
+  currentReviewPage: number = 0;
+  totalReviewPages: number = 0;
+  reviewData: ReviewData = {
+    rating: 0,
+    comment: ''
+  };
+  hoveredRating: number = 0;
+  Math = Math; // Để dùng Math trong template
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
     private appointmentService: AppointmentService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private reviewService: ReviewService) {
+
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -124,14 +147,19 @@ export class DetailCarComponent implements OnInit {
             if (this.car && this.car.images && this.car.images.length > 0) {
               this.currentImageIndex = 0;
             }
+            this.loadCurrentUser();
+            this.setMinDate();
+            this.loadReviewStatistics();
+            this.Math = Math; // Thêm dòng này để sử dụng Math trong template
+            this.loadReviews();
+            this.checkUserReview();
           },
           error: (err) => console.error('Lỗi khi tải chi tiết xe:', err)
         });
       }
     });
 
-    this.loadCurrentUser();
-    this.setMinDate();
+
   }
 
   // --- HÀM CHO SLIDER ẢNH CHÍNH ---
@@ -302,6 +330,240 @@ export class DetailCarComponent implements OnInit {
     const minute = timeArray[1].toString().padStart(2, '0');
     return `${hour}:${minute}`;
   }
+
+  // Reviews
+  loadReviewStatistics() {
+    if (!this.car) {
+      console.log('Car chưa load, bỏ qua load review stats');
+      return;
+    }
+
+    console.log('Loading review statistics for car:', this.car.id);
+
+    this.reviewService.getReviewStatistics(this.car.id).subscribe({
+      next: (response) => {
+        console.log('Review stats response:', response);
+        if (response.success) {
+          this.reviewStats = response.data;
+          console.log('Review stats loaded:', this.reviewStats);
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải thống kê đánh giá:', err);
+      }
+    });
+  }
+
+  loadReviews(page: number = 0) {
+    debugger;
+    if (!this.car) {
+      console.log('Car chưa load, bỏ qua load reviews');
+      return;
+    }
+
+    console.log('Loading reviews for car:', this.car.id, 'page:', page);
+
+    this.reviewService.getReviewsByCarId(this.car.id, page, 5).subscribe({
+      next: (response) => {
+        console.log('Reviews response:', response);
+        if (response.success) {
+          this.reviews = response.data.content;
+          this.currentReviewPage = response.data.number;
+          this.totalReviewPages = response.data.totalPages;
+          console.log('Reviews loaded:', this.reviews.length);
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải đánh giá:', err);
+      }
+    });
+  }
+
+  checkUserReview() {
+    if (!this.car || !this.authService.isLoggedIn()) {
+      console.log('Không check user review: car hoặc chưa login');
+      return;
+    }
+
+    console.log('Checking user review for car:', this.car.id);
+
+    this.reviewService.getUserReviewForCar(this.car.id).subscribe({
+      next: (response) => {
+        console.log('User review response:', response);
+        if (response.success && response.data) {
+          this.userReview = response.data;
+          console.log('User already reviewed:', this.userReview);
+        } else {
+          this.userReview = null;
+          console.log('User has not reviewed yet');
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi kiểm tra đánh giá:', err);
+        this.userReview = null;
+      }
+    });
+  }
+
+  openReviewModal() {
+    if (!this.authService.isLoggedIn()) {
+      alert('Vui lòng đăng nhập để đánh giá');
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    if (this.userReview) {
+      // Nếu đã đánh giá, load dữ liệu cũ
+      this.reviewData = {
+        rating: this.userReview.rating,
+        comment: this.userReview.comment || ''
+      };
+    } else {
+      // Reset form
+      this.reviewData = {
+        rating: 0,
+        comment: ''
+      };
+    }
+
+    this.isReviewModalOpen = true;
+  }
+  closeReviewModal() {
+    this.isReviewModalOpen = false;
+    this.hoveredRating = 0;
+  }
+
+  setRating(rating: number) {
+    this.reviewData.rating = rating;
+  }
+
+  setHoveredRating(rating: number) {
+    this.hoveredRating = rating;
+  }
+
+  submitReview() {
+    if (!this.reviewData.rating || this.reviewData.rating < 1) {
+      alert('Vui lòng chọn số sao đánh giá');
+      return;
+    }
+
+    if (!this.reviewData.comment || this.reviewData.comment.trim() === '') {
+      alert('Vui lòng nhập nội dung đánh giá');
+      return;
+    }
+
+    if (!this.car) {
+      alert('Không tìm thấy thông tin xe');
+      return;
+    }
+
+    if (this.userReview) {
+      // Update existing review
+      console.log('Updating review:', this.userReview.id, this.reviewData);
+
+      this.reviewService.updateReview(
+        this.userReview.id,
+        this.reviewData.rating,
+        this.reviewData.comment
+      ).subscribe({
+        next: (response) => {
+          console.log('Update review response:', response);
+          if (response.success) {
+            alert('Cập nhật đánh giá thành công!');
+            this.closeReviewModal();
+            this.loadReviewStatistics();
+            this.loadReviews();
+            this.checkUserReview();
+          }
+        },
+        error: (err) => {
+          console.error('Lỗi khi cập nhật đánh giá:', err);
+          alert(err.error?.message || 'Cập nhật đánh giá thất bại. Vui lòng thử lại.');
+        }
+      });
+    } else {
+      // Create new review
+      console.log('Creating review:', this.car.id, this.reviewData);
+
+      this.reviewService.createReview(
+        this.car.id,
+        this.reviewData.rating,
+        this.reviewData.comment
+      ).subscribe({
+        next: (response) => {
+          console.log('Create review response:', response);
+          if (response.success) {
+            alert('Đánh giá thành công!');
+            this.closeReviewModal();
+            this.loadReviewStatistics();
+            this.loadReviews();
+            this.checkUserReview();
+          }
+        },
+        error: (err) => {
+          console.error('Lỗi khi tạo đánh giá:', err);
+          alert(err.error?.message || 'Đánh giá thất bại. Vui lòng thử lại.');
+        }
+      });
+    }
+  }
+
+
+  deleteReview() {
+    if (!this.userReview) return;
+
+    if (!confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) return;
+
+    console.log('Deleting review:', this.userReview.id);
+
+    this.reviewService.deleteReview(this.userReview.id).subscribe({
+      next: (response) => {
+        console.log('Delete review response:', response);
+        if (response.success) {
+          alert('Xóa đánh giá thành công!');
+          this.userReview = null;
+          this.loadReviewStatistics();
+          this.loadReviews();
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi xóa đánh giá:', err);
+        alert(err.error?.message || 'Xóa đánh giá thất bại. Vui lòng thử lại.');
+      }
+    });
+  }
+
+  getStarArray(rating: number): boolean[] {
+    return Array(5).fill(false).map((_, i) => i < rating);
+  }
+
+  getRatingPercentage(star: number): number {
+    if (!this.reviewStats || this.reviewStats.totalReviews === 0) return 0;
+    const count = this.reviewStats.ratingDistribution[star] || 0;
+    return (count / this.reviewStats.totalReviews) * 100;
+  }
+
+  loadMoreReviews() {
+    if (this.currentReviewPage < this.totalReviewPages - 1) {
+      this.loadReviews(this.currentReviewPage + 1);
+    }
+  }
+
+  getTimeAgo(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 60) return `${diffMins} phút trước`;
+    if (diffHours < 24) return `${diffHours} giờ trước`;
+    if (diffDays < 30) return `${diffDays} ngày trước`;
+    return date.toLocaleDateString('vi-VN');
+  }
+
+
 
 
 

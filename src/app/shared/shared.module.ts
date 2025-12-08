@@ -19,6 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ChatComponent } from './components/chat/chat.component';
 import { UserAppointmentsComponent } from './components/user-appointments/user-appointments.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { MyFavoritesComponent } from './components/my-favorites/my-favorites.component';
+import { MyReviewsComponent } from './components/my-reviews/my-reviews.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { LoadingComponent } from './components/loading/loading.component';
     FineCheckComponent,
     ChatComponent,
     UserAppointmentsComponent,
-    LoadingComponent
+    LoadingComponent,
+    MyFavoritesComponent,
+    MyReviewsComponent
   ],
   imports: [
     CommonModule,

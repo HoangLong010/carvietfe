@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'dashboard-store', 
     component: DashboardStoreComponent,
   children: [
+    { path: '', redirectTo: 'report', pathMatch: 'full' },
     { path: 'car-management', component: CarManagementComponent },
     { path: 'history', component: HistoryComponent },
     { path: 'report', component: ReportComponent },

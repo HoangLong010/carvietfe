@@ -13,6 +13,8 @@ import { FineCheckComponent } from './shared/components/fine-check/fine-check.co
 import { ChatComponent } from './shared/components/chat/chat.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { UserAppointmentsComponent } from './shared/components/user-appointments/user-appointments.component';
+import { MyFavoritesComponent } from './shared/components/my-favorites/my-favorites.component';
+import { MyReviewsComponent } from './shared/components/my-reviews/my-reviews.component';
 
 const routes: Routes = [
   {
@@ -53,6 +55,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'store', component: StoreComponent },
   { path: 'detail-store/:userId', component: DetailStoreComponent },
+  { path: 'my-favorites', component: MyFavoritesComponent },
+  { path: 'my-reviews', component: MyReviewsComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'stores', loadChildren: () => import('./pages/store/store.module').then(m => m.StoreModule) }
 ];

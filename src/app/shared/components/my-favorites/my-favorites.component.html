@@ -1,0 +1,86 @@
+<app-header></app-header>
+<div class="favorites-container">
+  <div class="page-header">
+    <h1>Quản lý xe yêu thích</h1>
+    <p>Danh sách các xe bạn đã yêu thích</p>
+    <div class="favorites-count" *ngIf="favoriteCars.length > 0">
+      Tổng số: {{favoriteCars.length}} xe
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Đang tải...</p>
+  </div>
+
+  <div *ngIf="!loading && errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && favoriteCars.length === 0" class="empty-state">
+    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+    <h3>Chưa có xe yêu thích</h3>
+    <p>Bạn chưa thêm xe nào vào danh sách yêu thích</p>
+    <button class="btn-primary" routerLink="/car-old">Khám phá xe ngay</button>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && favoriteCars.length > 0" class="favorites-grid">
+    <div *ngFor="let car of favoriteCars" class="favorite-card">
+      <!-- <div class="card-image">
+        <img [src]="getCarImage(car)" [alt]="car.description" class="car-img"> -->
+        <!-- <div class="favorite-badge"> -->
+          <!-- <svg width="20" height="20" viewBox="0 0 24 24" fill="#e53935">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg> -->
+        <!-- </div> -->
+      <!-- </div> -->
+
+      <div class="card-body">
+        <h3 class="car-name">{{ car.description }}</h3>
+        <p class="car-model" *ngIf="car.brandName || car.model">
+          <span *ngIf="car.brandName">{{ car.brandName }}</span>
+          <span *ngIf="car.model"> - {{ car.model }}</span>
+        </p>
+        <div class="car-specs">
+          <span class="spec" *ngIf="car.year">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {{ car.year }}
+          </span>
+          <span class="spec" *ngIf="car.location">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            {{ car.location }}
+          </span>
+        </div>
+        <p class="car-price" *ngIf="car.price">
+          {{ formatPrice(car.price) }} VNĐ
+        </p>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-view" (click)="viewCarDetail(car.carId)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          Xem chi tiết
+        </button>
+        <button class="btn-remove" (click)="removeFavorite(car.carId)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

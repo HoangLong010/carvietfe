@@ -20,6 +20,11 @@ interface RegisterDealer {
   address: string;
 }
 
+export interface ResetPasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +34,7 @@ export class AuthService {
   private apiRegisterDealer = `${environment.apiUrl}/register/dealer`;
   private apiGetProfile = `${environment.apiUrl}/profile`;
   private apiSelectListDealer = `${environment.apiUrl}/dealer/select`;
+  private apiResetPassword = `${environment.apiUrl}/reset-password`;
   
   constructor(private http: HttpClient) { }
 
@@ -38,6 +44,16 @@ export class AuthService {
 
   registerDealer(dealerData: RegisterDealer): Observable<any> {
     return this.http.post<any>(this.apiRegisterDealer, dealerData);
+  }
+
+  changePassword(data: ResetPasswordRequest): Observable<any> {
+    const token = this.getAccessToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<any>(this.apiResetPassword, data, { headers });
   }
 
   login(credentials: { username: string, password: string }): Observable<any> {

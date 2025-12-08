@@ -1,62 +1,92 @@
 <header>
-        <div class="header-top">
-            <nav class="header-top-nav">
-                <ul>
-                    <li><a href="#">Quy định & chính sách</a></li>
-                    <li><a href="#">Về chúng tôi</a></li>
-                    <li><a href="#">Quy chế hoạt động</a></li>
-                </ul>
-                <div class="user-info" style="position: relative;">
-                    <a href="#">Kênh người bán</a>
-                    <span class="test" (click)="toggleUserMenu()" style="cursor:pointer;user-select:none;">
-                        {{ userName || 'Tài khoản' }}
-                        <svg style="margin-left:4px;vertical-align:middle;" width="14" height="14" viewBox="0 0 24 24"><path fill="#1a2a4b" d="M7 10l5 5 5-5z"/></svg>
-                    </span>
-                    <div *ngIf="showUserMenu" class="user-menu-dropdown">
-                        <div class="user-menu-header">
-                            <span class="user-avatar"><svg width="32" height="32" viewBox="0 0 24 24"><circle cx="12" cy="7" r="5" fill="#ffe600" stroke="#1a2a4b" stroke-width="2"/><path d="M2 22c0-4.418 3.582-8 8-8h4c4.418 0 8 3.582 8 8" fill="#ffe600" stroke="#1a2a4b" stroke-width="2"/></svg></span>
-                            <div>
-                                <div style="font-weight:bold;font-size:18px;">{{ userName }}</div>
-                                <div style="font-size:13px;color:#444;">Tham gia từ 15/07/2025</div>
+    <div class="header-top">
+        <nav class="header-top-nav">
+            <ul>
+                <li><a href="#">Quy định & chính sách</a></li>
+                <li><a href="#">Về chúng tôi</a></li>
+                <li><a href="#">Quy chế hoạt động</a></li>
+            </ul>
+            <div class="user-info" style="position: relative;">
+                <a href="#">Kênh người bán</a>
+                <span class="test" (click)="toggleUserMenu()" style="cursor:pointer;user-select:none;">
+                    {{ userName || 'Tài khoản' }}
+                    <svg style="margin-left:4px;vertical-align:middle;" width="14" height="14" viewBox="0 0 24 24">
+                        <path fill="#1a2a4b" d="M7 10l5 5 5-5z" />
+                    </svg>
+                </span>
+                <div *ngIf="showUserMenu" class="user-menu-dropdown">
+                    <div class="user-menu-header">
+                        <span class="user-avatar">
+                            <img *ngIf="userAvatar" [src]="userAvatar" alt="Avatar"
+                                style="width:32px; height:32px; border-radius: 50%; object-fit: cover; border: 2px solid #1a2a4b;">
+
+                            <svg *ngIf="!userAvatar" width="32" height="32" viewBox="0 0 24 24">
+                                <circle cx="12" cy="7" r="5" fill="#ffe600" stroke="#1a2a4b" stroke-width="2" />
+                                <path d="M2 22c0-4.418 3.582-8 8-8h4c4.418 0 8 3.582 8 8" fill="#ffe600"
+                                    stroke="#1a2a4b" stroke-width="2" />
+                            </svg>
+                        </span>
+
+                        <div>
+                            <div style="font-weight:bold;font-size:18px;">{{ userName }}</div>
+                            <div style="font-size:13px;color:#444;">
+                                Tham gia từ {{ createDate | date:'dd/MM/yyyy' }}
                             </div>
                         </div>
-                        <div class="user-menu-action" (click)="goToProfile()">
-                            <svg width="18" height="18" style="vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4" fill="#1a2a4b"/><path d="M2 22c0-4.418 3.582-8 8-8h4c4.418 0 8 3.582 8 8" fill="none" stroke="#1a2a4b" stroke-width="2"/></svg>
-                            Cài đặt tài khoản
-                        </div>
-                        <div class="user-menu-action logout" (click)="logout()">
-                            <svg width="18" height="18" style="vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24"><path d="M16 17l5-5-5-5M21 12H9" stroke="#e53935" stroke-width="2" fill="none"/><path d="M4 4v16h8" stroke="#e53935" stroke-width="2" fill="none"/></svg>
-                            Đăng xuất
-                        </div>
+                    </div>
+                    <div class="user-menu-action" (click)="goToProfile()">
+                        <svg width="18" height="18" style="vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24">
+                            <circle cx="12" cy="7" r="4" fill="#1a2a4b" />
+                            <path d="M2 22c0-4.418 3.582-8 8-8h4c4.418 0 8 3.582 8 8" fill="none" stroke="#1a2a4b"
+                                stroke-width="2" />
+                        </svg>
+                        Cài đặt tài khoản
+                    </div>
+                    <div class="user-menu-action logout" (click)="logout()">
+                        <svg width="18" height="18" style="vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24">
+                            <path d="M16 17l5-5-5-5M21 12H9" stroke="#e53935" stroke-width="2" fill="none" />
+                            <path d="M4 4v16h8" stroke="#e53935" stroke-width="2" fill="none" />
+                        </svg>
+                        Đăng xuất
                     </div>
                 </div>
-            </nav>
-        </div>
-
-        <div class="header-main">
-            <div class="header-main-content">
-                <a href="#" class="logo">
-                    <img src="https://e-cdn.carpla.vn/carpla-ecom/carplaprod/_next/static/media/logo.8ab5e2fa.svg" alt="Carpla Logo"> 
-                </a>
-                <div class="slogan">MUA BÁN XE CHÍNH HÃNG, NHANH CHÓNG VÀ TIN CẬY</div>
-            </div>
-        </div>
-
-        <nav class="main-nav">
-            <div class="main-nav-list">
-                <div class="menu-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                    <span>DANH MỤC</span>
-                </div>
-                <ul>
-                    <li><a routerLink="/car-old" routerLinkActive="active">Xe cũ</a></li>
-                    <li><a routerLink="/car-new" routerLinkActive="active">Xe mới</a></li>
-                    <li><a href="#">Xe đã bán</a></li>
-                    <li><a routerLink="/store" routerLinkActive="active">Cửa hàng</a></li>
-                    <li><a href="#">Phụ kiện ô tô</a></li>
-                    <li><a routerLink="/user-appointments" routerLinkActive="active">Lịch sử đặt xe</a></li>
-                    <li><a href="/fine-check">Tra cứu phạt nguội</a></li>
-                </ul>
             </div>
         </nav>
-    </header>
+    </div>
+
+    <div class="header-main">
+        <div class="header-main-content">
+            <a href="#" class="logo">
+                <img src="https://e-cdn.carpla.vn/carpla-ecom/carplaprod/_next/static/media/logo.8ab5e2fa.svg"
+                    alt="Carpla Logo">
+            </a>
+            <div class="slogan">MUA BÁN XE CHÍNH HÃNG, NHANH CHÓNG VÀ TIN CẬY</div>
+        </div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="main-nav-list">
+            <div class="menu-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-menu">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y6="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <span>DANH MỤC</span>
+            </div>
+            <ul>
+                <li><a routerLink="/car-old" routerLinkActive="active">Xe cũ</a></li>
+                <li><a routerLink="/car-new" routerLinkActive="active">Xe mới</a></li>
+                <li><a href="#">Xe đã bán</a></li>
+                <li><a routerLink="/store" routerLinkActive="active">Cửa hàng</a></li>
+                <li><a href="#">Phụ kiện ô tô</a></li>
+                <li><a routerLink="/user-appointments" routerLinkActive="active">Lịch sử đặt xe</a></li>
+                <li><a routerLink="/my-favorites" routerLinkActive="active">Quản lý yêu thích</a></li>
+                <li><a routerLink="/my-reviews" routerLinkActive="active">Quản lý đánh giá</a></li>
+                <li><a href="/fine-check">Tra cứu phạt nguội</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>

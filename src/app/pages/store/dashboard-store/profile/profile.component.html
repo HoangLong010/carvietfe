@@ -110,41 +110,106 @@
   </div>
 </div>
 
-<div class="modal-overlay" *ngIf="isEditStoreModalOpen">
-  <div class="modal-container">
+<!-- Modal Update Store -->
+<div class="modal" [class.show]="isEditStoreModalOpen">
+  <div class="modal-content">
     <div class="modal-header">
-      <h3>Cập nhật thông tin Store</h3>
-      <button class="close-btn" (click)="closeStoreUpdateModal()"><i class="bi bi-x-lg"></i></button>
+      <h2>Cập nhật thông tin cửa hàng</h2>
+      <button type="button" class="close-btn" (click)="closeStoreUpdateModal()">×</button>
     </div>
-    <div class="modal-body">
+    
+    <form (ngSubmit)="onSubmitUpdateStore()">
       <div class="form-group">
         <label>Tên cửa hàng</label>
-        <input type="text" [(ngModel)]="storeUpdateData.storeName" placeholder="Nhập tên cửa hàng">
+        <input type="text" [(ngModel)]="storeUpdateData.storeName" name="storeName">
       </div>
+
+      <div class="form-group">
+        <label>Địa chỉ</label>
+        <input type="text" [(ngModel)]="storeUpdateData.address" name="address">
+      </div>
+
+      <div class="form-group">
+        <label>Số điện thoại</label>
+        <input type="text" [(ngModel)]="storeUpdateData.phone" name="phone">
+      </div>
+
       <div class="form-group">
         <label>Email</label>
-        <input type="text" [(ngModel)]="storeUpdateData.email" placeholder="Nhập email">
+        <input type="email" [(ngModel)]="storeUpdateData.email" name="email">
       </div>
+
       <div class="form-group">
-        <label></label>
-        <input type="text" [(ngModel)]="storeUpdateData.address" placeholder="Nhập địa chỉ">
+        <label>Tỉnh/Thành phố</label>
+        <input type="text" [(ngModel)]="storeUpdateData.province" name="province">
       </div>
+
       <div class="form-group">
-        <label>Tỉnh thành phố</label>
-        <input type="text" [(ngModel)]="storeUpdateData.province" placeholder="Nhập tỉnh/thành phố">
+        <label>Mô tả</label>
+        <textarea [(ngModel)]="storeUpdateData.description" name="description" rows="3"></textarea>
       </div>
-      <div class="form-group">
-        <label>Hotline</label>
-        <input type="text" [(ngModel)]="storeUpdateData.phone" placeholder="Nhập số điện thoại">
-      </div>
+
       <div class="form-group">
         <label>Website</label>
-        <input type="text" [(ngModel)]="storeUpdateData.website" placeholder="Nhập website">
+        <input type="text" [(ngModel)]="storeUpdateData.website" name="website">
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" (click)="closeStoreUpdateModal()">Hủy</button>
-      <button class="btn-save" (click)="onSubmitUpdateStore()">Lưu thay đổi</button>
-    </div>
+
+      <!-- Upload Logo -->
+      <div class="form-group">
+        <label>Logo Cửa Hàng</label>
+        <div class="upload-section">
+          <div class="image-preview">
+            <img [src]="logoPreview || 'assets/images/default-logo.png'" 
+                 alt="Logo preview" 
+                 class="preview-image">
+            <button *ngIf="selectedLogoFile" type="button" class="remove-image-btn" (click)="removeSelectedLogo()">
+              ×
+            </button>
+          </div>
+          <input type="file" 
+                 #logoInput 
+                 (change)="onLogoSelected($event)" 
+                 accept="image/*" 
+                 hidden>
+          <button type="button" 
+                  class="btn btn-outline-primary btn-sm"
+                  (click)="logoInput.click()">
+            {{ selectedLogoFile ? 'Thay đổi Logo' : 'Chọn Logo' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload Banner -->
+      <div class="form-group">
+        <label>Banner Cửa Hàng</label>
+        <div class="upload-section">
+          <div class="image-preview banner-preview">
+            <img [src]="bannerPreview || 'assets/images/default-banner.png'" 
+                 alt="Banner preview" 
+                 class="preview-image">
+            <button *ngIf="selectedBannerFile" type="button" class="remove-image-btn" (click)="removeSelectedBanner()">
+              ×
+            </button>
+          </div>
+          <input type="file" 
+                 #bannerInput 
+                 (change)="onBannerSelected($event)" 
+                 accept="image/*" 
+                 hidden>
+          <button type="button" 
+                  class="btn btn-outline-primary btn-sm"
+                  (click)="bannerInput.click()">
+            {{ selectedBannerFile ? 'Thay đổi Banner' : 'Chọn Banner' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeStoreUpdateModal()">Hủy</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Đang xử lý...' : 'Cập nhật' }}
+        </button>
+      </div>
+    </form>
   </div>
 </div>
