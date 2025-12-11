@@ -24,10 +24,9 @@ interface ApiResponse {
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  // Các biến để quản lý toast notification
-  toastMessage: string = ''; // Nội dung thông báo hiển thị trên toast
-  toastType: 'success' | 'error' | 'warning' | 'info' = 'error'; // Loại thông báo (quyết định màu sắc)
-  showToast: boolean = false; // Biến kiểm soát việc hiển thị/ẩn toast
+  toastMessage: string = ''; 
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'error';
+  showToast: boolean = false; 
 
   constructor(
     private fb: FormBuilder,
@@ -48,10 +47,8 @@ export class LoginComponent implements OnInit {
     this.showToast = false;
 
     if (this.loginForm.valid) {
-      // Gọi service đăng nhập với giá trị từ form
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: ApiResponse) => { // Ép kiểu response về ApiResponse
-          // Dựa vào 'code' trong response để xác định loại thông báo và nội dung
           if (response.code === 200) {
           this.toastMessage = response.message;
           this.toastType = 'success';
@@ -90,21 +87,15 @@ export class LoginComponent implements OnInit {
         }
           else if (response.code === 400) {
             this.toastMessage = response.message || 'Đăng nhập thất bại.'; // Lấy message từ backend, hoặc dùng mặc định
-            this.toastType = 'error'; // Đặt loại là 'error' (màu đỏ)
+            this.toastType = 'error';
             this.showToast = true; // Hiển thị toast
-            console.error('Đăng nhập thất bại:', response.message);
           } else {
-            // Xử lý các mã lỗi khác nếu có (ví dụ: 500 Internal Server Error)
             this.toastMessage = response.message || 'Đã xảy ra lỗi không xác định.';
             this.toastType = 'warning'; // Có thể dùng 'warning' cho các lỗi không mong đợi
             this.showToast = true;
-            console.warn('Response không xác định:', response);
           }
         },
         error: (error) => {
-          console.error('Lỗi khi gọi API đăng nhập:', error);
-          // Xử lý lỗi từ HTTP (ví dụ: lỗi mạng, server không phản hồi, status code khác 2xx)
-          // Kiểm tra cấu trúc lỗi từ backend, ví dụ error.error.message
           if (error.error && error.error.message) {
             this.toastMessage = error.error.message; // Lấy message từ error.error nếu có
           } else {
@@ -115,29 +106,24 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      // Hiển thị lỗi validation của form nếu form không hợp lệ
-      this.loginForm.markAllAsTouched(); // Đánh dấu tất cả các trường đã chạm để hiển thị lỗi
+      this.loginForm.markAllAsTouched(); 
       this.toastMessage = 'Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.';
-      this.toastType = 'warning'; // Có thể dùng màu vàng cho lỗi validation form
+      this.toastType = 'warning'; 
       this.showToast = true;
     }
   }
 
-  /**
-   * Xử lý sự kiện khi toast notification đóng.
-   * Ẩn toast và xóa message để chuẩn bị cho thông báo tiếp theo.
-   */
+
   onToastClosed(): void {
     this.showToast = false;
     this.toastMessage = '';
-    this.toastType = 'error'; // Đặt lại về mặc định hoặc theo logic của bạn
+    this.toastType = 'error'; 
   }
 
    navigateToRegister() {
     this.router.navigate(['/register']);
   }
 
-  // Điều hướng đến trang đăng ký người bán
   navigateToRegisterStore() {
     this.router.navigate(['/register-store']);
   }

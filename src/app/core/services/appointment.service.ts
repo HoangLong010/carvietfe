@@ -166,7 +166,6 @@ export class AppointmentService {
   }
 
   private transformAppointmentData(appointment: any): AppointmentResponse {
-    // Chuyển đổi appointmentDate từ [2025, 11, 12] thành "2025-11-12"
     let appointmentDate = appointment.appointmentDate;
     if (Array.isArray(appointmentDate)) {
       const [year, month, day] = appointmentDate;

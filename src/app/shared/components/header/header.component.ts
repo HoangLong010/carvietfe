@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
   createDate: string = ''; // Chứa chuỗi ngày
   userAvatar: string = ''; // Biến chứa link ảnh
   showUserMenu: boolean = false;
+  isLoggedIn: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) { }
 
@@ -21,13 +22,22 @@ export class HeaderComponent implements OnInit {
     if (userProfile) {
       try {
         const profile = JSON.parse(userProfile);
-        this.userName = profile?.data?.fullName || profile?.data?.username || profile?.data?.email || '';
-        this.createDate = profile?.data?.createDate || '';
-        // Map key 'avatar'
-        this.userAvatar = profile?.data?.avatar || '';
+        if (profile?.data?.userId) {
+          this.isLoggedIn = true;
+          this.userName = profile?.data?.fullName || profile?.data?.username || profile?.data?.email || '';
+          this.createDate = profile?.data?.createDate || '';
+          this.userAvatar = profile?.data?.avatar || '';
+        } else {
+          this.isLoggedIn = false;
+          this.userName = '';
+        }
+
       } catch {
+        this.isLoggedIn = false;
         this.userName = '';
       }
+    } else {
+      this.isLoggedIn = false;
     }
   }
 
@@ -38,11 +48,18 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     localStorage.removeItem('userProfile');
+    this.isLoggedIn = false; // Cập nhật lại trạng thái
     this.router.navigate(['/auth/login']);
   }
 
   goToProfile(): void {
     this.router.navigate(['/profile']);
+    this.showUserMenu = false;
+  }
+
+  // Hàm chuyển hướng đến trang đăng nhập
+  goToLogin(): void {
+    this.router.navigate(['/auth/login']);
     this.showUserMenu = false;
   }
 }

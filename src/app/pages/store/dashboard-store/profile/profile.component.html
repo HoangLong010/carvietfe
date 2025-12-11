@@ -9,11 +9,11 @@
       </div>
       <div class="header-text">
         <h2>Xin chào, !</h2>
-        <p>Chào mừng bạn quay trở lại hệ thống SSP</p>
+        <p>Chào mừng bạn quay trở lại hệ thống Carviet</p>
       </div>
     </div>
     <div class="header-logo">
-      <i class="bi bi-star-fill ssp-icon"></i> SSP
+      <i class="bi bi-star-fill ssp-icon"></i> Carviet
     </div>
   </div>
 
@@ -212,4 +212,6 @@
       </div>
     </form>
   </div>
+  <app-toast-notification *ngIf="showToast" [message]="toastMessage" [type]="toastType" (closed)="onToastClosed()">
+</app-toast-notification>
 </div>

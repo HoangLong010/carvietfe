@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { environment } from '../../../../../environments/enviroment';
 
 Chart.register(ChartDataLabels);
 
@@ -47,14 +48,14 @@ interface RevenueByTimeResponse {
 export class ReportComponent implements OnInit {
 
   // Form data
-  startDate: string = '2025-01-01';
+  startDate: string = '2025-01-02';
   endDate: string = '2025-12-31';
   
   // Lấy storeId từ localStorage
   selectedStore: string = '';
 
   // API base URL
-  private apiUrl = 'http://localhost:8080/api/v1/dashboard/store';
+  private apiUrl = `${environment.apiUrl}/dashboard/store`;
 
   // Charts storage
   private charts: { [key: string]: Chart } = {};

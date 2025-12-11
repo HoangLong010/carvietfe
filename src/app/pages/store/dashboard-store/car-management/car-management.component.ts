@@ -36,7 +36,7 @@ export class CarManagementComponent implements OnInit {
   // Bộ lọc tìm kiếm
   filter: {
     title: string;
-    status: number | null; // 1: Mới (tương ứng API status=1), 0: Cũ (tương ứng API status=2), null: Tất cả
+    status: number | null; 
     dealerId: string | null;
   } = {
       title: '',
@@ -48,26 +48,18 @@ export class CarManagementComponent implements OnInit {
   dealers: DealerItem[] = [];
   brands: BrandItem[] = [];
 
-  // Trạng thái modal chỉnh sửa
   isEditModalOpen = false;
   selectedCar: CarResponseItem = {} as CarResponseItem;
 
   isCreateModalOpen = false;
   newCar: CarResponseItem = this.getEmptyCar();
-  // === BIẾN MỚI CHO QUẢN LÝ ẢNH ===
-  /** Danh sách ID của các ảnh HIỆN TẠI mà người dùng muốn GIỮ LẠI (Không xóa). */
   keepImageIds: string[] = [];
-  /** Danh sách File mới người dùng chọn để TẢI LÊN. */
   newImages: File[] = [];
-  /** Danh sách URL tạm thời (dùng cho preview) của ảnh mới. */
   newImageUrls: string[] = [];
-  // ================================
 
-  // === Các biến để quản lý toast notification ===
   toastMessage: string = '';
   toastType: 'success' | 'error' | 'warning' | 'info' = 'info';
   showToast: boolean = false;
-  // ===========================================
 
   constructor(private carService: CarService, private masterDataService: MasterDataService) { }
 
@@ -93,8 +85,7 @@ export class CarManagementComponent implements OnInit {
     this.masterDataService.getBrandsForSelection(currentDealerId).subscribe({
       next: (response) => {
         if (response.success && response.data) {
-          console.log('RAW brands:', response.data); // debug xem cấu trúc
-          // Map để đảm bảo mỗi item có { id: string, name: string }
+          console.log('RAW brands:', response.data); 
           this.brands = response.data.map((b: any) => ({
             id: String(b.id ?? b._id ?? b.brandId ?? ''),
             name: b.name ?? b.brandName ?? b.displayName ?? ''
@@ -104,17 +95,15 @@ export class CarManagementComponent implements OnInit {
       error: (error) => console.error('Lỗi khi tải danh sách hãng xe (Brand):', error)
     });
   } else {
-    console.warn('Không tìm thấy Dealer ID. Không thể tải danh sách hãng xe theo cửa hàng.');
   }
 }
 
   private getEmptyCar(): CarResponseItem {
-    // Lấy ID của dealer hiện tại để đặt mặc định cho xe mới.
     const currentDealerId = this.getCurrentDealerId();
 
     return {
-      carId: '', // ID sẽ được backend tạo
-      dealerId: currentDealerId || '', // Đặt dealerId mặc định
+      carId: '', 
+      dealerId: currentDealerId || '', 
       title: '',
       description: '',
       brandId: null as any,
@@ -123,7 +112,7 @@ export class CarManagementComponent implements OnInit {
       variant: '',
       year: new Date().getFullYear(),
       price: 0,
-      status: 1, // Mặc định là Xe mới (1)
+      status: 1, 
       location: '',
       mileage: 0,
       color: '',
@@ -139,7 +128,7 @@ export class CarManagementComponent implements OnInit {
       engineType: '',
       fuelConsumption: 0,
       airbags: 0,
-      registeredUntil: new Date().toISOString().substring(0, 10), // Mặc định hôm nay
+      registeredUntil: new Date().toISOString().substring(0, 10),
       images: [],
       store: null,
       sellStatus: 0
@@ -153,9 +142,7 @@ export class CarManagementComponent implements OnInit {
     this.isCreateModalOpen = true;
   }
 
-  /**
-   * Đóng modal thêm mới.
-   */
+ 
   closeCreateModal(): void {
     this.isCreateModalOpen = false;
     this.cleanupNewImageUrls();
@@ -166,7 +153,6 @@ export class CarManagementComponent implements OnInit {
   saveNewCar(): void {
     this.resetToast();
 
-    // 1. Kiểm tra Dealer ID (bắt buộc phải có để thêm xe)
     const dealerIdForHeader = this.newCar.dealerId;
     if (!dealerIdForHeader) {
       this.toastMessage = 'Lỗi: Không thể xác định Dealer ID để tạo xe.';
@@ -175,20 +161,15 @@ export class CarManagementComponent implements OnInit {
       return;
     }
 
-    // 2. TẠO FORM DATA để gửi dữ liệu multipart/form-data
     const formData = new FormData();
     debugger
 
-    // Thêm các trường dữ liệu text từ đối tượng newCar
     formData.append('title', this.newCar.title);
     formData.append('description', this.newCar.description);
-    const brandIdString = String(this.newCar.brandId || '').trim(); // Đảm bảo là chuỗi và không có khoảng trắng
+    const brandIdString = String(this.newCar.brandId || '').trim(); 
     if (brandIdString) {
       formData.append('brandId', brandIdString);
     } else {
-      // Nếu brandId không có, form validation sẽ ngăn người dùng submit, nhưng đây là safety check.
-      console.warn('Brand ID không được chọn hoặc là rỗng. Kiểm tra form validation.');
-      // Thêm kiểm tra validation ở đầu hàm saveNewCar() là tốt nhất
     }
     formData.append('model', this.newCar.model);
     formData.append('variant', this.newCar.variant);
@@ -211,15 +192,11 @@ export class CarManagementComponent implements OnInit {
     formData.append('fuelConsumption', this.newCar.fuelConsumption.toString());
     formData.append('airbags', this.newCar.airbags.toString());
     formData.append('registeredUntil', this.newCar.registeredUntil);
-    // Ghi chú: Không cần keepImageIds vì là tạo mới
 
-    // 3. Thêm các file ảnh mới (images) - Tên trường phải khớp với @RequestPart("images") trong Spring
     this.newImages.forEach(file => {
       formData.append('images', file, file.name);
     });
-    // =============================
 
-    // Gọi service createCar
     this.carService.createCar(formData, dealerIdForHeader).subscribe({
       next: (response: ApiResponse) => {
         if (response.success && response.code === 201) { // 201 Created
@@ -232,7 +209,6 @@ export class CarManagementComponent implements OnInit {
           this.toastMessage = response.message || 'Thêm xe thất bại. Vui lòng thử lại.';
           this.toastType = 'error';
           this.showToast = true;
-          console.error('Thêm xe thất bại:', response);
         }
       },
       error: (error) => {
@@ -245,22 +221,18 @@ export class CarManagementComponent implements OnInit {
 
   getCurrentDealerId(): string | null {
     try {
-      // Lấy chuỗi userProfile từ localStorage
       const userProfileString = localStorage.getItem('userProfile');
 
       if (!userProfileString) {
         return null;
       }
-
-      // Phân tích chuỗi JSON lớn
       const userProfile = JSON.parse(userProfileString);
 
-      // Kiểm tra cấu trúc và lấy userId
       if (
         userProfile &&
         userProfile.data &&
         userProfile.data.userId &&
-        userProfile.data.accountType === 3 // Kiểm tra accountType có phải là Dealer không (nếu cần)
+        userProfile.data.accountType === 3 
       ) {
         return userProfile.data.userId;
       }
@@ -273,7 +245,6 @@ export class CarManagementComponent implements OnInit {
   }
 
   performSearch(): void {
-    // 1. Ánh xạ trạng thái filter component sang trạng thái API (1: mới, 2: cũ)
     let apiStatus: number | undefined;
     if (this.filter.status === 1) { // Lọc theo Xe mới
       apiStatus = 1;
@@ -283,30 +254,25 @@ export class CarManagementComponent implements OnInit {
       apiStatus = undefined; // Tất cả
     }
 
-    // 2. Chuẩn bị các tham số cho hàm getCars
     const titleParam = this.filter.title || undefined;
-    // Nếu có chọn dealerId (admin chọn filter), dùng nó
-    // Nếu không có, tự đọc từ localStorage (nếu user là dealer)
     let dealerIdForHeader = this.filter.dealerId || this.getCurrentDealerId() || undefined;
 
 
-    // 3. GỌI SERVICE VỚI CHUỖI THAM SỐ VỊ TRÍ (khớp 1:1 với API)
     this.carService.getCars(
       this.currentPage,
       this.pageSize,
-      dealerIdForHeader, // RequestHeader: dealerId
-      titleParam,        // RequestParam: title
-      apiStatus,         // RequestParam: status
-      undefined,         // RequestParam: minPrice (Không sử dụng trong component này)
-      undefined,         // RequestParam: maxPrice
-      undefined,         // RequestParam: year
-      undefined,         // RequestParam: brandId
-      undefined,         // RequestParam: color
-      undefined,         // RequestParam: bodyStyle
-      undefined,         // RequestParam: origin
-      undefined,         // RequestParam: fuelType
-      undefined,         // RequestParam: seats
-      undefined          // RequestParam: location
+      dealerIdForHeader, 
+      titleParam,        
+      apiStatus,         
+      undefined,         
+      undefined,         
+      undefined,             
+      undefined,         
+      undefined,       
+      undefined,        
+      undefined,         
+      undefined,         
+      undefined      
     ).subscribe({
       next: (response) => {
         this.cars = response.data.content;
@@ -317,7 +283,6 @@ export class CarManagementComponent implements OnInit {
         this.hasPreviousPage = response.data.hasPrevious;
         this.hasNextPage = response.data.hasNext;
 
-        // ⚠️ TÔI ĐÃ BỎ PHẦN RESET FILTER Ở ĐÂY để giữ tiêu chí tìm kiếm trên UI
       },
       error: (error) => console.error('Lỗi khi tìm kiếm xe:', error)
     });
@@ -347,19 +312,13 @@ export class CarManagementComponent implements OnInit {
   openEditModal(car: CarResponseItem): void {
     this.selectedCar = { ...car };
 
-    // === KHỞI TẠO TRẠNG THÁI ẢNH KHI MỞ MODAL ===
-    // Mặc định là giữ lại TẤT CẢ các ảnh hiện có
     this.keepImageIds = car.images ? car.images.map(img => img.id) : [];
     this.newImages = []; // Đảm bảo danh sách ảnh mới trống
     this.newImageUrls = []; // Đảm bảo danh sách URL preview trống
-    // ===========================================
 
     this.isEditModalOpen = true;
   }
 
-  /**
-   * Dọn dẹp các URL đối tượng tạm thời để ngăn rò rỉ bộ nhớ.
-   */
   private cleanupNewImageUrls(): void {
     this.newImageUrls.forEach(url => URL.revokeObjectURL(url));
     this.newImageUrls = [];
@@ -367,19 +326,13 @@ export class CarManagementComponent implements OnInit {
 
   closeEditModal(): void {
     this.isEditModalOpen = false;
-    // Reset trạng thái ảnh khi đóng modal
     this.keepImageIds = [];
     this.newImages = [];
 
-    // === DỌN DẸP URL TẠM THỜI ===
-    this.cleanupNewImageUrls(); // Gọi hàm dọn dẹp riêng
-    // =============================
+    this.cleanupNewImageUrls(); 
   }
 
-  /**
-   * Xử lý sự kiện khi người dùng chọn file ảnh mới, tạo URL preview.
-   * Đây chính là cách để up ảnh tạm thời và hiện lên giao diện.
-   */
+
   handleNewImagesChange(event: any): void {
     // 1. Dọn dẹp các URL cũ và reset biến
     this.cleanupNewImageUrls();

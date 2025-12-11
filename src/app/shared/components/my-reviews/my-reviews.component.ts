@@ -31,19 +31,17 @@ export class MyReviewsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMyReviews();
-    this.loadUserId();
   }
 
-  loadUserId() {
-    debugger;
-    this.userId = this.authService.getUserId() || '';
-    if (!this.userId) {
-      this.router.navigate(['/auth/login']);
-    }
-  }
+  // loadUserId() {
+  //   debugger;
+  //   this.userId = this.authService.getUserId() || '';
+  //   if (!this.userId) {
+  //     this.router.navigate(['/auth/login']);
+  //   }
+  // }
 
   loadMyReviews(): void {
-    if (!this.userId) return;
     this.loading = true;
     this.reviewService.getUserReviews().subscribe({
       next: (response) => {
@@ -129,8 +127,8 @@ export class MyReviewsComponent implements OnInit {
     }
   }
 
-  viewCarDetail(carId: string): void {
-    this.router.navigate(['/car-detail', carId]);
+  goToCarDetail(carId: string) {
+    this.router.navigate(['/detail-car'], { queryParams: { id: carId } });
   }
 
   getStars(rating: number): number[] {

@@ -16,7 +16,7 @@
         <div class="main-content">
             <div class="search-banner">
                 <div class="search-banner-content">
-                    <h2>Tìm xe chính hãng<br>Chọn Carpla.vn</h2>
+                    <h2>Tìm xe chính hãng<br>Chọn Carviet.vn</h2>
                     <div class="search-input-group">
                         <input type="text" placeholder="Tìm kiếm theo hãng xe, mẫu xe, số chỗ...">
                         <button>Tìm kiếm</button>
@@ -335,5 +335,8 @@
         </aside>
     </div>
 </main>
+
+<app-toast-notification *ngIf="showToast" [message]="toastMessage" [type]="toastType" (closed)="onToastClosed()">
+</app-toast-notification>
 
 <app-footer></app-footer>

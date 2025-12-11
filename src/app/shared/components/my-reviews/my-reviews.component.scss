@@ -232,3 +232,11 @@
     }
   }
 }
+
+.reviews-container {
+  max-width: 1000px;      // 1. Giảm độ rộng tối đa xuống 1000px để nội dung gọn, dễ đọc hơn (thay vì 1200px)
+  width: 90%;             // 2. Quan trọng: Luôn chỉ chiếm 90% chiều rộng màn hình (tự động hở 5% mỗi bên)
+  margin: 40px auto;      // 3. Căn giữa màn hình (auto) và cách top/bottom 40px cho thoáng
+  padding: 0;             // Reset padding vì đã dùng width 90% để tạo lề
+  box-sizing: border-box; 
+}

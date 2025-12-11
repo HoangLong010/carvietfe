@@ -79,10 +79,9 @@ export class AuthService {
               // Lưu userId riêng để dễ truy cập
               if (userProfile.data?.userId) {
                 localStorage.setItem('userId', userProfile.data.userId);
-                console.log('Login successful - UserId:', userProfile.data.userId);
               }
             } catch (e) {
-              console.error('Error parsing userProfile:', e);
+              alert("Gặp lỗi trong quá trình xử lý")
             }
           }
         }
@@ -131,7 +130,6 @@ export class AuthService {
 
       return null;
     } catch (error) {
-      console.error('Lỗi khi lấy user ID từ localStorage:', error);
       return null;
     }
   }

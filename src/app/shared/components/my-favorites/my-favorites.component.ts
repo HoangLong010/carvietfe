@@ -37,20 +37,20 @@ export class MyFavoritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFavorites();
-    this.loadUserId();
+    // this.loadUserId();
   }
 
-  loadUserId() {
-    debugger;
-    this.userId = this.authService.getUserId() || '';
-    if (!this.userId) {
-      debugger
-      this.router.navigate(['/auth/login']);
-    }
-  }
+  // loadUserId() {
+  //   debugger;
+  //   this.userId = this.authService.getUserId() || '';
+  //   if (!this.userId) {
+  //     debugger
+  //     this.router.navigate(['/auth/login']);
+  //   }
+  // }
 
   loadFavorites(): void {
-    if (!this.userId) return;
+    debugger
     this.loading = true;
     this.favoriteService.getUserFavorites().subscribe({
       next: (response) => {
@@ -95,8 +95,8 @@ export class MyFavoritesComponent implements OnInit {
     this.toastMessage = '';
   }
 
-  viewCarDetail(carId: string): void {
-    this.router.navigate(['/car-detail', carId]);
+  goToCarDetail(carId: string) {
+    this.router.navigate(['/detail-car'], { queryParams: { id: carId } });
   }
 
   // Hàm format giá tiền
@@ -104,8 +104,8 @@ export class MyFavoritesComponent implements OnInit {
     return new Intl.NumberFormat('vi-VN').format(price);
   }
 
-  // // Hàm lấy ảnh mặc định nếu không có ảnh
-  // getCarImage(car: CarFavoriteInfo): string {
-  //   return car.imageUrl || 'assets/images/default-car.jpg';
-  // }
+  // Hàm lấy ảnh mặc định nếu không có ảnh
+  getCarImage(car: CarFavoriteInfo): string {
+    return car.imageUrl || 'assets/images/default-car.jpg';
+  }
 }

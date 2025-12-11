@@ -51,28 +51,18 @@ export class RegisterComponent implements OnInit { // 👈 Thêm OnInit
     this.showToast = false;
     
     if (this.registerForm.valid) {
-      console.log('Thông tin đăng ký:', this.registerForm.value);
-      
-      // 🔑 Gọi API Đăng ký
       this.authService.register(this.registerForm.value).subscribe({
         next: (response: ApiResponse) => { 
           if (response.code === 200 || response.success) { // Kiểm tra thành công
-            // 1. Hiển thị thông báo thành công
             this.toastMessage = response.message || 'Đăng ký thành công!';
             this.toastType = 'success';
             this.showToast = true;
 
-            // 2. Chuyển hướng về trang đăng nhập (hoặc trang home) sau một khoảng thời gian
             setTimeout(() => {
-              // Nếu bạn muốn chuyển về trang đăng nhập
-              this.router.navigate(['/login']); // 👈 Chuyển về trang Đăng nhập
-              
-              // Hoặc nếu muốn chuyển về trang chủ (home) như yêu cầu ban đầu (nhưng logic thường là về login)
-              // this.router.navigate(['/home']); 
-            }, 2000); // Chuyển sau 2 giây để người dùng kịp đọc thông báo
+              this.router.navigate(['/login']); 
+            }, 2000); 
           } 
           else {
-            // Xử lý lỗi từ backend (ví dụ: userName đã tồn tại, lỗi validation)
             this.toastMessage = response.message || 'Đăng ký thất bại. Vui lòng thử lại.'; 
             this.toastType = 'error'; 
             this.showToast = true; 
@@ -80,14 +70,12 @@ export class RegisterComponent implements OnInit { // 👈 Thêm OnInit
         },
         error: (error) => {
           console.error('Lỗi khi gọi API đăng ký:', error);
-          // Xử lý lỗi hệ thống/mạng
           this.toastMessage = 'Lỗi kết nối. Vui lòng kiểm tra lại đường truyền.';
           this.toastType = 'error';
           this.showToast = true;
         }
       });
     } else {
-      // Form không hợp lệ
       this.registerForm.markAllAsTouched(); 
       this.toastMessage = 'Vui lòng nhập đầy đủ và đúng định dạng các trường.';
       this.toastType = 'warning'; 
@@ -95,9 +83,6 @@ export class RegisterComponent implements OnInit { // 👈 Thêm OnInit
     }
   }
   
-  /**
-   * Xử lý sự kiện khi toast notification đóng.
-   */
   onToastClosed(): void {
     this.showToast = false;
     this.toastMessage = '';
