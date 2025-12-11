@@ -35,6 +35,10 @@ export class CarNewComponent implements OnInit {
 
   searchInput: string = '';
 
+  toastMessage: string = '';
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'error';
+  showToast: boolean = false;
+
   // Các option cho dropdown và filter
   priceRanges = [
     { label: 'Dưới 300 triệu', min: null, max: 300000000 },
@@ -334,7 +338,9 @@ export class CarNewComponent implements OnInit {
     event.stopPropagation();
 
     if (!this.authService.isLoggedIn()) {
-      alert('Vui lòng đăng nhập để sử dụng tính năng yêu thích');
+      this.toastMessage = 'Vui lòng đăng nhập để sử dụng tính năng này.';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
@@ -350,8 +356,15 @@ export class CarNewComponent implements OnInit {
       },
       error: (err) => {
         console.error('Lỗi khi toggle favorite:', err);
-        alert('Có lỗi xảy ra khi thực hiện thao tác');
+        this.toastMessage = 'Đã có lỗi xảy ra khi cập nhật yêu thích.';
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
+  }
+
+  onToastClosed(): void {
+    this.showToast = false;
+    this.toastMessage = '';
   }
 }

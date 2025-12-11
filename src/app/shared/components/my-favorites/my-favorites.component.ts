@@ -22,6 +22,11 @@ export class MyFavoritesComponent implements OnInit {
   loading: boolean = true;
   errorMessage: string = '';
 
+  // Biến để quản lý Toast Notification
+  toastMessage: string = ''; 
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'error'; 
+  showToast: boolean = false; 
+
   constructor(
     private favoriteService: FavoriteService,
     private router: Router
@@ -42,7 +47,9 @@ export class MyFavoritesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading favorites:', error);
-        this.errorMessage = 'Không thể tải danh sách yêu thích';
+        this.toastMessage = 'Không thể tải danh sách yêu thích';
+        this.toastType = 'error';
+        this.showToast = true;
         this.loading = false;
       }
     });
@@ -54,16 +61,25 @@ export class MyFavoritesComponent implements OnInit {
         next: (response) => {
           if (response.success) {
             this.favoriteCars = this.favoriteCars.filter(car => car.carId !== carId);
-            alert('Đã xóa khỏi danh sách yêu thích');
+            this.toastMessage = 'Đã xóa khỏi danh sách yêu thích';
+            this.toastType = 'success';
+            this.showToast = true;
           }
         },
         error: (error) => {
           console.error('Error removing favorite:', error);
-          alert('Có lỗi xảy ra khi xóa yêu thích');
+          this.toastMessage = 'Có lỗi xảy ra khi xóa yêu thích';
+          this.toastType = 'error';
+          this.showToast = true;
         }
       });
     }
   }
+
+  onToastClosed(): void {
+    this.showToast = false;
+    this.toastMessage = '';
+  }
 
   viewCarDetail(carId: string): void {
     this.router.navigate(['/car-detail', carId]);

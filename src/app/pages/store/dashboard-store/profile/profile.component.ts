@@ -29,7 +29,9 @@ export class ProfileComponent {
   bannerPreview: string | null = null;
   isSubmitting: boolean = false;
   constructor(private storeService: StoreService, private authService: AuthService) {}
-
+  toastMessage: string = ''; 
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'error'; 
+  showToast: boolean = false; 
   ngOnInit(): void {
     const profile = localStorage.getItem('userProfile');
     if (profile) {
@@ -74,13 +76,17 @@ export class ProfileComponent {
     if (file) {
       // Kiểm tra loại file
       if (!file.type.match('image.*')) {
-        alert('Chỉ chấp nhận file ảnh');
+        this.toastMessage = 'Chỉ chấp nhận file ảnh';
+        this.toastType = 'warning';
+        this.showToast = true;
         return;
       }
       
       // Kiểm tra kích thước file (ví dụ: max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Kích thước file không được vượt quá 5MB');
+        this.toastMessage = 'Kích thước file không được vượt quá 5MB';
+        this.toastType = 'warning';
+        this.showToast = true;
         return;
       }
       
@@ -101,13 +107,17 @@ export class ProfileComponent {
     if (file) {
       // Kiểm tra loại file
       if (!file.type.match('image.*')) {
-        alert('Chỉ chấp nhận file ảnh');
+        this.toastMessage = 'Chỉ chấp nhận file ảnh';
+        this.toastType = 'warning';
+        this.showToast = true;
         return;
       }
       
       // Kiểm tra kích thước file (ví dụ: max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Kích thước file không được vượt quá 5MB');
+        this.toastMessage = 'Kích thước file không được vượt quá 5MB';
+        this.toastType = 'warning';
+        this.showToast = true;
         return;
       }
       
@@ -148,17 +158,23 @@ export class ProfileComponent {
       next: (res) => {
         this.isSubmitting = false;
         if (res.success) {
-          alert('Cập nhật thông tin cửa hàng thành công!');
+          this.toastMessage = 'Cập nhật thông tin cửa hàng thành công!';
+          this.toastType = 'success';
+          this.showToast = true;
           this.closeStoreUpdateModal();
           this.updateUserProfile();
         } else {
-          alert('Cập nhật thất bại: ' + (res.message || 'Lỗi không xác định'));
+          this.toastMessage = 'Cập nhật thất bại: ' + (res.message || 'Lỗi không xác định');
+          this.toastType = 'error';
+          this.showToast = true;
         }
       },
       error: (err) => {
         this.isSubmitting = false;
         console.error(err);
-        alert('Cập nhật thất bại: ' + (err.error?.message || 'Lỗi hệ thống'));
+        this.toastMessage = 'Cập nhật thất bại: ' + (err.error?.message || 'Lỗi hệ thống');
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
   }
@@ -178,5 +194,10 @@ export class ProfileComponent {
       localStorage.setItem('userProfile', JSON.stringify(userProfile));
       this.userInfo = userProfile.data;
     }
+  }
+
+  onToastClosed(): void {
+    this.showToast = false;
+    this.toastMessage = '';
   }
 }

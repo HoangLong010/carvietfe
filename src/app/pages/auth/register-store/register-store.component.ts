@@ -56,14 +56,15 @@ export class RegisterStoreComponent implements OnInit { // 👈 Triển khai OnI
     
     if (this.registerStoreForm.valid) {
       // Lấy các trường dữ liệu cần thiết theo cấu trúc API của Dealer
-      const { userName, storeName, phone, email, address } = this.registerStoreForm.value;
+      const { userName, storeName, phone, email, address, password } = this.registerStoreForm.value;
       
       const dealerData = {
         userName,
         storeName,
         phone,
         email,
-        address // 'address' tương ứng với 'Thành phố hoạt động'
+        address,
+        password // 'address' tương ứng với 'Thành phố hoạt động'
       };
 
       // Gọi API Đăng ký Dealer

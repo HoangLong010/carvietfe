@@ -101,4 +101,5 @@
     </div>
   </div>
 </div>
+<app-toast-notification *ngIf="showToast" [message]="toastMessage" [type]="toastType" (closed)="onToastClosed()">
 <app-footer></app-footer>

@@ -58,6 +58,8 @@ interface ReviewData {
   comment: string;
 }
 
+
+
 @Component({
   selector: 'app-detail-car',
   standalone: false,
@@ -93,8 +95,6 @@ export class DetailCarComponent implements OnInit {
   selectedSlot: TimeSlotResponse | null = null;
 
   // Reviews
-
-
   reviews: ReviewResponse[] = [];
   reviewStats: ReviewStatistics | null = null;
   userReview: ReviewResponse | null = null;
@@ -116,6 +116,11 @@ export class DetailCarComponent implements OnInit {
     private reviewService: ReviewService) {
 
   }
+
+  // Toast notification
+  toastMessage: string = '';
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'info';
+  showToast: boolean = false;
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -239,7 +244,9 @@ export class DetailCarComponent implements OnInit {
   // Mở modal đặt lịch
   openAppointmentModal() {
     if (!this.authService.isLoggedIn()) {
-      alert('Vui lòng đăng nhập để đặt lịch xem xe');
+      this.toastMessage = 'Vui lòng đăng nhập để đặt lịch hẹn';
+      this.toastType = 'warning';
+      this.showToast = true;
       this.router.navigate(['/auth/login']);
       return;
     }
@@ -273,8 +280,9 @@ export class DetailCarComponent implements OnInit {
             console.log('Available slots:', this.availableSlots); // Debug
           },
           error: (err) => {
-            console.error('Lỗi khi tải khung giờ:', err);
-            alert('Không thể tải khung giờ. Vui lòng thử lại.');
+            this.toastMessage = 'Không thể tải khung giờ. Vui lòng thử lại.';
+            this.toastType = 'error';
+            this.showToast = true;
           }
         });
     }
@@ -293,13 +301,17 @@ export class DetailCarComponent implements OnInit {
   bookAppointment() {
     // Kiểm tra cả selectedSlot và các trường bắt buộc
     if (!this.selectedSlot || !this.car || !this.selectedDate) {
-      alert('Vui lòng chọn đầy đủ thông tin: ngày và khung giờ.');
+      this.toastMessage = 'Vui lòng chọn ngày và khung giờ hợp lệ.';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
     // Kiểm tra thông tin người dùng
     if (!this.appointmentData.customerName || !this.appointmentData.customerPhone || !this.appointmentData.customerEmail) {
-      alert('Vui lòng điền đầy đủ thông tin liên hệ.');
+      this.toastMessage = 'Vui lòng điền đầy đủ thông tin cá nhân.';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
@@ -313,12 +325,16 @@ export class DetailCarComponent implements OnInit {
     this.appointmentService.bookAppointment(this.appointmentData)
       .subscribe({
         next: (response) => {
-          alert('Đặt lịch thành công! Chúng tôi sẽ liên hệ với bạn để xác nhận.');
+          this.toastMessage = 'Đặt lịch thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.';
+          this.toastType = 'success';
+          this.showToast = true;
           this.closeAppointmentModal();
         },
         error: (err) => {
           console.error('Lỗi khi đặt lịch:', err);
-          alert('Đặt lịch thất bại. Vui lòng thử lại.');
+          this.toastMessage = 'Đặt lịch thất bại. Vui lòng thử lại.';
+          this.toastType = 'error';
+          this.showToast = true;
         }
       });
   }
@@ -407,7 +423,9 @@ export class DetailCarComponent implements OnInit {
 
   openReviewModal() {
     if (!this.authService.isLoggedIn()) {
-      alert('Vui lòng đăng nhập để đánh giá');
+      this.toastMessage = 'Vui lòng đăng nhập để đánh giá xe';
+      this.toastType = 'warning';
+      this.showToast = true;
       this.router.navigate(['/auth/login']);
       return;
     }
@@ -440,20 +458,26 @@ export class DetailCarComponent implements OnInit {
   setHoveredRating(rating: number) {
     this.hoveredRating = rating;
   }
-
+  // Đánh giá
   submitReview() {
     if (!this.reviewData.rating || this.reviewData.rating < 1) {
-      alert('Vui lòng chọn số sao đánh giá');
+      this.toastMessage = 'Vui lòng chọn số sao đánh giá';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
     if (!this.reviewData.comment || this.reviewData.comment.trim() === '') {
-      alert('Vui lòng nhập nội dung đánh giá');
+      this.toastMessage = 'Vui lòng nhập nội dung đánh giá';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
     if (!this.car) {
-      alert('Không tìm thấy thông tin xe');
+      this.toastMessage = 'Không tìm thấy thông tin xe';
+      this.toastType = 'error';
+      this.showToast = true;
       return;
     }
 
@@ -469,7 +493,9 @@ export class DetailCarComponent implements OnInit {
         next: (response) => {
           console.log('Update review response:', response);
           if (response.success) {
-            alert('Cập nhật đánh giá thành công!');
+            this.toastMessage = 'Cập nhật đánh giá thành công!';
+            this.toastType = 'success';
+            this.showToast = true;
             this.closeReviewModal();
             this.loadReviewStatistics();
             this.loadReviews();
@@ -477,35 +503,49 @@ export class DetailCarComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Lỗi khi cập nhật đánh giá:', err);
-          alert(err.error?.message || 'Cập nhật đánh giá thất bại. Vui lòng thử lại.');
+          this.toastMessage = 'Có lỗi xảy ra khi tải dữ liệu cửa hàng';
+          this.toastType = 'error';
+          this.showToast = true;
         }
       });
     } else {
       // Create new review
       console.log('Creating review:', this.car.id, this.reviewData);
-
       this.reviewService.createReview(
         this.car.id,
         this.reviewData.rating,
         this.reviewData.comment
       ).subscribe({
         next: (response) => {
+          debugger
           console.log('Create review response:', response);
           if (response.success) {
-            alert('Đánh giá thành công!');
+            this.toastMessage = 'Đánh giá thành công!';
+            this.toastType = 'success';
+            this.showToast = true;
             this.closeReviewModal();
             this.loadReviewStatistics();
             this.loadReviews();
             this.checkUserReview();
           }
-        },
-        error: (err) => {
-          console.error('Lỗi khi tạo đánh giá:', err);
-          alert(err.error?.message || 'Đánh giá thất bại. Vui lòng thử lại.');
+          else {
+            this.toastMessage = 'Bạn chưa hoàn thành lịch hẹn xem xe này. Chỉ có thể đánh giá sau khi đã xem xe.';
+            this.toastType = 'error';
+            this.showToast = true;
+          }
         }
       });
     }
+  }
+
+  onToastClosed(): void {
+    this.resetToast();
+  }
+
+  private resetToast(): void {
+    this.showToast = false;
+    this.toastMessage = '';
+    this.toastType = 'info';
   }
 
 
@@ -520,7 +560,9 @@ export class DetailCarComponent implements OnInit {
       next: (response) => {
         console.log('Delete review response:', response);
         if (response.success) {
-          alert('Xóa đánh giá thành công!');
+          this.toastMessage = 'Xóa đánh giá thành công!';
+          this.toastType = 'success';
+          this.showToast = true;
           this.userReview = null;
           this.loadReviewStatistics();
           this.loadReviews();
@@ -528,7 +570,9 @@ export class DetailCarComponent implements OnInit {
       },
       error: (err) => {
         console.error('Lỗi khi xóa đánh giá:', err);
-        alert(err.error?.message || 'Xóa đánh giá thất bại. Vui lòng thử lại.');
+        this.toastMessage = err.error?.message || 'Xóa đánh giá thất bại. Vui lòng thử lại.';
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
   }

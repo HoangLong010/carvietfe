@@ -40,7 +40,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.chatService.disconnect();
+    // this.chatService.disconnect();
+    console.log('Rời màn hình chat, nhưng vẫn giữ kết nối ngầm.');
   }
 
   loadCurrentUser(): void {

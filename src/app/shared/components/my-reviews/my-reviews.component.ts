@@ -17,6 +17,10 @@ export class MyReviewsComponent implements OnInit {
   editRating: number = 5;
   editComment: string = '';
 
+  toastMessage: string = '';
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'info';
+  showToast: boolean = false;
+
   constructor(
     private reviewService: ReviewService,
     private authService: AuthService,
@@ -50,6 +54,16 @@ export class MyReviewsComponent implements OnInit {
     this.editComment = review.comment || '';
   }
 
+  onToastClosed(): void {
+    this.resetToast();
+  }
+
+  private resetToast(): void {
+    this.showToast = false;
+    this.toastMessage = '';
+    this.toastType = 'info';
+  }
+
   cancelEdit(): void {
     this.editingReview = null;
     this.editRating = 5;
@@ -66,14 +80,18 @@ export class MyReviewsComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         if (response.success) {
-          alert('Cập nhật đánh giá thành công');
+          this.toastMessage = 'Cập nhật đánh giá thành công!';
+          this.toastType = 'success';
+          this.showToast = true;
           this.cancelEdit();
           this.loadMyReviews();
         }
       },
       error: (error) => {
         console.error('Error updating review:', error);
-        alert('Có lỗi xảy ra khi cập nhật đánh giá');
+        this.toastMessage = 'Có lỗi xảy ra khi cập nhật đánh giá';
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
   }
@@ -83,13 +101,17 @@ export class MyReviewsComponent implements OnInit {
       this.reviewService.deleteReview(reviewId).subscribe({
         next: (response) => {
           if (response.success) {
-            alert('Đã xóa đánh giá');
+            this.toastMessage = 'Đã xóa đánh giá thành công!';
+            this.toastType = 'success';
+            this.showToast = true;
             this.loadMyReviews();
           }
         },
         error: (error) => {
           console.error('Error deleting review:', error);
-          alert('Có lỗi xảy ra khi xóa đánh giá');
+          this.toastMessage = 'Có lỗi xảy ra khi xóa đánh giá';
+          this.toastType = 'error';
+          this.showToast = true;
         }
       });
     }

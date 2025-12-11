@@ -44,6 +44,11 @@ export class ProfileComponent implements OnInit {
     confirmPassword: ''
   };
 
+  // Biến để quản lý Toast Notification
+  toastMessage: string = ''; 
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'error'; 
+  showToast: boolean = false; 
+
   isChangingPassword = false;
 
   constructor(
@@ -82,7 +87,9 @@ export class ProfileComponent implements OnInit {
 
         this.avatarPreview = this.userProfile.avatar;
       } catch (e) {
-        console.error('Lỗi parse userProfile từ localStorage', e);
+        this.toastMessage = 'Lỗi khi tải thông tin người dùng';
+        this.toastType = 'error';
+        this.showToast = true;
       }
     }
   }
@@ -90,17 +97,23 @@ export class ProfileComponent implements OnInit {
   changePassword() {
     // 1. Validate dữ liệu
     if (!this.passwordData.oldPassword || !this.passwordData.newPassword || !this.passwordData.confirmPassword) {
-      alert('Vui lòng nhập đầy đủ thông tin mật khẩu');
+      this.toastMessage = 'Vui lòng điền đầy đủ các trường mật khẩu';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
     if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
-      alert('Mật khẩu mới và xác nhận mật khẩu không khớp');
+      this.toastMessage = 'Mật khẩu mới và xác nhận mật khẩu không khớp';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
     if (this.passwordData.newPassword.length < 6) { // Ví dụ validate độ dài
-      alert('Mật khẩu mới phải có ít nhất 6 ký tự');
+      this.toastMessage = 'Mật khẩu mới phải có ít nhất 6 ký tự';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
@@ -116,10 +129,14 @@ export class ProfileComponent implements OnInit {
       next: (res) => {
         this.isChangingPassword = false;
         if (res.success || res.code === 201 || res.code === 200) {
-          alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.');
+          this.toastMessage = 'Đổi mật khẩu thành công! Vui lòng đăng nhập lại.';
+          this.toastType = 'success';
+          this.showToast = true;
           this.logout(); // Đăng xuất để user đăng nhập lại bằng pass mới (Security best practice)
         } else {
-          alert(res.message || 'Có lỗi xảy ra');
+          this.toastMessage = res.message || 'Đổi mật khẩu thất bại. Vui lòng thử lại.';
+          this.toastType = 'error';
+          this.showToast = true;
         }
       },
       error: (err) => {
@@ -127,7 +144,9 @@ export class ProfileComponent implements OnInit {
         console.error(err);
         // Hiển thị lỗi từ backend (ví dụ: Mật khẩu cũ không trùng khớp)
         const message = err.error?.message || 'Đổi mật khẩu thất bại. Vui lòng kiểm tra lại mật khẩu cũ.';
-        alert(message);
+        this.toastMessage = message;
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
   }
@@ -137,13 +156,17 @@ export class ProfileComponent implements OnInit {
     if (file) {
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        alert('Vui lòng chọn file ảnh');
+        this.toastMessage = 'Vui lòng chọn file ảnh';
+        this.toastType = 'warning';
+        this.showToast = true;
         return;
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Kích thước ảnh không được vượt quá 5MB');
+        this.toastMessage = 'Kích thước ảnh không được vượt quá 5MB';
+        this.toastType = 'warning';
+        this.showToast = true;
         return;
       }
 
@@ -165,7 +188,9 @@ export class ProfileComponent implements OnInit {
 
   saveProfile() {
     if (!this.userProfile.fullName) {
-      alert('Vui lòng nhập họ và tên');
+      this.toastMessage = 'Vui lòng nhập họ và tên';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
     debugger
@@ -185,7 +210,9 @@ export class ProfileComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         this.isSaving = false;
-        alert('Cập nhật thông tin thành công!');
+        this.toastMessage = 'Cập nhật thông tin thành công!';
+        this.toastType = 'success';
+        this.showToast = true;
 
         // Update localStorage
         const currentUser = JSON.parse(localStorage.getItem('userProfile') || '{}');
@@ -202,7 +229,9 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => {
         this.isSaving = false;
-        alert('Cập nhật thất bại: ' + (error.error?.message || 'Lỗi không xác định'));
+        this.toastMessage = 'Cập nhật thất bại: ' + (error.error?.message || 'Lỗi không xác định');
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
   }
@@ -212,4 +241,9 @@ export class ProfileComponent implements OnInit {
     localStorage.removeItem('userProfile');
     this.router.navigate(['/auth/login']);
   }
+
+  onToastClosed(): void {
+    this.showToast = false;
+    this.toastMessage = '';
+  }
 }

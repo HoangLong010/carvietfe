@@ -1,9 +1,9 @@
 // schedule-management.component.ts
 import { Component, OnInit } from '@angular/core';
-import { 
-  AppointmentService, 
-  DealerScheduleResponse, 
-  DealerScheduleRequest 
+import {
+  AppointmentService,
+  DealerScheduleResponse,
+  DealerScheduleRequest
 } from '../../../../core/services/appointment.service';
 import { AuthService } from '../../../../core/services/auth.service';
 
@@ -41,7 +41,7 @@ export class ScheduleManagementComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDealerId();
@@ -56,19 +56,26 @@ export class ScheduleManagementComponent implements OnInit {
   }
 
   loadSchedules() {
-    if (!this.dealerId) return;
+    if (!this.dealerId) {
+      this.isLoading = false;
+      console.error('No dealerId found:', this.dealerId);
+      return;
+    }
 
     this.isLoading = true;
+    console.log('Loading schedules for dealer:', this.dealerId);
+
     this.appointmentService.getDealerSchedules(this.dealerId)
       .subscribe({
         next: (schedules) => {
+          console.log('Schedules loaded:', schedules);
           this.schedules = schedules;
           this.isLoading = false;
         },
         error: (err) => {
           console.error('Error loading schedules:', err);
           this.isLoading = false;
-          this.showToastMessage('Lỗi khi tải lịch làm việc: ' + (err.error?.message || err.message), 'error');
+          this.showToastMessage('Lỗi khi tải lịch làm việc', 'error');
         }
       });
   }
@@ -76,7 +83,7 @@ export class ScheduleManagementComponent implements OnInit {
   // Mở modal thêm lịch
   openAddScheduleModal(dayOfWeek: number) {
     const dayName = this.daysOfWeek.find(d => d.id === dayOfWeek)?.name || '';
-    
+
     this.currentEditSchedule = {
       id: '',
       dealerId: this.dealerId,
@@ -87,7 +94,7 @@ export class ScheduleManagementComponent implements OnInit {
       slotDuration: 60,
       isActive: true
     };
-    
+
     this.isBatchMode = false;
     this.isEditModalOpen = true;
   }
@@ -103,7 +110,7 @@ export class ScheduleManagementComponent implements OnInit {
   openBatchEditModal() {
     this.editSchedules = this.daysOfWeek.map(day => {
       const existing = this.schedules.find(s => s.dayOfWeek === day.id);
-      
+
       if (existing) {
         return { ...existing };
       } else {
@@ -119,7 +126,7 @@ export class ScheduleManagementComponent implements OnInit {
         };
       }
     });
-    
+
     this.isBatchMode = true;
     this.isEditModalOpen = true;
   }
@@ -154,7 +161,7 @@ export class ScheduleManagementComponent implements OnInit {
     };
 
     const isNew = !this.currentEditSchedule.id;
-    const apiCall = isNew 
+    const apiCall = isNew
       ? this.appointmentService.createDealerSchedule(request)
       : this.appointmentService.updateDealerSchedule(this.currentEditSchedule.id, request);
 
@@ -164,7 +171,7 @@ export class ScheduleManagementComponent implements OnInit {
         this.closeEditModal();
         this.isLoading = false;
         this.showToastMessage(
-          isNew ? 'Tạo lịch làm việc thành công!' : 'Cập nhật lịch làm việc thành công!', 
+          isNew ? 'Tạo lịch làm việc thành công!' : 'Cập nhật lịch làm việc thành công!',
           'success'
         );
       },
@@ -274,7 +281,7 @@ export class ScheduleManagementComponent implements OnInit {
     this.toastMessage = message;
     this.toastType = type;
     this.showToast = true;
-    
+
     setTimeout(() => {
       this.hideToast();
     }, 5000);

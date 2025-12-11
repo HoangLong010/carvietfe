@@ -47,6 +47,10 @@ export class HomeComponent implements OnInit {
   showProvinceModal = false;
   showYearModal = false;
 
+  toastMessage: string = '';
+  toastType: 'success' | 'error' | 'warning' | 'info' = 'error';
+  showToast: boolean = false;
+
   constructor(private carService: CarService,
     private router: Router,
     private favoriteService: FavoriteService,
@@ -334,7 +338,9 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
 
     if (!this.authService.isLoggedIn()) {
-      alert('Vui lòng đăng nhập để sử dụng tính năng yêu thích');
+      this.toastMessage = 'Vui lòng đăng nhập để sử dụng tính năng yêu thích';
+      this.toastType = 'warning';
+      this.showToast = true;
       return;
     }
 
@@ -350,8 +356,15 @@ export class HomeComponent implements OnInit {
       },
       error: (err) => {
         console.error('Lỗi khi toggle favorite:', err);
-        alert('Có lỗi xảy ra khi thực hiện thao tác');
+        this.toastMessage = 'Có lỗi xảy ra khi thực hiện thao tác';
+        this.toastType = 'error';
+        this.showToast = true;
       }
     });
+  }
+
+  onToastClosed(): void {
+    this.showToast = false;
+    this.toastMessage = '';
   }
 }

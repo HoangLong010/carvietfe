@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/enviroment';
+import { ChatService } from './chat.service';
 
 interface RegisterUser {
   fullName: string;
@@ -18,6 +19,7 @@ interface RegisterDealer {
   phone: string;
   email: string;
   address: string;
+  password: string;
 }
 
 export interface ResetPasswordRequest {
@@ -36,7 +38,7 @@ export class AuthService {
   private apiSelectListDealer = `${environment.apiUrl}/dealer/select`;
   private apiResetPassword = `${environment.apiUrl}/reset-password`;
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private chatService: ChatService) { }
 
   register(userData: RegisterUser): Observable<any> {
     return this.http.post<any>(this.apiRegister, userData);
@@ -94,6 +96,7 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userProfile');
     localStorage.removeItem('userId');
+    this.chatService.disconnect(); // Chỉ ngắt kết nối khi đăng xuất hẳn
   }
 
   getAccessToken(): string | null {

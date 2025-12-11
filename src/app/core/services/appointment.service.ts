@@ -128,7 +128,7 @@ export class AppointmentService {
     let params = new HttpParams()
       .set('dealerId', dealerId)
       .set('reason', reason);
-    
+
     return this.http.put<ApiResponse<any>>(
       `${this.apiUrl}/${appointmentId}/reject`,
       {},
@@ -187,11 +187,13 @@ export class AppointmentService {
     };
   }
 
-  private formatTimeArrayToString(timeArray: number[]): string {
-    if (!timeArray || timeArray.length < 2) return '';
-    const hour = timeArray[0].toString().padStart(2, '0');
-    const minute = timeArray[1].toString().padStart(2, '0');
-    return `${hour}:${minute}`;
+  private formatTimeArrayToString(timeArray: any): string {
+    if (Array.isArray(timeArray) && timeArray.length >= 2) {
+      const hour = timeArray[0].toString().padStart(2, '0');
+      const minute = timeArray[1].toString().padStart(2, '0');
+      return `${hour}:${minute}`;
+    }
+    return timeArray || ''; // Trả về nguyên gốc nếu nó đã là string
   }
 
   // Đặt lịch hẹn - FIX: Unwrap ApiResponse
@@ -255,7 +257,15 @@ export class AppointmentService {
     return this.http.get<ApiResponse<DealerScheduleResponse[]>>(
       `${this.apiUrl}/dealer/${dealerId}/schedules`
     ).pipe(
-      map(response => response.data || [])
+      map(response => {
+        if (!response.data) return [];
+        // Map qua từng phần tử để convert time
+        return response.data.map(schedule => ({
+          ...schedule,
+          startTime: this.formatTimeArrayToString(schedule.startTime),
+          endTime: this.formatTimeArrayToString(schedule.endTime)
+        }));
+      })
     );
   }
 
@@ -290,7 +300,14 @@ export class AppointmentService {
       `${this.apiUrl}/dealer/schedules/batch`,
       requests
     ).pipe(
-      map(response => response.data || [])
+      map(response => {
+        if (!response.data) return [];
+        return response.data.map(schedule => ({
+          ...schedule,
+          startTime: this.formatTimeArrayToString(schedule.startTime),
+          endTime: this.formatTimeArrayToString(schedule.endTime)
+        }));
+      })
     );
   }
 

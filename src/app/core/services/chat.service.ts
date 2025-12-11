@@ -51,6 +51,16 @@ export class ChatService {
    * Kết nối WebSocket
    */
   connect(userId: string): void {
+    // 1. Kiểm tra nếu đã kết nối rồi thì không kết nối lại
+    if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
+        console.log('✅ WebSocket đã có sẵn, không cần kết nối lại.');
+        return;
+    }
+
+    // 2. Nếu đang có kết nối dở dang hoặc đóng, reset lại
+    if (this.websocket) {
+        this.websocket.close();
+    }
     const wsUrl = `${environment.wsUrl}/web-socket/chat?userId=${userId}`;
     
     try {
@@ -76,14 +86,16 @@ export class ChatService {
         this.connectionStatus.next(false);
       };
 
-      this.websocket.onclose = () => {
-        console.log('🔌 WebSocket Disconnected');
-        this.connectionStatus.next(false);
+      // this.websocket.onclose = (event) => {
+      //   console.log('🔌 WebSocket Disconnected');
+      //   this.connectionStatus.next(false);
+      //   this.websocket = null; // Reset biến
         
-        // Tự động kết nối lại sau 5 giây
-        console.log('🔄 Reconnecting in 5 seconds...');
-        setTimeout(() => this.connect(userId), 5000);
-      };
+      //  if (event.code !== 1000) { 
+      //        console.log('🔄 Reconnecting in 5 seconds...');
+      //        setTimeout(() => this.connect(userId), 5000);
+      //   }
+      // };
     } catch (error) {
       console.error('❌ Failed to create WebSocket connection:', error);
       this.connectionStatus.next(false);
