@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CarFavoriteInfo, FavoriteService } from '../../../core/services/favorite.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 interface FavoriteCar {
   carId: string;
@@ -21,6 +22,7 @@ export class MyFavoritesComponent implements OnInit {
   favoriteCars: CarFavoriteInfo[] = [];
   loading: boolean = true;
   errorMessage: string = '';
+  userId: string = '';
 
   // Biến để quản lý Toast Notification
   toastMessage: string = ''; 
@@ -29,14 +31,26 @@ export class MyFavoritesComponent implements OnInit {
 
   constructor(
     private favoriteService: FavoriteService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadFavorites();
+    this.loadUserId();
+  }
+
+  loadUserId() {
+    debugger;
+    this.userId = this.authService.getUserId() || '';
+    if (!this.userId) {
+      debugger
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   loadFavorites(): void {
+    if (!this.userId) return;
     this.loading = true;
     this.favoriteService.getUserFavorites().subscribe({
       next: (response) => {

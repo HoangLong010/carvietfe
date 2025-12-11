@@ -271,5 +271,6 @@
         </svg>
     </a>
 </main>
-
+<app-toast-notification *ngIf="showToast" [message]="toastMessage" [type]="toastType" (closed)="onToastClosed()">
+</app-toast-notification>
 <app-footer></app-footer>

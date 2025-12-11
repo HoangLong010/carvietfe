@@ -21,6 +21,8 @@ export class MyReviewsComponent implements OnInit {
   toastType: 'success' | 'error' | 'warning' | 'info' = 'info';
   showToast: boolean = false;
 
+  userId: string = '';
+
   constructor(
     private reviewService: ReviewService,
     private authService: AuthService,
@@ -29,9 +31,19 @@ export class MyReviewsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMyReviews();
+    this.loadUserId();
+  }
+
+  loadUserId() {
+    debugger;
+    this.userId = this.authService.getUserId() || '';
+    if (!this.userId) {
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   loadMyReviews(): void {
+    if (!this.userId) return;
     this.loading = true;
     this.reviewService.getUserReviews().subscribe({
       next: (response) => {
